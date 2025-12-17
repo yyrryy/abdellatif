@@ -3,7 +3,7 @@ from threading import Thread
 from time import sleep
 import socket
 from waitress import serve
-from myproject.wsgi import application  # Replace with your project name
+from autoparts.wsgi import application  # Replace with your project name
 
 def get_local_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
