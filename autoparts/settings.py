@@ -33,16 +33,26 @@ DEBUG = True
 
 
 ALLOWED_HOSTS = ['*']
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'mydb',
-        'USER': 'postgres',
-        'PASSWORD': 'gadwad123',
-        'HOST': 'localhost',
-        'PORT': '',
+usesqlite = os.getenv('DEBUG')=='True' or os.getenv('HOME')=='/home/aaliali'
+print('usesqlite', usesqlite)
+if usesqlite:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'mydb',
+            'USER': 'postgres',
+            'PASSWORD': 'gadwad123',
+            'HOST': 'localhost',
+            'PORT': '',
+        }
+    }
 # if DEBUG:
 # els
 # e:
