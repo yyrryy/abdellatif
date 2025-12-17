@@ -325,7 +325,6 @@ urlpatterns = [
     path('minidashboard', views.minidashboard, name='minidashboard'),
     #path('yeardatafccopy', views.yeardatafccopy, name='yeardatafccopy'),
     #path('yeardatafccopy', views.yeardatafccopy, name='yeardatafccopy'),
-    #path('yeardatafccopy', views.yeardatafccopy, name='yeardatafccopy'),
     # check views used to be only for check views but now, it's the 2nd views file
     path('makethisprint', checkviews.makethisprint, name='makethisprint'),
     path('downloadfcfromech', checkviews.downloadfcfromech, name='downloadfcfromech'),
@@ -371,7 +370,8 @@ urlpatterns = [
     path('yearstock', checkviews.yearstock, name='yearstock'),
     path('stockperyear', checkviews.stockperyear, name='stockperyear'),
     path('getstockyear', checkviews.getstockyear, name='getstockyear'),
-    # path('cleararrivage', checkviews.cleararrivage, name='cleararrivage'),
+    path('addmark', checkviews.addmark, name='addmark'),
+    path('addcategory', checkviews.addcategory, name='addcategory'),
     # path('cleararrivage', checkviews.cleararrivage, name='cleararrivage'),
     # path('cleararrivage', checkviews.cleararrivage, name='cleararrivage'),
     # path('cleararrivage', checkviews.cleararrivage, name='cleararrivage'),

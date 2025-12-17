@@ -69,7 +69,7 @@ class Produit(models.Model):
     stockdepot=models.IntegerField(default=None, null=True, blank=True)
     stocktotal=models.IntegerField(default=None, null=True, blank=True)
     stockinitial=models.IntegerField(default=0, null=True, blank=True)
-    stockfacture=models.IntegerField(default=None, null=True, blank=True)
+    stockfacture=models.IntegerField(default=0, null=True, blank=True)
     stockbon=models.IntegerField(default=None, null=True, blank=True)
     # stock=models.BooleanField(default=True)
     # add equivalent in refs

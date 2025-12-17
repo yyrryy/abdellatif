@@ -489,15 +489,16 @@
                             </tr>
                         </thead>
                         <tbody class="pdctsinbody{{product.id}}">
+                            <!-- {% for i in  stockininventaire%}
                           <tr>
-                            <td>01/01/2024</td>
-                            <td>inventaire 2023</td>
-                            <td>stock inital</td>
-                            <td>{{product.stockinitial}}</td>
-                            <td>--</td>
+                            <td>{{i.date}}</td>
+                            <td>inventaire</td>
+                            <td>inventaire</td>
+                            <td>{{i.quantity}}</td>
+                            <td>{{i.price}}</td>
+                            <td>{{i.total}}</td>
                           </tr>
-                          {% for entry in product.stockin_set.all %}
-                          {% endfor %}
+                            {% endfor %} -->
                             {% for entry in entries %}
                             <tr {% if not entry.isinventaire %} onclick="createtab('bonachat{{entry.nbon.id}}', 'Bon achat {{entry.nbon.nbon}}', '/products/bonachatdetails/{{entry.nbon.id}}')" {%endif%}>
                                 <td>

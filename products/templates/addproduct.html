@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un article</title>
+    <title>Print Example</title>
     <style>
       @media print {
          .livraison-holder {
@@ -129,7 +129,7 @@
     </form>
     <hr class="mt-5">
     <!-- add category -->
-    <!-- <div class="row">
+    <div class="row">
         <div class="col-6">
             <strong>Ajouter une category</strong>
             <div class=" d-flex">
@@ -148,7 +148,7 @@
             </div>
         </div>
 
-    </div> -->
+    </div>
 </div>
 
 <script src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
@@ -167,10 +167,10 @@
             return
         }
         $.ajax({
-            url: '{% url "products:createmarque" %}',
+            url: '{% url "products:addmark" %}',
             type: 'POST',
             data: {
-                'marquename': marque,
+                'marque': marque,
                 'csrfmiddlewaretoken': '{{csrf_token}}'
             },
             success: function(data){
@@ -195,10 +195,10 @@
             return
         }
         $.ajax({
-            url: '{% url "products:createcategory" %}',
+            url: '{% url "products:addcategory" %}',
             type: 'POST',
             data: {
-                'categoryname': category,
+                'category': category,
                 'csrfmiddlewaretoken': '{{csrf_token}}'
             },
             success: function(data){
@@ -239,8 +239,9 @@
                     
                     alertify.success('Produit ajouté avec success');
                     // resetform
+                    location.reload()
                     //$('.addoneproductform').trigger('reset');
-                    location.reload();
+
                     //ajaxpage('addpducts', 'Articles', '/products/stock?target={{target}}')
                     // we dont want to reload the page !important
                     //ajaxpage('add', '+ Article', '/products/addproductspage?target={{target}}')

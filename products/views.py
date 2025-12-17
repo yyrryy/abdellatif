@@ -341,41 +341,44 @@ def addoneproduct(request):
     code=request.POST.get('codeinadd') or ''
     block=request.POST.get('blockinadd') or ''
     equivalent=request.POST.get('equivinadd') or ''
-    cars=request.POST.getlist('carsinadd') or ''
+    cars=request.POST.get('carsinadd') or ''
     netprice=round(float(sellprice)-(float(sellprice)*float(remise)/100), 2)
-    # try:
-    #     res=req.get('http://domain.com/products/addoneproduct', {
-    #         'ref':ref,
-    #         'name':name,
-    #         'buyprice':buyprice,
-    #         'diametre':diametre,
-    #         'sellprice':sellprice,
-    #         'remise':remise,
-    #         'prixnet':netprice,
-    #         'representprice':representprice,
-    #         'minstock':minstock,
-    #         'equivalent':equivalent,
-    #         'cars':cars,
-    #         'category':category,
-    #         'supplier':supplier,
-    #         'mark':mark,
-    #         'image':'',
-    #         'code':code,
-    #         'repsprice':commercialsprix,
-    #         'block':block,
-    #         'carlogos_id':logo,
-    #         'stocktotal':0,
-    #         'stockfacture':0,
-    #         'uniqcode':uniqcode
-    #     })
-    #     res.raise_for_status()
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.get(f'http://{serverip}/products/addoneproduct', {
+                'ref':ref,
+                'name':name,
+                'buyprice':buyprice,
+                'diametre':diametre,
+                'sellprice':sellprice,
+                'remise':remise,
+                'prixnet':netprice,
+                'representprice':representprice,
+                'minstock':minstock,
+                'equivalent':equivalent,
+                'cars':cars,
+                'category':category,
+                'supplier':supplier,
+                'mark':mark,
+                'image':'',
+                'code':code,
+                'repsprice':commercialsprix,
+                'block':block,
+                'carlogos_id':logo,
+                'stocktotal':0,
+                'stockfacture':0,
+                'uniqcode':uniqcode
+            })
+            res.raise_for_status()
 
-    # except Exception as e:
-    #     print('>>> error', e)
-    #     return JsonResponse({
-    #         'success':False,
-    #         'error':f'error {e}'
-    #     })
+        except Exception as e:
+            print('>>> error', e)
+            return JsonResponse({
+                'success':False,
+                'error':f'error {e}'
+            })
         # create product
     product=Produit.objects.create(
         ref=ref,
@@ -389,7 +392,7 @@ def addoneproduct(request):
         representprice=representprice,
         minstock=minstock,
         equivalent=equivalent,
-        cars=json.dumps(cars),
+        cars=cars,
         category_id=category,
         supplier_id=supplier,
         mark_id=mark,
@@ -433,6 +436,7 @@ def viewoneproduct(request, id):
     totalrev=round(revbl+revfacture, 2)
     print('>>>', revbl, revfacture, Outfacture.objects.filter(product=product))
     print(totalrev)
+    stockininventaire=Stockin.objects.filter(product=product, isinventaire=True)
     stockout=Livraisonitem.objects.filter(product=product, isfacture=False).order_by('-id')
     stockoutfc=Outfacture.objects.filter(product=product, facture__bon__isnull=False).order_by('-id')
     avoirs=Returned.objects.filter(product=product)
@@ -449,6 +453,7 @@ def viewoneproduct(request, id):
     # Sort the items by date
     outs = sorted(releve, key=lambda item: item[0].date, reverse=True)
     ctx={
+        'stockininventaire':stockininventaire,
         'thisproductreliquat':thisproductreliquat,
         'outs':outs,
         'title':'Detail de '+product.ref,
@@ -489,6 +494,48 @@ def updateproduct(request):
     sellprice=request.POST.get('sellprice')
     netprice=round(float(sellprice)-(float(sellprice)*float(remise)/100), 2)
     product=Produit.objects.get(pk=productid)
+    serverip=Setting.objects.first().serverip
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        data={
+            #'image':product.image.url.replace('/media/', '') if product.image else '/media/default.png',
+            'new':True if request.POST.get('switch')=='on' else False,
+            'logo':request.POST.get('updatepdctlogo'),
+            'productid':request.POST.get('productid'),
+            'remise':request.POST.get('remise'),
+            'sellprice':request.POST.get('sellprice'),
+            'netprice':round(float(sellprice)-(float(sellprice)*float(remise)/100), 2),
+            'equivalent':equivalent,
+            'near':near,
+            'code':request.POST.get('updatecode'),
+            'refeq1':request.POST.get('refeq1'),
+            'refeq2':request.POST.get('refeq2'),
+            'refeq3':request.POST.get('refeq3'),
+            'refeq4':request.POST.get('refeq4'),
+            'repprice':request.POST.get('updaterepprice') or 0,
+            # 'coderef':request.POST.get('updatecoderef'),
+            'name':request.POST.get('name'),
+            'cars':json.dumps(request.POST.getlist('cars')),
+            'ref':request.POST.get('ref').lower().strip(),
+            'category_id':request.POST.get('category'),
+            'mark_id':request.POST.get('marque'),
+            'diametre':request.POST.get('diametre'),
+            'stock':product.stocktotal
+        }
+        if image:
+            print('sending new image')
+            data['image']=product.image.url.replace('/media/', '') if product.image else '/media/default.png',
+        print('>>end ',product)
+        try:
+            res=req.get(f'http://{serverip}/products/updatepdctdata', data)
+            res.raise_for_status()
+        except Exception as e:
+            print('>>> error', e)
+            return JsonResponse({
+                'success':False,
+                'error':f'error {e}'
+            })
     #if price changed itshould be changed in reliquat and panier of clients
     if float(sellprice) != float(product.sellprice):
         print('price changed')
@@ -504,7 +551,7 @@ def updateproduct(request):
             i.save()
             i.cart.total=newtotal
             i.cart.save()
-    equivalent=' '.join(i.upper() for i in request.POST.get('equivalent').split())
+    equivalent=request.POST.get('equivalent')
     logos = request.POST.getlist('updatepdctlogo')  # because it's multiple
     product.carlogos.set(logos)
     if new=='on':
@@ -536,49 +583,21 @@ def updateproduct(request):
     if image:
         product.image=image
     product.save()
-    data={
-        #'image':product.image.url.replace('/media/', '') if product.image else '/media/default.png',
-        'new':True if request.POST.get('switch')=='on' else False,
-        'logo':request.POST.get('updatepdctlogo'),
-        'productid':request.POST.get('productid'),
-        'remise':request.POST.get('remise'),
-        'sellprice':request.POST.get('sellprice'),
-        'netprice':round(float(sellprice)-(float(sellprice)*float(remise)/100), 2),
-        'equivalent':equivalent,
-        'near':near,
-        'code':request.POST.get('updatecode'),
-        'refeq1':request.POST.get('refeq1'),
-        'refeq2':request.POST.get('refeq2'),
-        'refeq3':request.POST.get('refeq3'),
-        'refeq4':request.POST.get('refeq4'),
-        'repprice':request.POST.get('updaterepprice') or 0,
-        # 'coderef':request.POST.get('updatecoderef'),
-        'name':request.POST.get('name'),
-        'cars':json.dumps(request.POST.getlist('cars')),
-        'ref':request.POST.get('ref').lower().strip(),
-        'category_id':request.POST.get('category'),
-        'mark_id':request.POST.get('marque'),
-        'diametre':request.POST.get('diametre'),
-        'stock':product.stocktotal
-    }
-    if image:
-        print('sending new image')
-        data['image']=product.image.url.replace('/media/', '') if product.image else '/media/default.png',
-    print('>>end ',product)
+    
     print('>>>>>>>>>>>>>> equivalent>',equivalent)
 
     # res=req.get('http://domain.com/products/updateproduct', data)
     # print('>>>>>>', res)
     # if not res.status_code == 200:
     #         print('Error message:', res.text)
-    print('>>>>>>', request.POST.getlist('cars'))
-    # req.get('http://domain.com/products/updatepdctdata', {
-    #     'password':'gadwad123',
-    #     'id':request.POST.get('productid'),
-    #     'ref':request.POST.get('ref').lower().strip(),
-    #     'stocktotal':product.stocktotal,
-    #     'cars':json.dumps(request.POST.getlist('cars')),
-    # })
+    
+        # req.get('http://domain.com/products/updatepdctdata', {
+        #     'password':'gadwad123',
+        #     'id':request.POST.get('productid'),
+        #     'ref':request.POST.get('ref').lower().strip(),
+        #     'stocktotal':product.stocktotal,
+        #     'cars':json.dumps(request.POST.getlist('cars')),
+        # })
     return JsonResponse({
         'success':True
     })
@@ -4674,10 +4693,7 @@ def excelclients(request):
 def excelpdcts(request):
     myfile = request.FILES['excelFile']
     df = pd.read_excel(myfile)
-    lastid=0 # zero cause we will add one
-    if Produit.objects.last():
-        lastid=Produit.objects.last().id
-    uniqcode=f'pdct{lastid+1}'
+    
     entries=0
     for d in df.itertuples():
         try:
@@ -4688,18 +4704,14 @@ def excelpdcts(request):
         name = d.name
         mark = None if pd.isna(d.mark) else d.mark
         refeq = '' if pd.isna(d.refeq) else d.refeq
-        status = False if pd.isna(d.status) else True
-        coderef = '' if pd.isna(d.code) else d.code
         diam = '' if pd.isna(d.diam) else d.diam
         qty = 0 if pd.isna(d.qty) else d.qty
         buyprice = 0 if pd.isna(d.buyprice) else d.buyprice
-        devise = 0 if pd.isna(d.devise) else d.devise
         cars = None if pd.isna(d.cars) else d.cars
         sellprice = 0 if pd.isna(d.sellprice) else d.sellprice
         ctg = None if pd.isna(d.ctg) else d.ctg
-        order = '' if pd.isna(d.order) else d.order
         img = None if pd.isna(d.img) else d.img
-        remise = 0 if pd.isna(d.remise) else d.remise
+        total=qty*buyprice
         #prixnet=0 if pd.isna(d.prixnet) else d.prixnet
         # try:
         #     print('entering', ref)
@@ -4712,6 +4724,10 @@ def excelpdcts(request):
             # print('>>',e, ref)
             # with open('error.txt', 'a') as ff:
             #     ff.write(f'>> {e} {ref}')
+        lastid=0 # zero cause we will add one
+        if Produit.objects.last():
+            lastid=Produit.objects.last().id
+        uniqcode=f'pdct{lastid+1}'
         product=Produit.objects.create(
             uniqcode=uniqcode,
             ref=ref,
@@ -4720,10 +4736,9 @@ def excelpdcts(request):
             name=name,
             mark_id=mark,
             sellprice=sellprice,
-            remise=remise,
             category_id=ctg,
             stocktotal=qty,
-            stockfacture=qty,
+            #stockfacture=qty,
             diametre=diam,
             buyprice=buyprice,
             cars=cars
@@ -4731,7 +4746,7 @@ def excelpdcts(request):
         if img:
             product.image.name=img
             product.save()
-        Stockin.objects.create(isinventaire=True, product=product, price=buyprice, qty=qty, date=timezone.now())
+        Stockin.objects.create(isinventaire=True, product=product, price=buyprice, quantity=qty, date=timezone.now(), total=total)
 
     print('>>>', entries)
     return JsonResponse({
