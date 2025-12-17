@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6c342" />
+    <meta name="description" content="companyname est un importateur et vendeur leader de pièces automobiles de haute qualité pour une variété de modèles de voitures. Faites-nous confiance pour des pièces fiables et durables pour votre véhicule.">
+    <meta name="keywords" content="companyname, ste companyname, pièces automobiles, pièces importées, pièces de qualité">
+    <meta name="robots" content="index, follow">
+
+    <!-- Site Properties -->
+    <title>
+        {% if title %}
+        ste companyname | {{ title }}
+        {% else %}
+        ste companyname | Importateur et Vendeur de Pièces Automobiles de Qualité
+        {% endif %}
+    </title>
+    <link rel="shortcut icon" href="static/images/favicon.png" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" href="apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,700%7cLibre+Franklin&display=swap">
+    <!-- CSS -->
+    <link rel="stylesheet" href="static/css/main/uikit.css">
+    <link rel="stylesheet" href="static/css/main/style.css">
+
+</head>
+
+<body>
+    <!-- <a href="tel:0662835329" class="uk-button uk-button-primary uk-position-fixed appeller">
+        Appeller
+    </a> -->
+    <header data-uk-sticky="top: 400; cls-active: in-sticky">
+        <div class="uk-section uk-padding-remove-vertical">
+            <div class="uk-container">
+                <div class="uk-grid">
+                    <div class="uk-width-1-2 uk-width-auto@m uk-flex uk-flex-middle">
+                        <!-- header logo begin -->
+                        <div class="uk-grid-medium" data-uk-grid>
+                            <div class="in-header-logo">
+                                <a class="uk-logo" href="/"><img src="static/images/logo.png" alt="logo"
+                                        data-uk-img></a>
+                            </div>
+                            <div class="uk-flex uk-flex-middle uk-visible@m">
+                                <p class="uk-text-small">Autoparts leader</p>
+                            </div>
+                        </div>
+                        <!-- header logo end -->
+                    </div>
+                    <div class="uk-width-1-2 uk-width-expand@m uk-inline">
+                        <!-- <div class="in-header-info uk-float-right uk-text-small uk-visible@m info-address">
+                            <span data-uk-icon="icon:fa-phone; ratio: .028"></span>+212 5 555 654 22
+                        </div> -->
+                        <!-- main navigation begin -->
+                        <nav class="uk-navbar-container uk-navbar-transparent uk-float-right uk-position-bottom uk-visible@m"
+                            data-uk-navbar>
+                            <div class="uk-navbar-right">
+                                <ul class="uk-navbar-nav">
+                                    <li>
+                                        <a href="/"><span data-uk-icon="icon: fa-home; ratio: 0.029"></span></a>
+                                    </li>
+                                    <li>
+                                        <a href="/aboutus">A propos</a>
+                                    </li>
+                                    <!--
+                                        <li>
+                                            <a href="./pages/#" data-uk-icon="icon: fa-sort-down; ratio: 0.023">Company</a>
+                                            <div class="uk-navbar-dropdown">
+                                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                                    <li><a href="./pages/about.html">About</a></li>
+                                                    <li><a href="./pages/blog.html">Blog</a></li>
+                                                    <li><a href="./pages/careers.html">Careers</a></li>
+                                                    <li><a href=".#contactus">Contact</a></li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    -->
+                                    <li>
+                                        <a href="/#contactus">Contactez-nous</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/partners">Les marques</a>
+                                    </li>
+                                    <li>
+                                        <a href="/catalog" target="_blank">Catalogue</a>
+                                    </li>
+                                    <!-- <li>
+                                        <a href="/signup" target="_blank">Devenir Client</a>
+                                    </li> -->
+                                    <!-- -
+                                        <li>
+                                            <a href="#" data-uk-icon="icon: fa-sort-down; ratio: 0.023">Resources</a>
+                                            <div class="uk-navbar-dropdown uk-navbar-dropdown-width-2">
+                                                <div class="uk-navbar-dropdown-grid uk-child-width-1-2" data-uk-grid>
+                                                    <div>
+                                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                                            <li><a href="https://getuikit.com/docs/">Documentation<span data-uk-icon="icon:fa-external-link-alt; ratio: 0.024"></span></a></li>
+                                                            <li><a href="#">Help Center</a></li>
+                                                            <li><a href="customers.html">Customers</a></li>
+                                                            <li><a href="roadmap.html">Roadmap</a></li>
+                                                            <li><a href="#">White Paper<span data-uk-icon="icon:fa-file-pdf; ratio: 0.024"></span></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div>
+                                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                                            <li><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    -->
+                                </ul>
+                            </div>
+                        </nav>
+                        <!-- main navigation end -->
+                        <!-- mobile navigation begin -->
+                        <div class="in-mobile-nav uk-height-1-1 uk-flex uk-flex-right uk-flex-middle uk-hidden@m">
+                            <a class="uk-button" href="#mobile-nav-modal" data-uk-toggle><span
+                                    data-uk-icon="icon: fa-bars; ratio: 0.040"></span></a>
+                        </div>
+                        <div id="mobile-nav-modal" class="uk-modal-full" data-uk-modal>
+                            <div class="uk-modal-dialog uk-flex uk-flex-center uk-flex-middle" data-uk-height-viewport>
+                                <button class="uk-modal-close-full uk-close-large" type="button"
+                                    data-uk-icon="icon: fa-times; ratio: 0.040"></button>
+                                <div class="uk-width-large uk-padding-large">
+                                    <ul class="uk-nav-primary uk-nav-parent-icon in-margin-negative-top@s" data-uk-nav>
+                                        <li>
+                                            <a href="/"><span data-uk-icon="icon: fa-home; ratio: 0.029"></span></a>
+                                        </li>
+                                        <li>
+                                            <a href="/catalog" target="_blank">Catalogue</a>
+                                        </li>
+                                        <li>
+                                            <a href="/aboutus">A propos</a>
+                                        </li>
+                                        <!--
+                                                                            <li>
+                                                                                <a href="./pages/#" data-uk-icon="icon: fa-sort-down; ratio: 0.023">Company</a>
+                                                                                <div class="uk-navbar-dropdown">
+                                                                                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                                                                                        <li><a href="./pages/about.html">About</a></li>
+                                                                                        <li><a href="./pages/blog.html">Blog</a></li>
+                                                                                        <li><a href="./pages/careers.html">Careers</a></li>
+                                                                                        <li><a href=".#contactus">Contact</a></li>
+                                                                                    </ul>
+                                                                                </div>
+                                                                            </li>
+                                                                        -->
+                                        <li>
+                                            <a href="/#contactus">Contactez-nous</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/partners">Les marques</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- mobile navigation end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+
+        <div class="uk-section uk-padding">
+            <div class="uk-container">
+                <!-- footer content begin -->
+                <div class="uk-child-width-1-1 uk-child-width-1-5@m uk-text-small" data-uk-grid>
+                    <div class="uk-width-expand">
+                        <a class="uk-logo" href="/">
+                            <h1>Ste companyname, pieces auto</h1>
+                        </a>
+                                <p>
+                                    Zone industriel Sapino, lot 67-2et, Nouacer 
+                                 </p>
+                        <div class="cars">
+                            <div class="carac">
+                                <div class="icon sat" data-uk-icon="icon:fa-shipping-fast; ratio: .06;">
+                            
+                                </div>
+                                <p>
+                                    Livraison
+                                </p>
+                            
+                            </div>
+          
+                            <div class=" carac">
+                                <div class="icon sat" data-uk-icon="icon:fa-shield-alt ; ratio: .06;">
+                            
+                                </div>
+                                <p>
+                                    QUALITE
+                                </p>
+                            
+                            </div>
+                            <div class=" carac">
+                                <div class="icon sat" data-uk-icon="icon:fa-check ; ratio: .06;">
+                            
+                                </div>
+                                <p>
+                                    SATISFACTION
+                                </p>
+                            
+                            </div>
+                    
+                    
+                    
+                        </div>
+                    </div>
+
+                    <div>
+
+                        <ul class="uk-list uk-link-text">
+                            <li><a href="/aboutus">A props</a></li>
+                            <li><a href="/#contactus">Contactez nous</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Nos medias</h4>
+                        <div class="uk-flex uk-flex-left">
+                            <a href="#" class="uk-icon-button uk-margin-small-right" data-uk-icon="icon: facebook">
+                            </a>
+
+                            <a href="#" class="uk-icon-button uk-margin-small-right" data-uk-icon="icon: twitter">
+                            </a>
+
+                            <a href="#" class="uk-icon-button" data-uk-icon="icon: linkedin">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="uk-width-1-1 uk-text-left uk-text-center@m">
+                        <p>Ste companyname &copy;<span id="thisyear"></span> Tous les droits sont réservés - realisé par <a href="/developer" target="_blank">dev</a>
+                            <!-- <a
+                                href="https://abdelouahed.me" target="_blank">Abdelouahed</a> -->
+                        </p>
+                    </div>
+                </div>
+                <!-- footer content end -->
+            </div>
+        </div>
+        <div class="uk-flex uk-flex-right uk-visible@m">
+            <a href="#" class="in-totop" data-uk-scroll data-uk-icon="icon: fa-chevron-up; ratio: .032"></a>
+        </div>
+    </footer>
+
+    <!-- Javascript -->
+
+    <script src="static/js/jquery.min.js"></script>
+    <script>
+        $('#thisyear').text(new Date().getFullYear())
+    </script>
+    <script src="static/js/main/uikit.min.js"></script>
+    <script src="static/js/main/uikit-icons.min.js"></script>
+    <script src="static/js/main/config.js"></script>
+    <script src="static/js/main/vendor.js"></script>
+    {% block js %}
+    {% endblock %}
+
+</body>
+
+</html>
+

@@ -1,0 +1,76 @@
+{% load global_tags %}
+<table class="table table-bordered table-hover" style="font-size: 12px; border-color: black;" id="etattable">
+  <thead class="bg-darkblue text-white" style="position:sticky; top:0;">
+    <td style="width: 15%; white-space: nowrap;">Client</td>
+    <td style="text-align: center; width: 5%;" onclick="$('.clientespece').toggleClass('d-none')">Code</td>
+    <td style="text-align: center; width: 5%">Ville</td>
+    <td style="text-align: center; width: 5%">Region</td>
+    <td style="text-align: center; width: 5%">Repr.</td>
+    <td style="text-align: center; width: 2%"></td>
+    {% for i in months %}
+    <td style="text-align: center" onclick="intsorttable(event)">{{i}}</td>
+    {% endfor %}
+    <td onclick="intsorttable(event)">Situation</td>
+    <td style="text-align: center; width: 2%">Impr.</td>
+  </thead>
+  <tbody class="etatblfctrs">
+
+{% for i in data %}
+<tr>
+  <td>{{i.client_name}}</td>
+  <td style="text-align: center">{{i.client_code}} {% if i.client_moderegl == '1' %}<span class="clientespece">*</span>{%endif%}</td>
+  <td style="text-align: center">{{i.client_city}}</td>
+  <td style="text-align: center">{{i.client_region}}</td>
+  <td style="text-align: center">{{i.client_represent}}</td>
+  <td style="text-align: center">BL</td>
+
+{% for a in i.monthly_data %}
+<td style="text-align: center; font-weight:bolder;">
+    {{a.situation|floatformat:2|intspace}}
+
+</td>
+{% endfor %}
+<!-- <td {% if i.totalsituation == i.soldbl %} class="" {% else %} class="bg-danger text-white" {% endif %}>
+    {{i.totalsituation|floatformat:2|intspace}}
+</td> -->
+<td class="totalsituation">
+    {{i.totalsituation|floatformat:2|intspace}}
+</td>
+<td>
+  {% if not i.totalsituation == 0 %}
+  <button class="btn btn-sucess bi bi-download" onclick="popupwindow(event, '/products/situationclblfc', '{{i.client_name}}', '{{i.client_id}}')"></button>
+  {% endif %}
+</td>
+</tr>
+<!-- facture trs -->
+<tr style="border-bottom: 3px solid black; color:red;">
+  <td>{{i.client_name}}</td>
+  <td style="text-align: center">{{i.client_code}} {% if i.client_moderegl == '1' %}<span class="clientespece">*</span>{%endif%}</td>
+  <td style="text-align: center">{{i.client_city}}</td>
+  <td style="text-align: center">{{i.client_region}}</td>
+  <td style="text-align: center">{{i.client_represent}}</td>
+  <td style="text-align: center">FC</td>
+
+{% for a in i.monthly_data %}
+<td style="text-align: center">
+    {{a.situationfc|floatformat:2|intspace}}
+</td>
+{% endfor %}
+<!-- <td {% if i.totalsituationfc == i.soldfc %} class="" {% else %} class="bg-danger text-white" {% endif %}>
+    {{i.totalsituationfc|floatformat:2|intspace}}
+</td> -->
+<td class="totalsituation">
+    {{i.totalsituationfc|floatformat:2|intspace}}
+</td>
+<td>
+   {% if not i.totalsituationfc == 0 %}
+   <button class="btn btn-sucess bi bi-download" onclick="popupwindow(event, '/products/situationclblfc', '{{i.client_name}}', '{{i.client_id}}')"></button>
+   {% endif %}
+</td>
+</tr>
+{% endfor %}
+
+
+  </tbody>
+
+</table>

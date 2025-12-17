@@ -1,0 +1,23 @@
+{% for i in products %}
+<a class="suggestions__item suggestions__product mb-3 p-3 border-bottom" href="/product/{{i.id}}">
+    <div class="col-2">
+      <img src="{% if i.image %}{{i.image.url}}{% endif %}" alt="" style="width: 50%;">
+    </div>
+    <div class="suggestions__product-info">
+      <div class="suggestions__product-name">
+        <strong>{{i.ref.upper}} -</strong>  {{i.name.upper}}
+      </div>
+      
+    </div>
+    <div>
+      <strong class="text-primary">{{i.sellprice}} Net</strong> <br>
+      {% if i.mark.image %}
+      <img src="{{i.mark.image.url}}" width="60">
+      {% endif %}
+    </div>
+  </a>
+{% empty %}
+<strong>
+    Pas de resultats
+</strong>
+{% endfor %}

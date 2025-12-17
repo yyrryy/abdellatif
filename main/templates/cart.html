@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block content %}
+
+
+
+<div class="block">
+    <div class="container position-relative">
+      <div class="fixed-bottom" style="height: 6em; background: #333">
+    
+
+      <div class="p-2 d-flex justify-content-center">
+        <div class="d-flex me-3">
+          {% if user.groups.all.0.name == 'clients' %}
+          <input type="text" hidden value="{{user.client.id}}" class="clientid">
+          {% elif user.groups.all.0.name == 'salsemen' %}
+          <select class="form-control clientid">
+            <option value="">---</option>
+            {% for i in clients %}
+            <option value="{{i.id}}">
+              {{i.name}}
+            </option>
+            {% endfor %}
+          </select>
+          {% endif %}
+          <div>
+  
+            <select class="form-control mb-2 modes" aria-label="Default select example" name="modpymnt">
+              <option selected value="0">Mode de payement</option>
+              <option value="espece">Espece</option>
+              <option value="cheque">Cheque</option>
+              <option value="effet">Effet</option>
+            </select>
+          </div>
+          
+  
+          <div>
+            <select class="form-control modes" aria-label="Default select example" name="modlvrsn">
+              <option selected value="0">Mode de livraison</option>
+              <option value="LUX">LUX</option>
+              <option value="SDTM">SDTM</option>
+              <option value="GHAZALA">GHAZALA</option>
+              <option value="BAHA">BAHA express</option>
+              <option value="BG">BG</option>
+              <option value="VOIE EXPRESS">VOIE EXPRESS</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary valider">
+          valider le panier
+        </button>
+          
+      </div>
+      <input type="text" name="isclient" hidden value="{% if user.groups.all.0.name == 'clients' %}true{%endif%}">
+      
+      
+  </div>
+      <div class="cart">
+        <div class="cart__table cart-table position-relative" style="height: 75vh;overflow-y: scroll;">
+          <div class="loadingcartitems flex-column align-items-center justify-content-center w-100 h-100 top-0 bg-dark" style="z-index:1199; position: absolute;">
+            <div class="spinner-border text-light"></div>
+          </div>
+        
+        
+          <table class="table table-bordered table-hover">
+            <thead style="background: white;">
+              <tr class="">
+                <th class="">Ref</th>
+                <th class="" style="width: 50%;">Article</th>
+                <!-- <th class="">Prix</th> -->
+                <th class="">Quantité</th>
+                <!-- <th class="">Total</th> -->
+                <th class=""></th>
+              </tr>
+            </thead>
+            <tbody class="">
+              {% for i in cartitems %}
+              <tr class="" ref="{{i.product.ref.upper}}" n="{{i.product.name}}" id="{{i.product.id}}">
+          
+                <td class="">
+                  <a src="{{i.product.image}}" data-toggle="modal" data-target="#imagedisplaymodal" class="imagedisplaybtn" imgsrc="{{i.product.image}}">{{i.product.ref.upper}}</a>
+                </td>
+                <td class="">
+                  <strong>{{i.product.name.upper}}</strong>
+                </td>
+                <!-- <td class="price" data-title="Price">
+                <small class="priceholder" price={{i.product.price}}>{{i.product.price}} NET</small>
+                </td> -->
+                <td class="qtyholder" data-title="Quantity">
+                  <div class="d-flex cart-table__quantity input-number">
+                    <input  class="form-control input-number__input qty" type="number" min="1" value="{{i.qty}}" price={{i.product.price}} name="qtytosub" style="width: 30%;">
+                    <button class="btn border bi bi-pen-fill" onclick="edititemincart(event, '{{i.id}}')"></button>
+                    {% if i.product.isoffer %}
+                    <button class="btn btn-primary bi bi-question btn-sm" onclick="$(this).parent().parent().find('.offer').toggleClass('d-none')"></button>
+                    {% endif %}
+                  </div>
+                  {% if i.product.isoffer %}
+                  <strong class="offer d-none">
+                    {{i.product.offre.upper}}
+                  </strong>
+                  {% endif %}
+                </td>
+                <!-- <td class=" subtotal" data-title="Total">
+                <small>{{i.total}} NET</small>
+                </td> -->
+                <td class="">
+                  <button onclick="deleteitemcart(event, '{{i.id}}')" type="button" class="btn btn-sm btn-danger" id="{{i.product.id}}">
+                    
+                  </button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot class="cart-table__foot">
+              <tr>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+  function edititemincart(event, id){
+    qty_input=$(event.target).parent().find('input')
+    if (qty_input.val()=='' || qty_input.val()==0){
+      qty_input.addClass('border-danger')
+      return
+    }
+    $('.loadingcartitems').toggleClass('d-none');
+    $.get({
+      url: '/edititemincart',
+      data: {
+        'cartitemid': id,
+        'qty': qty_input.val(),
+      },
+      success: function (data) {
+        $('.loadingcartitems').toggleClass('d-none');
+
+      }
+    });
+  }
+  function deleteitemcart(event, id){
+    alertify.confirm('Supprimer ?', ()=>{
+      //$('.loadingcartitems').toggleClass('d-none');
+      $.get({
+      url: '/removeitemincart',
+      data: {
+        'cartitemid': id,
+      },
+      success: function (data) {
+        $(event.target).parent().parent().remove();
+        //$('.loadingcartitems').toggleClass('d-none');
+        
+      }
+    }, ()=>{
+      console.log('OK')
+    })
+    
+    });
+  }
+  // get the input element
+  // const input = document.getElementById('onlynumbers');
+
+  // // add an event listener to validate input
+  // input.addEventListener('input', (event) => {
+  //     // get the current value of the input
+  //     const value = event.target.value;
+
+  //     // replace any non-numeric characters with an empty string
+  //     const cleanValue = value.replace(/[^0-9]/g, '');
+
+  //     // set the cleaned value as the input value
+  //     event.target.value = cleanValue;
+  // });
+
+</script>
+<script src="{% static 'js/cart.js'%}"></script>
+{% endblock %}
