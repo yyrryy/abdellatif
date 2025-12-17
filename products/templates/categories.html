@@ -21,7 +21,7 @@
                 <strong>Image</strong>
                 <input name="categoryimage" type="file" class="form-control" required>
                 
-                Representants caché
+                <!-- Representants caché
                 <select class="select" name="commercialexcluded" multiple="multiple" style="width:100%;">
                     {% for i in commercials %}
                     <option value="{{i.id}}">
@@ -34,7 +34,7 @@
                     <label class="form-check-label" for="flexCheckIndeterminate">
                       Masquer les clients
                     </label>
-                </div>
+                </div> -->
                 <button class="btn btn-success mt-2 createcategorybtn">Ajouter</button>
             </form>
         </div>
@@ -64,20 +64,20 @@
                                 <option value="table" {% if i.affichage == "table" %} selected {% endif %}>table</option>
                                 <option value="double" {% if i.affichage == "double" %} selected {% endif %}>double</option>
                             </select>
-                            Representants caché:
+                            <!-- Representants caché:
                             <select class="select" name="commercialexcluded" multiple="multiple" style="width:100%;">
                                 {% for c in commercials %}
                                 <option value="{{c.id}}" {% if c in i.excludedrep.all %}selected{% endif %}>
                                     {{c.name}}
                                 </option>
                                 {% endfor %}
-                            </select>
-                            <div class="form-check position-relative mt-2">
+                            </select> -->
+                            <!-- <div class="form-check position-relative mt-2">
                                 <input class="form-check-input" type="checkbox" value="True" id="flexCheckIndeterminate" name="hideclient" {% if i.masqueclients %} checked {% endif %}>
                                 <label class="form-check-label" for="flexCheckIndeterminate">
                                 Masquer les clients
                                 </label>
-                            </div>
+                            </div> -->
                             <button class="btn btn-sm btn-success w-100 updatecategorybtn" id="{{i.id}}">Mise à jour</button>
                         </form>
                     </div>
