@@ -419,9 +419,7 @@ def viewoneproduct(request, id):
     commercial_prices = product.getcommercialsprice()  # Note the parentheses ()
     # stockin will exclude bons with ismanuel is True because they dont add to stock, only add to stock facture
     # nbon__ismanual=False this filters the unmanual bons #here
-    stockin=Stockin.objects.filter(product=product, nbon__ismanual=False)|Stockin.objects.filter(product=product, isinventaire=True)
-    stockin = stockin.order_by('-date')
-
+    stockin=Stockin.objects.filter(product=product, nbon__ismanual=False)|Stockin.objects.filter(product=product, isinventaire=True).order_by('-date')
     # outs in bon livraisons
     outbl=Livraisonitem.objects.filter(product=product, isfacture=False).aggregate(Sum('qty'))['qty__sum'] or 0
     # outs in factures, exclude the factures created manually
@@ -4676,57 +4674,64 @@ def excelclients(request):
 def excelpdcts(request):
     myfile = request.FILES['excelFile']
     df = pd.read_excel(myfile)
+    lastid=0 # zero cause we will add one
+    if Produit.objects.last():
+        lastid=Produit.objects.last().id
+    uniqcode=f'pdct{lastid+1}'
     entries=0
     for d in df.itertuples():
         try:
             ref = d.ref.lower().strip()
         except:
-            ref=d.ref
+            ref=d.ref.strip()
         #reps=json.dumps(d.rep)
-        #name = d.name
-        #mark = None if pd.isna(d.mark) else d.mark
-        #refeq = '' if pd.isna(d.refeq) else d.refeq
-        #status = False if pd.isna(d.status) else True
-        #coderef = '' if pd.isna(d.code) else d.code
-        #diam = '' if pd.isna(d.diam) else d.diam
-        #qty = 0 if pd.isna(d.qty) else d.qty
-        #buyprice = 0 if pd.isna(d.buyprice) else d.buyprice
-        #devise = 0 if pd.isna(d.devise) else d.devise
-        # car = None if pd.isna(d.car) else d.car
-        #prixbrut = 0 if pd.isna(d.prixbrut) else d.prixbrut
-        #ctg = None if pd.isna(d.ctg) else d.ctg
-        #order = '' if pd.isna(d.order) else d.order
-        #img = None if pd.isna(d.img) else d.img
+        name = d.name
+        mark = None if pd.isna(d.mark) else d.mark
+        refeq = '' if pd.isna(d.refeq) else d.refeq
+        status = False if pd.isna(d.status) else True
+        coderef = '' if pd.isna(d.code) else d.code
+        diam = '' if pd.isna(d.diam) else d.diam
+        qty = 0 if pd.isna(d.qty) else d.qty
+        buyprice = 0 if pd.isna(d.buyprice) else d.buyprice
+        devise = 0 if pd.isna(d.devise) else d.devise
+        cars = None if pd.isna(d.cars) else d.cars
+        sellprice = 0 if pd.isna(d.sellprice) else d.sellprice
+        ctg = None if pd.isna(d.ctg) else d.ctg
+        order = '' if pd.isna(d.order) else d.order
+        img = None if pd.isna(d.img) else d.img
         remise = 0 if pd.isna(d.remise) else d.remise
         #prixnet=0 if pd.isna(d.prixnet) else d.prixnet
-        try:
-            print('entering', ref)
-            product=Produit.objects.get(ref=ref)
-            product.representremise=int(remise)
-            product.save()
-            entries+=1
+        # try:
+        #     print('entering', ref)
+        #     product=Produit.objects.get(ref=ref)
+        #     product.representremise=int(remise)
+        #     product.save()
+        #     entries+=1
 
-        except Exception as e:
-            print('>>',e, ref)
-            with open('error.txt', 'a') as ff:
-                ff.write(f'>> {e} {ref}')
-            # product=Produit.objects.create(
-            #     ref=ref,
-            #     equivalent=refeq,
-            #     isactive=False,
-            #     coderef=coderef,
-            #     name=name,
-            #     mark_id=mark,
-            #     sellprice=prixbrut,
-            #     prixnet=prixnet,
-            #     remise=remise,
-            #     category_id=ctg,
-            #     image=img,
-            #     stockfacture=qty,
-            #     #diametre=diam,
-            #     buyprice=buyprice,
-            #     devise=devise
-            # )
+        # except Exception as e:
+            # print('>>',e, ref)
+            # with open('error.txt', 'a') as ff:
+            #     ff.write(f'>> {e} {ref}')
+        product=Produit.objects.create(
+            uniqcode=uniqcode,
+            ref=ref,
+            equivalent=refeq,
+            isactive=True,
+            name=name,
+            mark_id=mark,
+            sellprice=sellprice,
+            remise=remise,
+            category_id=ctg,
+            stocktotal=qty,
+            stockfacture=qty,
+            diametre=diam,
+            buyprice=buyprice,
+            cars=cars
+        )
+        if img:
+            product.image.name=img
+            product.save()
+        Stockin.objects.create(isinventaire=True, product=product, price=buyprice, qty=qty, date=timezone.now())
 
     print('>>>', entries)
     return JsonResponse({
