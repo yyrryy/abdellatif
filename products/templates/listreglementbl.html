@@ -452,7 +452,15 @@
           </thead>
           <tbody>
                {% for i in reglements %}
-               <tr class="reglbl-row"  >
+               <tr class="reglbl-row"
+               {% if not i.ispaid and i.mode != 'espece' and i.mode != 'avoir' %}
+                   {% if i.echance == today %}
+                       style="background: yellow;"
+                   {% elif i.echance < today %}
+                       style="background: red;"
+                   {% endif %}
+               {% endif %}
+                >
                      <td>
                           {{i.mode}} <br>
                           <!-- <select name="updatemodereglbl{{i.id}}" id=""></select> -->
