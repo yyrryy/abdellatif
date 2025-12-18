@@ -4704,6 +4704,7 @@ def excelpdcts(request):
         #reps=json.dumps(d.rep)
         name = d.name
         mark = None if pd.isna(d.mark) else d.mark
+        order = None if pd.isna(d.order) else d.order
         refeq = '' if pd.isna(d.refeq) else d.refeq
         diam = '' if pd.isna(d.diam) else d.diam
         qty = 0 if pd.isna(d.qty) else d.qty
@@ -4736,6 +4737,7 @@ def excelpdcts(request):
             isactive=True,
             name=name,
             mark_id=mark,
+            code=order,
             sellprice=sellprice,
             category_id=ctg,
             stocktotal=qty,
