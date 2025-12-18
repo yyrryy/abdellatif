@@ -158,9 +158,9 @@
                   <div class="product-card__info">
                     
                     <div class="product-card__name">
-                      <div >
-                        <strong class="badge bg-primary" style="font-size: 17px;">{{i.ref.upper}}</strong>
-                        - {{i.name}} {%if i.diametre%}<span class="text-primary">{{i.diametre}}</span>{%endif%}
+                      <div style="font-size: 17px;">
+                        <strong class="badge bg-primary me-3">{{i.ref.upper}}</strong>
+                        {{i.name.upper}} {%if i.diametre%}<span class="text-primary">{{i.diametre}}</span>{%endif%}
                       </div>
                     </div>
                     <div class="product-card__rating d-flex justify-content-between align-items-center">
@@ -184,17 +184,17 @@
                     </div> -->
                     <div class="d-block w-100 text-primary p-2" style="font-weight: bold;"> 
                       {% if i.mark.image %} <img src="{{i.mark.image.url}}" alt=""> {%endif%}
-                      <div class="d-flex justify-content-between">
+                      <!-- <div class="d-flex justify-content-between">
                         <div>Pr Brut TTC</div>
                         <div>{{i.sellprice|floatformat:2}}</div>
                       </div>
                       <div class="d-flex justify-content-between">
                         <div>Remise</div>
                         <div>{{i.remise|floatformat:2}}</div>
-                      </div>
+                      </div> -->
                       <div class="d-flex justify-content-between" style="color: orange;">
-                        <div>Pr Net</div>
-                        <div>{{i.prixnet|floatformat:2}}</div>
+                        <div>Prix TTC</div>
+                        <div>{{i.sellprice|floatformat:2}}</div>
                       </div>
                       
                     </div>

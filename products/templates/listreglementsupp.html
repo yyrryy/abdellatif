@@ -803,8 +803,7 @@ function submitupdatereglementsupp(event){
             bons:JSON.stringify(selectedValues),
             csrfmiddlewaretoken: '{{ csrf_token }}'
             }, function(data){
-                forceupdatetab('addlistreglementsupp', '/products/listreglementsupp')
-                alertify.success('Reglement ajouté')
+                createtab('addlistreglementsupp', 'REGLEMENT FOURNISSEUR', '/products/listreglementsupp')
         })
     })
 

@@ -9264,7 +9264,7 @@ def getitemsforlistbl(request):
     print('>>>>', brands)
     unique_categories = set(categories)
     unique_brands = set(brands)
-    brands = [{'id': mark.id, 'name': mark.name, 'image':mark.image.url if mark.image else '/media/default.png'} for mark in unique_brands]
+    brands = [{'id': mark.id if mark.id else None, 'name': mark.name if mark.name else None, 'image':mark.image.url if mark.image else '/media/default.png'} for mark in unique_brands]
     categories = [{'id': category.id, 'name': category.name, 'image':category.image.url if category.image else '/media/default.png'} for category in unique_categories]
     trs=[f'''<tr class="productsbrand{i.mark.id if i.mark else ''}">
     <td><img src={i.image.url if i.image else ''}></td>
