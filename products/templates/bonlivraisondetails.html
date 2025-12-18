@@ -57,10 +57,10 @@
     <div class="mt-2">
       Contre/normal
       <select class="updateiscontreselect" name="" onchange="updateiscontrebon(event, '{{order.id}}')">
-          <option value="Simple" {% if paymenttype == "Simple" %}selected{%endif%}>Simple</option>
-          <option value="Espece" {% if paymenttype == "Espece" %}selected{%endif%}>Espece</option>
-          <option value="Cheque" {% if paymenttype == "Cheque" %}selected{%endif%}>Cheque</option>
-          <option value="Traite" {% if paymenttype == "Traite" %}selected{%endif%}>Traite</option>
+          <option value="Simple" {% if order.paymenttype == "Simple" %}selected{%endif%}>Simple</option>
+          <option value="Espece" {% if order.paymenttype == "Espece" %}selected{%endif%}>Espece</option>
+          <option value="Cheque" {% if order.paymenttype == "Cheque" %}selected{%endif%}>Cheque</option>
+          <option value="Traite" {% if order.paymenttype == "Traite" %}selected{%endif%}>Traite</option>
       </select>
     </div>
     <strong>Reglements:</strong>
