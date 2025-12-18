@@ -173,7 +173,7 @@
             processData: false,
             contentType: false,
             success:((data)=>{
-                $(`#supplist`).html(data.html)
+                createtab('addclientstab', 'CLIENTS', '/products/supplierspage')
             })
         })
     })

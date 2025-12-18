@@ -1084,8 +1084,7 @@
             bons:JSON.stringify(selectedValues),
             csrfmiddlewaretoken: '{{ csrf_token }}'
             }, function(data){
-                forceupdatetab('addlistreglementfc', '/products/listreglementfc')
-                alertify.success('Reglement ajouté')
+                createtab('addlistreglementfc', 'REGLEMENT FACTURE', '/products/listreglementfc')
         })
     })
 
