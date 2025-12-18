@@ -4701,7 +4701,7 @@ def excelpdcts(request):
         try:
             ref = d.ref.lower().strip()
         except:
-            ref=d.ref.strip()
+            ref=d.ref
         #reps=json.dumps(d.rep)
         name = d.name
         mark = None if pd.isna(d.mark) else d.mark

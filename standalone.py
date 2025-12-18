@@ -18,11 +18,11 @@ ip = get_local_ip()
 
 def runserver():
     # Use Waitress to serve Django app
-    serve(application, host=ip, port=80)
+    serve(application, host='0.0.0.0', port=80)
 
 def launchchrome():
     sleep(2)  # Give Waitress time to start
-    os.system(f'start chrome http://{ip}')
+    os.system(f'start chrome http://0.0.0.0:80')
 
 # Run the server and launch Chrome in parallel
 t1 = Thread(target=runserver)
