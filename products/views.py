@@ -492,12 +492,13 @@ def updateproduct(request):
     selected_reps = request.POST.getlist('updatereps')
     remise=request.POST.get('remise')
     sellprice=request.POST.get('sellprice')
+    minstock=request.POST.get('updateminstock')
     netprice=round(float(sellprice)-(float(sellprice)*float(remise)/100), 2)
     product=Produit.objects.get(pk=productid)
-    serverip=Setting.objects.first().serverip
     serverip = Setting.objects.only('serverip').first()
     serverip = serverip.serverip if serverip else None
     if serverip:
+        print('>> serverip', serverip)
         data={
             #'image':product.image.url.replace('/media/', '') if product.image else '/media/default.png',
             'new':True if request.POST.get('switch')=='on' else False,
@@ -508,6 +509,7 @@ def updateproduct(request):
             'netprice':round(float(sellprice)-(float(sellprice)*float(remise)/100), 2),
             'equivalent':equivalent,
             'near':near,
+            'minstock':minstock,
             'code':request.POST.get('updatecode'),
             'refeq1':request.POST.get('refeq1'),
             'refeq2':request.POST.get('refeq2'),
@@ -524,9 +526,7 @@ def updateproduct(request):
             'stock':product.stocktotal
         }
         if image:
-            print('sending new image')
             data['image']=product.image.url.replace('/media/', '') if product.image else '/media/default.png',
-        print('>>end ',product)
         try:
             res=req.get(f'http://{serverip}/products/updatepdctdata', data)
             res.raise_for_status()
@@ -537,20 +537,20 @@ def updateproduct(request):
                 'error':f'error {e}'
             })
     #if price changed itshould be changed in reliquat and panier of clients
-    if float(sellprice) != float(product.sellprice):
-        print('price changed')
-        reliquas=wishlist.objects.filter(product=product)
-        for i in reliquas:
-            i.total=round(float(netprice)*float(i.qty), 2)
-            i.save()
-        cartitems=Cartitems.objects.filter(product=product)
-        for i in cartitems:
-            newtotal=round(float(netprice)*float(i.qty), 2)
-            newcarttotal=i.cart.total-i.total+newtotal
-            i.total=newtotal
-            i.save()
-            i.cart.total=newtotal
-            i.cart.save()
+    # if float(sellprice) != float(product.sellprice):
+    #     print('price changed')
+    #     reliquas=wishlist.objects.filter(product=product)
+    #     for i in reliquas:
+    #         i.total=round(float(netprice)*float(i.qty), 2)
+    #         i.save()
+    #     cartitems=Cartitems.objects.filter(product=product)
+    #     for i in cartitems:
+    #         newtotal=round(float(netprice)*float(i.qty), 2)
+    #         newcarttotal=i.cart.total-i.total+newtotal
+    #         i.total=newtotal
+    #         i.save()
+    #         i.cart.total=newtotal
+    #         i.cart.save()
     equivalent=request.POST.get('equivalent')
     logos = request.POST.getlist('updatepdctlogo')  # because it's multiple
     product.carlogos.set(logos)
@@ -559,6 +559,7 @@ def updateproduct(request):
     else:
       product.isnew=False
     product.near=near
+    product.minstock=minstock
     product.repsprice=json.dumps(selected_reps)
     product.equivalent=equivalent
     product.code=request.POST.get('updatecode')
