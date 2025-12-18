@@ -3018,9 +3018,9 @@ function printbonachat(bonid){
 
     function createtab(id, title, url) {
       $('.deletetabholder').attr('onclick', `deletetab(${id})`)
-      $('.loadingscreen').toggleClass('d-none')
+      $(`#maintab`).html('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>')
       $.get(url, (data) => {
-        $('.loadingscreen').toggleClass('d-none')
+        
 
           $(`#maintab`).html(data)
           // $('.select2').select2();

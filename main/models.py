@@ -345,6 +345,7 @@ class Order(models.Model):
 
 class Bonlivraison(models.Model):
     iscontre=models.BooleanField(default=False)
+    paymenttype=models.CharField(max_length=50, null=True, default='simple')
     commande=models.ForeignKey(Order, on_delete=models.SET_NULL, default=None, null=True, blank=True)
     date = models.DateTimeField(default=datetime.datetime.now, blank=True, null=True)
     client=models.ForeignKey(Client, on_delete=models.SET_NULL, default=None, null=True, blank=True)

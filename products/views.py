@@ -810,7 +810,7 @@ def addbonlivraison(request):
     # orderno
     transport=request.POST.get('transport')
     note=request.POST.get('note')
-    iscontre=request.POST.get('iscontre')=='contre'
+    paymenttype=request.POST.get('iscontre')
     datebon=request.POST.get('datebon')
     datebon=datetime.strptime(f'{datebon}', '%Y-%m-%d')
     client=Client.objects.get(pk=clientid)
@@ -840,7 +840,8 @@ def addbonlivraison(request):
         modlvrsn=transport,
         bon_no=receipt_no,
         note=note,
-        iscontre=iscontre
+        # iscontre=iscontre
+        paymenttype=paymenttype
     )
     print('>>>>>>', len(json.loads(products))>0)
     if len(json.loads(products))>0:
@@ -11475,10 +11476,10 @@ def printrelevclientglobal(request):
 def refactive(request):
     products=Produit.objects.filter(stockstocktotal__gt=0)
 def updateiscontrebon(request):
-    iscontre=request.GET.get('iscontre')=='contre'
+    paymenttype=request.GET.get('iscontre')
     blid=request.GET.get('blid')
     bon=Bonlivraison.objects.get(pk=blid)
-    bon.iscontre=iscontre
+    bon.paymenttype=paymenttype
     bon.save()
     return JsonResponse({
         'success':True
