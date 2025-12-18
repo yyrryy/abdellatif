@@ -22,7 +22,7 @@ def runserver():
 
 def launchchrome():
     sleep(2)  # Give Waitress time to start
-    os.system(f'start chrome http://0.0.0.0:80')
+    os.system(f'start chrome http://{ip}')
 
 # Run the server and launch Chrome in parallel
 t1 = Thread(target=runserver)
