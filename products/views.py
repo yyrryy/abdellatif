@@ -2816,7 +2816,6 @@ def addavoirsupp(request):
         total=totalbon,
         date=datebon,
         avoirfacture=avoirfacture
-
     )
     supplier.rest-=float(totalbon)
     supplier.save()

@@ -427,7 +427,7 @@
           })
           let supplierid = parentdiv.find('.supplierselectavoir').val()
           let repid = parentdiv.find('.repsselects').val()
-          let mode = parentdiv.find('.modeselectavsup').val()
+          let mode = parentdiv.find('.modeselectavsupp').val()
           let datebon = parentdiv.find('.datebonavsupp').val()
           let transport = parentdiv.find('.transport').val()
           let totalbon=parseFloat(parentdiv.find('.totalbon').text())
@@ -448,6 +448,7 @@
               url: "{% url 'products:addavoirsupp' %}",
               type: 'POST',
               data: {
+                'mode': mode,
                   'totalbon': totalbon,
                   'supplierid': supplierid,
                   'repid':repid,
