@@ -53,7 +53,7 @@ class Produit(models.Model):
     sellprice=models.FloatField(default=None, null=True, blank=True)
     sellpricebrut=models.FloatField(default=None, null=True, blank=True)
     coutmoyen=models.FloatField(default=None, null=True, blank=True)
-    remise=models.IntegerField(default=35, null=True, blank=True)
+    remise=models.IntegerField(default=0, null=True, blank=True)
     #checkprice= models.FloatField(default=None, null=True, blank=True)
     prixnet=models.FloatField(default=None, null=True, blank=True)
     devise=models.FloatField(default=None, null=True, blank=True)

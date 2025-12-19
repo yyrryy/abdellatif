@@ -4736,6 +4736,7 @@ def excelpdcts(request):
             minstock=min,
             ref=ref,
             equivalent=refeq,
+            refeq1=refeq,
             isactive=True,
             name=name,
             mark_id=mark,
