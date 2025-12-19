@@ -6,7 +6,7 @@
         <div class="bg-white rounded shadow p-2">
             <form action="/products/createlogo" method="post" enctype="multipart/form-data" id="createlogo">
                 {% csrf_token %}
-                <input name="logoname" type="text" class="form-control mb-2" placeholder="Categorie" required>
+                <input name="logoname" type="text" class="form-control mb-2" placeholder="Voiture" required>
                 <strong>Image</strong>
                 <input name="logoimage" type="file" class="form-control" required>
                 <button class="btn btn-success mt-2 createlogobtn">Ajouter</button>
@@ -84,8 +84,7 @@
             processData: false,
             contentType: false,
             success:((data)=>{
-                alertify.success('OK')
-                $(`#carlogo`).html(data.html)
+                createtab('carlogospage', 'carlogospage', '/products/carlogospage')
             })
         })
     })

@@ -115,6 +115,8 @@ class Produit(models.Model):
         # Custom sorting key function
         parts = [part.isdigit() and int(part) or part for part in re.split(r'(\d+)', self.code)]
         return parts
+    def totalofstock(self):
+        return 0 if self.ref=='divers' else self.stocktotal*self.buyprice
 
     def getprofit(self):
         try:

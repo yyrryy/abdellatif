@@ -384,7 +384,7 @@ def addoneproduct(request):
         ref=ref,
         uniqcode=uniqcode,
         name=name,
-        buyprice=buyprice,
+        buyprice=0,
         diametre=diametre,
         sellprice=sellprice,
         remise=remise,
@@ -4797,8 +4797,7 @@ def stock(request):
         'products':products,
         'stocktotal':Produit.objects.all().aggregate(Sum('stocktotal'))['stocktotal__sum']or 0,
         'stockfacture':Produit.objects.all().aggregate(Sum('stockfacture'))['stockfacture__sum']or 0,
-
-
+        'totalstock':sum([i.totalofstock() for i in Produit.objects.all()])
     }
     if facture:
         return render(request, 'admin/fcproducts.html', ctx)

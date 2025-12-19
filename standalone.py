@@ -10,6 +10,9 @@ def get_local_ip():
     try:
         s.connect(("8.8.8.8", 80))  # Just a way to get local IP
         ip = s.getsockname()[0]
+    except:
+        s.close()
+        ip='localhost'
     finally:
         s.close()
     return ip
@@ -18,7 +21,7 @@ ip = get_local_ip()
 
 def runserver():
     # Use Waitress to serve Django app
-    serve(application, host='0.0.0.0', port=80)
+    serve(application, host=ip, port=80)
 
 def launchchrome():
     sleep(2)  # Give Waitress time to start
