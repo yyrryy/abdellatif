@@ -465,21 +465,21 @@
 			<div class="col-md-4 col-6 mb-2 category{{i.id}} category">
 				<div  class="p-2 d-flex justify-content-between align-items-center" style="border:1px solid; border-radius: 10px;">
 					<a href="categories/products/{{i.id}}">
-						<div>
+						{% if i.image %}
+						<img class="image__tag" src="{{i.image.url}}" alt="" style="width: 100%;">
+						{% else %}
+						<img class="image__tag" src="" alt="">
+						{% endif %}
+						<div class="text-center">
 							<b class="categoryname">
-								{{i.name.upper}}
+								{{i.name.upper}} fff
 							</b> <br>
 							<small>{{i.total_products}} PRODUITS</small>
 						</div>
 
 					</a>
-					<a href="categories/products/{{i.id}}" class="text-end">
-						{% if i.image %}
-						<img class="image__tag" src="{{i.image.url}}" alt="" style="width: 60%;">
-						{% else %}
-						<img class="image__tag" src="" alt="">
-						{% endif %}
-					</a>
+					<!-- <a href="categories/products/{{i.id}}" class="text-end">
+					</a> -->
 				</div>
 			</div>
 			{% endfor %}
