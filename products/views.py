@@ -4705,6 +4705,7 @@ def excelpdcts(request):
         name = d.name
         mark = None if pd.isna(d.mark) else d.mark
         order = None if pd.isna(d.order) else d.order
+        min = None if pd.isna(d.min) else d.min
         refeq = '' if pd.isna(d.refeq) else d.refeq
         diam = '' if pd.isna(d.diam) else d.diam
         qty = 0 if pd.isna(d.qty) else d.qty
@@ -4732,6 +4733,7 @@ def excelpdcts(request):
         uniqcode=f'pdct{lastid+1}'
         product=Produit.objects.create(
             uniqcode=uniqcode,
+            minstock=min,
             ref=ref,
             equivalent=refeq,
             isactive=True,
