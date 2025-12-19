@@ -406,13 +406,13 @@
                                 <div>
                                     <small>Designations</small>
                                 </div>
-                                <div>
+                                <!-- <div>
                                     <button class="btn btn-success" onclick="addcarsinput(event)">+</button>
-                                </div>
+                                </div> -->
                             </div>
 
                             <small for="name">Voitures.</small>
-                            <textarea type="text" class="form-control mb-3" name="cars" value="" style="height: 15em">{{product.cars}}</textarea>
+                            <textarea type="text" class="form-control mb-3" name="cars" value="" style="height: 15em">{%if product.cars%}{{product.cars}}{%endif%}</textarea>
                             
                             <small for="name">Ref equiv.</small>
                             <textarea type="text" class="form-control mb-3" name="equivalent" value="" style="height: 15em">{{product.equivalent}}</textarea>
