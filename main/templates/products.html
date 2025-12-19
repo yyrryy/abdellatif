@@ -159,12 +159,14 @@
                     
                     <div class="product-card__name">
                       <div style="font-size: 17px;" class="d-flex">
-                        <div class="badge bg-primary me-3 text-start" style="font-size: 19px;">
-                          {{i.ref.upper}}
+                        <div class="text-start">
+                          <strong class="badge bg-primary me-3" style="font-size: 19px;">
+                            {{i.ref.upper}}
+                          </strong>
                           <br>
-                          {%if i.refeq1%}{{i.refeq1}} <br>{%endif%}
-                          {%if i.refeq2%}{{i.refeq2}} <br>{%endif%}
-                          {%if i.refeq3%}{{i.refeq3}}{%endif%}
+                          {%if i.refeq1%}<strong class="badge bg-primary me-3 text-start" style="font-size: 19px;">{{i.refeq1}}</strong> <br>{%endif%}
+                          {%if i.refeq2%}<strong class="badge bg-primary me-3 text-start" style="font-size: 19px;">{{i.refeq2}}</strong> <br>{%endif%}
+                          {%if i.refeq3%}<strong class="badge bg-primary me-3 text-start" style="font-size: 19px;">{{i.refeq3}}</strong>{%endif%}
                         </div>
                         <div>
                           {{i.name.upper}} {%if i.diametre%}<span class="text-primary">{{i.diametre}}</span>{%endif%}
