@@ -4705,7 +4705,7 @@ def excelpdcts(request):
         name = d.name
         mark = None if pd.isna(d.mark) else d.mark
         order = None if pd.isna(d.order) else d.order
-        minstock = None if pd.isna(d.minstock) else d.minstock
+        minstock = 0 if pd.isna(d.minstock) else d.minstock
         refeq = '' if pd.isna(d.refeq) else d.refeq
         diam = '' if pd.isna(d.diam) else d.diam
         qty = 0 if pd.isna(d.qty) else d.qty
