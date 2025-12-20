@@ -734,8 +734,8 @@ class Wich(models.Model):
     def __str__(self) -> str:
         if self.user:
             return self.user.username
-#wishlist items
-class wishlist(models.Model):
+#Wishlist items
+class Wishlist(models.Model):
     wich=models.ForeignKey(Wich, on_delete=models.CASCADE, default=None, null=True, blank=True)
     product=models.ForeignKey(Produit, on_delete=models.CASCADE, default=None)
     qty=models.IntegerField(default=None, null=True, blank=True)
