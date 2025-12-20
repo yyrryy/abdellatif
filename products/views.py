@@ -90,7 +90,7 @@ def createcategory(request):
     category=Category.objects.create(name=name, image=image, code=code, affichage=affichage, masqueclients=hideclient)
     # create category
     # try:
-    #     res=req.get('http://domain.com/products/createcategory', {
+    #     res=req.get(f'http://{serverip}/products/createcategory', {
 
     #         'name':name,
     #         'code':code,
@@ -124,7 +124,7 @@ def createcategory(request):
     #     # get image file
     #     'image':category.image.url.replace('/media/', '') if category.image else ''
     # })
-    # req.get('http://domain.com/products/createcategory', {
+    # req.get(f'http://{serverip}/products/createcategory', {
 
     #     'name':name,
     #     'code':code,
@@ -161,7 +161,7 @@ def updatecategory(request):
         'categories':Category.objects.all().order_by('code'),
         'title':'Categories'
     }
-    # req.get('http://domain.com/products/updatecategory', {
+    # req.get(f'http://{serverip}/products/updatecategory', {
     #     'id':id,
     #     'image':category.image.url.replace('/media/', '') if category.image else '',
     #     'hideclient':hideclient,
@@ -195,7 +195,7 @@ def createmarque(request):
     mrq=Mark.objects.create(name=name, image=image, masqueclients=hideclient)
     if len(commercialexcluded) > 0:
         mrq.excludedrep.set(reps)
-    # req.get('http://domain.com/products/createmarque', {
+    # req.get(f'http://{serverip}/products/createmarque', {
     #     'name':name,
     #     'hideclient':hideclient,
     #     'commercialexcluded':commercialexcluded,
@@ -220,7 +220,7 @@ def updatemarque(request):
     if image:
         mark.image=image
     mark.save()
-    req.get('http://domain.com/products/updatemarque', {
+    req.get(f'http://{serverip}/products/updatemarque', {
         'id':id,
         'name':request.POST.get('name'),
         'hideclient':hideclient,
@@ -587,12 +587,12 @@ def updateproduct(request):
     
     print('>>>>>>>>>>>>>> equivalent>',equivalent)
 
-    # res=req.get('http://domain.com/products/updateproduct', data)
+    # res=req.get(f'http://{serverip}/products/updateproduct', data)
     # print('>>>>>>', res)
     # if not res.status_code == 200:
     #         print('Error message:', res.text)
     
-        # req.get('http://domain.com/products/updatepdctdata', {
+        # req.get(f'http://{serverip}/products/updatepdctdata', {
         #     'password':'gadwad123',
         #     'id':request.POST.get('productid'),
         #     'ref':request.POST.get('ref').lower().strip(),
@@ -1042,16 +1042,25 @@ def addcommercial(request):
     repphone=request.POST.get('repphone')
     repregion=request.POST.get('repregion')
     repinfo=request.POST.get('repinfo')
-    try:
-        # request=req.get('http://domain.com/products/addcommercial',{
-        #     'repusername':repusername,
-        #     'reppassword':reppassword,
-        #     'repname':repname,
-        #     'repphone':repphone,
-        #     'repregion':repregion,
-        #     'repinfo':repinfo
-        # })
-        # request.raise_for_status()
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            request=req.get(f'http://{serverip}/products/addcommercial',{
+                'repusername':repusername,
+                'reppassword':reppassword,
+                'repname':repname,
+                'repphone':repphone,
+                'repregion':repregion,
+                'repinfo':repinfo
+            })
+            request.raise_for_status()
+        except Exception as e:
+            print('>>> error', e)
+            return JsonResponse({
+                'success':False,
+                'message':f'ERROR CONEXION AU SERVEUR DISTANT: {e}'
+            })
         #user=User.objects.create_user(username=repusername, password=reppassword)
         # Get or create the group
         #group, created = Group.objects.get_or_create(name="salsemen")
@@ -1061,13 +1070,13 @@ def addcommercial(request):
 
         # Save the user
         #user.save()
-        Represent.objects.create(
-            #user=user,
-            name=repname,
-            phone=repphone,
-            region=repregion,
-            info=repinfo
-        )
+    Represent.objects.create(
+        #user=user,
+        name=repname,
+        phone=repphone,
+        region=repregion,
+        info=repinfo
+    )
         # old code 04/07/2024
         # ctx={
         #     'commercials':Represent.objects.all(),
@@ -1076,15 +1085,10 @@ def addcommercial(request):
         # return JsonResponse({
         #     'html':render(request, 'commerciaux.html', ctx).content.decode('utf-8')
         # })
-        return JsonResponse({
-            'success':True
-        })
-    except Exception as e:
-        print('>>> error', e)
-        return JsonResponse({
-            'success':False,
-            'message': 'ERROR CONEXION'
-        })
+    return JsonResponse({
+        'success':True
+    })
+    
 
 def checkcodeclient(request):
     code=request.POST.get('code')
@@ -1132,44 +1136,45 @@ def addclient(request):
             'success':False,
             'error':'Code ou Nom exist deja'
         })
-    try:
-        # response=req.get('http://domain.com/products/addclient', {
-        #     'city':city,
-        #     'ice':ice,
-        #     'region':region,
-        #     'represent_id':representant,
-        #     'code':code,
-        #     'name':name,
-        #     'phone':phone,
-        #     'address':address,
-        # })
-        # response.raise_for_status()
-        client=Client.objects.create(
-            city=city,
-            ice=ice,
-            region=region,
-            represent_id=representant,
-            code=code,
-            name=name,
-            phone=phone,
-            phone2=phone2,
-            address=address,
-            soldtotal=0.00,
-            soldfacture=0.00,
-            soldbl=0.00,
-            diver=False
-        )
-
-
-        return JsonResponse({
-            'success':True
-        })
-    except Exception as e:
-        return JsonResponse({
-            'success':False,
-            'error':e
-        })
-
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            response=req.get(f'http://{serverip}/products/addclient', {
+                'city':city,
+                'ice':ice,
+                'region':region,
+                'represent_id':representant,
+                'code':code,
+                'name':name,
+                'phone':phone,
+                'address':address,
+            })
+            response.raise_for_status()
+        except Exception as e:
+            return JsonResponse({
+                'success':False,
+                'error':f'Error connexion au serveur distant: {e}'
+            })
+    client=Client.objects.create(
+        city=city,
+        ice=ice,
+        region=region,
+        represent_id=representant,
+        code=code,
+        name=name,
+        phone=phone,
+        phone2=phone2,
+        address=address,
+        soldtotal=0.00,
+        soldfacture=0.00,
+        soldbl=0.00,
+        diver=False
+    )
+    return JsonResponse({
+        'success':True
+    })
+    
 def getclientdata(request):
     id=request.POST.get('id')
     client=Client.objects.get(pk=id)
@@ -1204,7 +1209,7 @@ def updateclient(request):
          })
     oldcode=client.code
     try:
-        res=req.get('http://domain.com/products/updateclient', {
+        res=req.get(f'http://{serverip}/products/updateclient', {
             'clientcode':oldcode,
             'name':request.POST.get('updateclientname'),
             'phone':request.POST.get('updateclientphone'),
@@ -1747,7 +1752,7 @@ def activerproduct(request):
         'entries':Stockin.objects.filter(product=product),
         'sorties':Orderitem.objects.filter(product=product),
     }
-    req.get('http://domain.com/products/activerproduct', {
+    req.get(f'http://{serverip}/products/activerproduct', {
         'id':request.POST.get('id')
     })
     return JsonResponse({
@@ -1769,7 +1774,7 @@ def desactiverproduct(request):
         'entries':Stockin.objects.filter(product=product),
         'sorties':Orderitem.objects.filter(product=product),
     }
-    req.get('http://domain.com/products/desactiverproduct', {
+    req.get(f'http://{serverip}/products/desactiverproduct', {
         'id':request.POST.get('id')
     })
     return JsonResponse({
@@ -4340,6 +4345,9 @@ def createclientaccount(request):
     username=request.POST.get('username')
     password=request.POST.get('password')
     #check for username
+    
+
+        
     user=User.objects.filter(username=username).first()
     if user:
         return JsonResponse({
@@ -4355,11 +4363,14 @@ def createclientaccount(request):
     user.save()
     client.user=user
     client.save()
-    req.get('http://domain.com/products/createclientaccount', {
-        'clientcode':client.code,
-        'username':username,
-        'password':password
-    })
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        req.get(f'http://{serverip}/products/createclientaccount', {
+            'clientcode':client.code,
+            'username':username,
+            'password':password
+        })
     return JsonResponse({
         'success':True
     })
@@ -4386,6 +4397,14 @@ def createrepaccount(request):
     user.save()
     rep.user=user
     rep.save()
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        req.get(f'http://{serverip}/products/createrepaccount', {
+            'repid':repid,
+            'username':username,
+            'password':password
+        })
     return JsonResponse({
         'success':True
     })
@@ -4765,7 +4784,7 @@ def deactivateaccount(request):
     user=User.objects.get(id=userid)
     user.is_active=False
     user.save()
-    req.get('http://domain.com/products/deactivateaccount', {
+    req.get(f'http://{serverip}/products/deactivateaccount', {
         'username':user.username,
     })
     # delete user session in django session
@@ -4782,7 +4801,7 @@ def activateaccount(request):
     user=User.objects.get(id=userid)
     user.is_active=True
     user.save()
-    req.get('http://domain.com/products/activateaccount', {
+    req.get(f'http://{serverip}/products/activateaccount', {
         'username':user.username,
     })
     return JsonResponse({
@@ -5425,7 +5444,7 @@ def boncommandes(request):
 
 def listeconnected(request):
     five_minutes_ago = timezone.now() - timedelta(minutes=10)
-    res=req.get('http://domain.com/products/listeconnected')
+    res=req.get(f'http://{serverip}/products/listeconnected')
     print(json.loads(res.text)['connected'])
     print('>>', res.text)
     notconnected=Connectedusers.objects.filter(lasttime__lt=five_minutes_ago).order_by('-lasttime')
@@ -5454,7 +5473,7 @@ def createpromotion(request):
     image=request.FILES.get('promotionimage')
     # create category
     pr=Promotion.objects.create(info=name, image=image)
-    req.get('http://domain.com/products/createpromotion', {
+    req.get(f'http://{serverip}/products/createpromotion', {
         'name':name,
         # get image file
         'image':pr.image.url.replace('/media/', '') if pr.image else ''
@@ -5475,7 +5494,7 @@ def updatepromotion(request):
     if image:
         promotion.image=image
     promotion.save()
-    req.get('http://domain.com/products/updatepromotion', {
+    req.get(f'http://{serverip}/products/updatepromotion', {
         'name':request.POST.get('name'),
         'id':id,
         # get image file
@@ -7763,7 +7782,7 @@ def createnewclientaccount(request):
         })
     user=User.objects.create_user(username=username, password=password)
     try:
-        response=req.get('http://domain.com/products/createnewclientaccount', {
+        response=req.get(f'http://{serverip}/products/createnewclientaccount', {
             'username':username,
             'password':password,
             'clientcode':client.code
@@ -7810,7 +7829,7 @@ def createnewrepaccount(request):
             'error':'Username exist déja'
         })
     try:
-        response=req.get('http://domain.com/products/createnewrepaccount', {
+        response=req.get(f'http://{serverip}/products/createnewrepaccount', {
             'username':username,
             'password':password,
             'repid':repid
@@ -9209,7 +9228,7 @@ def updaterepdata(request):
     'caneditprice':caneditprice
     }
     try:
-        res=req.get('http://domain.com/products/updaterepdata', data)
+        res=req.get(f'http://{serverip}/products/updaterepdata', data)
         res.raise_for_status()
     except:
         # in case connection failed
@@ -9288,7 +9307,7 @@ def getitemsforlistbl(request):
         'categories':categories
     })
 def refspage(request):
-    res=req.get('http://domain.com/products/refspage')
+    res=req.get(f'http://{serverip}/products/refspage')
     print(res)
 
     refs=Refstats.objects.all().order_by('-lastdate')
@@ -9325,7 +9344,7 @@ def notavailable(request):
     return render(request, 'notavailable.html', ctx)
 
 def cartpage(request):
-    res=req.get('http://domain.com/products/getcarts')
+    res=req.get(f'http://{serverip}/products/getcarts')
 
     ctx={
         'carts':Cart.objects.all().order_by('-total').exclude(total=0),
@@ -9334,7 +9353,7 @@ def cartpage(request):
     return render(request, 'cartspage.html', ctx)
 
 def reliquatpage(request):
-    res=req.get('http://domain.com/products/getwishs')
+    res=req.get(f'http://{serverip}/products/getwishs')
     print(list(json.loads(res.text)['carts']))
     ctx={
         'carts':Wich.objects.all().order_by('-total'),
@@ -9569,7 +9588,7 @@ def listnotifications(request):
 def addnotification(request):
     notification=request.GET.get('notification')
     try:
-        req.get('http://domain.com/products/addnotification', {'notificationid':notificationid,'notification':notification})
+        req.get(f'http://{serverip}/products/addnotification', {'notificationid':notificationid,'notification':notification})
 
         Notification.objects.create(notification=notification)
         return JsonResponse({
@@ -9589,7 +9608,7 @@ def updatenotification(request):
         'success':True
     })
     # try:
-    #     req.get('http://domain.com/products/updatenotification', {'notificationid':notificationid,'notification':notification})
+    #     req.get(f'http://{serverip}/products/updatenotification', {'notificationid':notificationid,'notification':notification})
     #     notif=Notification.objects.get(pk=notificationid)
     #     notif.notification=notification
     #     notif.save()
@@ -9699,7 +9718,7 @@ def updateproductstock(request):
     product=Produit.objects.get(pk=productid)
     diff=int(stock)-int(product.stocktotal)
     Modifierstock.objects.create(stock=diff, product=product)
-    req.get('http://domain.com/products/updatepdctdata', {
+    req.get(f'http://{serverip}/products/updatepdctdata', {
 
         'id':productid,
         'ref':product.ref,
@@ -9768,7 +9787,7 @@ def getclientcode(request):
 def allowcatalog(request):
     clientcode=request.GET.get('clientcode')
     try:
-        res=req.get('http://domain.com/products/allowcatalog', {
+        res=req.get(f'http://{serverip}/products/allowcatalog', {
             'clientcode':clientcode,
         })
         print(res)
