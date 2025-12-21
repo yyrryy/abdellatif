@@ -14,14 +14,15 @@ for /f "tokens=2 delims==" %%I in ('wmic os get localdatetime /value') do set ld
 set TIMESTAMP=!ldt:~0,8!_!ldt:~8,6!
 
 :: Backup file with timestamp
-set BACKUP_FILE=%BACKUP_DIR%\backup_!TIMESTAMP!.sql
+@REM set BACKUP_FILE=%BACKUP_DIR%\backup_!TIMESTAMP!.sql
+set BACKUP_FILE=%BACKUP_DIR%\backup.sql
 
 echo Backing up database %DATABASE_NAME%...
 
 :: Set PGPASSFILE environment variable to point to .pgpass file
 set PGPASSFILE=C:\Users\Public\pgpass.conf
 
-"C:\bin\pg_dump.exe" -h localhost -U %USER% -b -v -f "%BACKUP_FILE%" %DATABASE_NAME%
+"C:\Program Files\PostgreSQL\16\bin\pg_dump.exe" -h localhost -U %USER% -b -v -f "%BACKUP_FILE%" %DATABASE_NAME%
 
 echo Backup completed.
 
