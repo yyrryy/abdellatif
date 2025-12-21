@@ -339,7 +339,7 @@
                 if(data.success){
                     updatetab('client{{client.id}}', '/products/client/{{client.id}}')
                 }else{
-                    alertify.error('alert', data.error);
+                    alertify.error(data.error);
                 }
             }
         });

@@ -99,9 +99,13 @@
             processData: false,
             contentType: false,
             success:((data)=>{
+                if(data.success){
+                    createtab('categories', 'categories', '/products/categoriespage')
+                }else{
+                    alertify.error('Erreur lors de la création de la catégorie');
+                }
                 //$(`#ctg`).html(data.html)
                 //location.reload()
-                createtab('categories', 'categories', '/products/categoriespage')
             })
         })
     })

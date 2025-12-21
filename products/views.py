@@ -84,9 +84,29 @@ def createcategory(request):
     hideclient=request.POST.get('hideclient')=='True'
     commercialexcluded=request.POST.getlist('commercialexcluded')
     reps=Represent.objects.filter(pk__in=commercialexcluded)
-
     # get image file
     image=request.FILES.get('categoryimage')
+    files={'image':image}
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.post(f'http://{serverip}/products/createcategory', {
+                'name':name,
+                'code':code,
+                'affichage':affichage,
+                'hideclient':hideclient,
+                'commercialexcluded':commercialexcluded,
+                # get image file
+                'image':category.image.url.replace('/media/', '') if category.image else ''
+            }, files=files)
+            res.raise_for_status()
+        except req.exceptions.RequestException as e:
+            return JsonResponse({
+                'success':False,
+                'error':'Error in request to the server'
+            })
+        
     category=Category.objects.create(name=name, image=image, code=code, affichage=affichage, masqueclients=hideclient)
     # create category
     # try:
@@ -147,6 +167,26 @@ def updatecategory(request):
     commercialexcluded=request.POST.getlist('commercialexcluded')
     reps=Represent.objects.filter(pk__in=commercialexcluded)
     category=Category.objects.get(pk=id)
+    files={'image':image}
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.post(f'http://{serverip}/products/updatecategory', {
+                'id':id,
+                'hideclient':hideclient,
+                'commercialexcluded':commercialexcluded,
+                'name':request.POST.get('updatecategoryname'),
+                'code':request.POST.get('updatecategorycode'),
+                'affichage':request.POST.get('updatecategoryaffichage')
+            }, files=files)
+            res.raise_for_status()
+        except req.exceptions.RequestException as e:
+            print('>>> error', e)
+            return JsonResponse({
+                'success':False,
+                'error':'Error in request to the server'
+            })
     category.masqueclients=hideclient
     category.excludedrep.clear()
     category.excludedrep.set(reps)
@@ -191,17 +231,19 @@ def createmarque(request):
     hideclient=request.POST.get('hideclientmrk')=='True'
     commercialexcluded=request.POST.getlist('commercialexcludedmrk')
     reps=Represent.objects.filter(pk__in=commercialexcluded)
-
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
     mrq=Mark.objects.create(name=name, image=image, masqueclients=hideclient)
+    if serverip:
+        req.get(f'http://{serverip}/products/createmarque', {
+            'name':name,
+            'hideclient':hideclient,
+            'commercialexcluded':commercialexcluded,
+            # get image file
+            'image':mrq.image.url.replace('/media/', '') if mrq.image else ''
+        })
     if len(commercialexcluded) > 0:
         mrq.excludedrep.set(reps)
-    # req.get(f'http://{serverip}/products/createmarque', {
-    #     'name':name,
-    #     'hideclient':hideclient,
-    #     'commercialexcluded':commercialexcluded,
-    #     # get image file
-    #     'image':mrq.image.url.replace('/media/', '') if mrq.image else ''
-    # })
     return JsonResponse({
         'success':True
     })
@@ -212,8 +254,24 @@ def updatemarque(request):
     hideclient=request.POST.get('hideclientmrk')=='True'
     commercialexcluded=request.POST.getlist('commercialexcludedmrk')
     reps=Represent.objects.filter(pk__in=commercialexcluded)
-
     mark=Mark.objects.get(pk=id)
+    files={'image':image}
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.post(f'http://{serverip}/products/updatemarque', {
+                'id':id,
+                'hideclient':hideclient,
+                'commercialexcluded':commercialexcluded,
+                'name':request.POST.get('name')
+            }, files=files)
+            res.raise_for_status()
+        except req.exceptions.RequestException as e:
+            return JsonResponse({
+                'success':False,
+                'error':'Error in request to the server'
+            })
     mark.name=request.POST.get('name')
     mark.masqueclients=hideclient
     mark.excludedrep.set(reps)
@@ -373,7 +431,7 @@ def addoneproduct(request):
             })
             res.raise_for_status()
 
-        except Exception as e:
+        except req.exceptions.RequestException as e:
             print('>>> error', e)
             return JsonResponse({
                 'success':False,
@@ -493,16 +551,21 @@ def updateproduct(request):
     remise=request.POST.get('remise')
     sellprice=request.POST.get('sellprice')
     minstock=request.POST.get('updateminstock')
+    equivalent=request.POST.get('equivalent')
+    logos = request.POST.getlist('updatepdctlogo')
     netprice=round(float(sellprice)-(float(sellprice)*float(remise)/100), 2)
     product=Produit.objects.get(pk=productid)
     serverip = Setting.objects.only('serverip').first()
     serverip = serverip.serverip if serverip else None
+    files = {}
+    if image:
+        files['image'] = image
     if serverip:
         print('>> serverip', serverip)
         data={
             #'image':product.image.url.replace('/media/', '') if product.image else '/media/default.png',
             'new':True if request.POST.get('switch')=='on' else False,
-            'logo':request.POST.get('updatepdctlogo'),
+            'logos':logos,
             'productid':request.POST.get('productid'),
             'remise':request.POST.get('remise'),
             'sellprice':request.POST.get('sellprice'),
@@ -518,19 +581,19 @@ def updateproduct(request):
             'repprice':request.POST.get('updaterepprice') or 0,
             # 'coderef':request.POST.get('updatecoderef'),
             'name':request.POST.get('name'),
-            'cars':json.dumps(request.POST.getlist('cars')),
+            'cars':request.POST.get('cars'),
             'ref':request.POST.get('ref').lower().strip(),
             'category_id':request.POST.get('category'),
             'mark_id':request.POST.get('marque'),
             'diametre':request.POST.get('diametre'),
             'stock':product.stocktotal
         }
-        if image:
-            data['image']=product.image.url.replace('/media/', '') if product.image else '/media/default.png',
+        # if image:
+        #     data['image']=product.image.url.replace('/media/', '') if product.image else '/media/default.png',
         try:
-            res=req.get(f'http://{serverip}/products/updatepdctdata', data)
+            res=req.post(f'http://{serverip}/products/updatepdctdata', data, files=files)
             res.raise_for_status()
-        except Exception as e:
+        except req.exceptions.RequestException as e:
             print('>>> error', e)
             return JsonResponse({
                 'success':False,
@@ -580,13 +643,9 @@ def updateproduct(request):
     product.mark_id=request.POST.get('marque')
     product.diametre=request.POST.get('diametre')
     product.block=request.POST.get('block')
-
     if image:
         product.image=image
     product.save()
-    
-    print('>>>>>>>>>>>>>> equivalent>',equivalent)
-
     # res=req.get(f'http://{serverip}/products/updateproduct', data)
     # print('>>>>>>', res)
     # if not res.status_code == 200:
@@ -1208,43 +1267,47 @@ def updateclient(request):
              'error':'Code ou Nom exist deja'
          })
     oldcode=client.code
-    try:
-        res=req.get(f'http://{serverip}/products/updateclient', {
-            'clientcode':oldcode,
-            'name':request.POST.get('updateclientname'),
-            'phone':request.POST.get('updateclientphone'),
-            'address':request.POST.get('updateclientaddress'),
-            'ice':request.POST.get('updateclientice'),
-            'code':request.POST.get('updateclientcode'),
-            'city':request.POST.get('updateclientcity'),
-            'address':request.POST.get('updateclientaddress'),
-            'region':request.POST.get('updateclientregion'),
-            'rep':request.POST.get('updateclientrep'),
-        })
-        res.raise_for_status
-        client.name=request.POST.get('updateclientname')
-        client.phone=request.POST.get('updateclientphone')
-        client.clientname=request.POST.get('updateclientpersonalname')
-        client.phone2=request.POST.get('updateclientphone2')
-        client.address=request.POST.get('updateclientaddress')
-        client.ice=request.POST.get('updateclientice')
-        client.code=request.POST.get('updateclientcode')
-        client.city=request.POST.get('updateclientcity')
-        client.location=request.POST.get('updateclientlocation')
-        client.address=request.POST.get('updateclientaddress')
-        client.region=request.POST.get('updateclientregion').lower().strip()
-        client.moderegl=request.POST.get('updateclientmoderegl').strip()
-        client.represent_id=request.POST.get('updateclientrep')
-        client.save()
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.get(f'http://{serverip}/products/updateclient', {
+                'clientcode':oldcode,
+                'name':request.POST.get('updateclientname'),
+                'phone':request.POST.get('updateclientphone'),
+                'address':request.POST.get('updateclientaddress'),
+                'ice':request.POST.get('updateclientice'),
+                'code':request.POST.get('updateclientcode'),
+                'city':request.POST.get('updateclientcity'),
+                'address':request.POST.get('updateclientaddress'),
+                'region':request.POST.get('updateclientregion'),
+                'rep':request.POST.get('updateclientrep'),
+            })
+            res.raise_for_status
 
-        return JsonResponse({
-            'success':True
-        })
-    except Exception as e:
-        print('>>> ', e)
-        return JsonResponse({
-            'success':False
-        })
+        
+        except req.exceptions.RequestException as e:
+            print('>>> ', e)
+            return JsonResponse({
+                'success':False
+            })
+    client.name=request.POST.get('updateclientname')
+    client.phone=request.POST.get('updateclientphone')
+    client.clientname=request.POST.get('updateclientpersonalname')
+    client.phone2=request.POST.get('updateclientphone2')
+    client.address=request.POST.get('updateclientaddress')
+    client.ice=request.POST.get('updateclientice')
+    client.code=request.POST.get('updateclientcode')
+    client.city=request.POST.get('updateclientcity')
+    client.location=request.POST.get('updateclientlocation')
+    client.address=request.POST.get('updateclientaddress')
+    client.region=request.POST.get('updateclientregion').lower().strip()
+    client.moderegl=request.POST.get('updateclientmoderegl').strip()
+    client.represent_id=request.POST.get('updateclientrep')
+    client.save()
+    return JsonResponse({
+        'success':True
+    })
 
 def getscommercialdata(request):
     id=request.POST.get('id')
@@ -1265,6 +1328,24 @@ def updatecommercial(request):
     phone2=request.POST.get('updaterepphone2')
     region=request.POST.get('updaterepregion')
     region=request.POST.get('updaterepregion')
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.get(f'http://{serverip}/products/updatecommercial', {
+                'id':id,
+                'name':name,
+                'phone':phone,
+                'phone2':phone2,
+                'region':region
+            })
+            res.raise_for_status()
+        except req.exceptions.RequestException as e:
+            print('>>> ', e)
+            return JsonResponse({
+                'success':False,
+                'error':f'Error connexion au serveur distant: {e}'
+            })
     rep=Represent.objects.get(pk=id)
     rep.name=name
     rep.phone=phone
@@ -4345,35 +4426,44 @@ def createclientaccount(request):
     username=request.POST.get('username')
     password=request.POST.get('password')
     #check for username
-    
-
-        
-    user=User.objects.filter(username=username).first()
-    if user:
-        return JsonResponse({
-            'success':False,
-            'error':'Username exist déja'
-        })
-
-    # create user
-    user=User.objects.create_user(username=username, password=password)
-    # assign user to client
-    group, created = Group.objects.get_or_create(name="clients")
-    user.groups.add(group)
-    user.save()
-    client.user=user
-    client.save()
     serverip = Setting.objects.only('serverip').first()
     serverip = serverip.serverip if serverip else None
     if serverip:
-        req.get(f'http://{serverip}/products/createclientaccount', {
+        res=req.get(f'http://{serverip}/products/createclientaccount', {
             'clientcode':client.code,
             'username':username,
             'password':password
         })
+        if json.loads(res.text)['success']:
+            return JsonResponse({
+                'success':True
+            })
+        else:
+            return JsonResponse({
+                'success':False,
+                'error':f"{json.loads(res.text)['error']}"
+            })
+    # user=User.objects.filter(username=username).first()
+    # if user:
     return JsonResponse({
-        'success':True
+        'success':False,
+        'error':'No server'
     })
+
+    # # create user
+    # user=User.objects.create_user(username=username, password=password)
+    # # assign user to client
+    # group, created = Group.objects.get_or_create(name="clients")
+    # user.groups.add(group)
+    # user.save()
+    # client.user=user
+    # client.save()
+    # serverip = Setting.objects.only('serverip').first()
+    # serverip = serverip.serverip if serverip else None
+    
+    # return JsonResponse({
+    #     'success':True
+    # })
 
 
 def createrepaccount(request):
@@ -4382,29 +4472,46 @@ def createrepaccount(request):
     username=request.POST.get('username')
     password=request.POST.get('password')
     #check for username
-    user=User.objects.filter(username=username).first()
-    if user:
-        return JsonResponse({
-            'success':False,
-            'error':'Username exist déja'
-        })
-
-    # create user
-    user=User.objects.create_user(username=username, password=password)
-    # assign user to rep
-    group, created = Group.objects.get_or_create(name="salsemen")
-    user.groups.add(group)
-    user.save()
-    rep.user=user
-    rep.save()
     serverip = Setting.objects.only('serverip').first()
     serverip = serverip.serverip if serverip else None
     if serverip:
-        req.get(f'http://{serverip}/products/createrepaccount', {
+        res=req.get(f'http://{serverip}/products/createrepaccount', {
             'repid':repid,
             'username':username,
             'password':password
         })
+        if json.loads(res.text)['success']:
+            return JsonResponse({
+                'success':True
+            })
+        else:
+            return JsonResponse({
+                'success':False,
+                'error':f"{json.loads(res.text)['error']}"
+            })
+    # user=User.objects.filter(username=username).first()
+    # if user:
+    #     return JsonResponse({
+    #         'success':False,
+    #         'error':'Username exist déja'
+    #     })
+
+    # # create user
+    # user=User.objects.create_user(username=username, password=password)
+    # # assign user to rep
+    # group, created = Group.objects.get_or_create(name="salsemen")
+    # user.groups.add(group)
+    # user.save()
+    # rep.user=user
+    # rep.save()
+    # serverip = Setting.objects.only('serverip').first()
+    # serverip = serverip.serverip if serverip else None
+    # if serverip:
+    #     req.get(f'http://{serverip}/products/createrepaccount', {
+    #         'repid':repid,
+    #         'username':username,
+    #         'password':password
+    #     })
     return JsonResponse({
         'success':True
     })
@@ -4420,8 +4527,19 @@ def carlogospage(request):
 def createlogo(request):
     name=request.POST.get('logoname')
     # get image file
-    image=request.FILES.get('logoimage')
+    image=request.FILES.get('logoimage', None)
     # create category
+    files={'image':image}
+    serverip= Setting.objects.only('serverip').first()
+    serverip=serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.post(f'http://{serverip}/products/createlogo', data={'name':name}, files=files)
+            res.raise_for_status()
+        except req.exceptions.RequestException as e:
+            return JsonResponse({
+                'error':str(e)
+            })
     Carlogos.objects.create(name=name, image=image)
     ctx={
         'categories':Carlogos.objects.all(),
@@ -4435,6 +4553,18 @@ def updatelogo(request):
     image=request.FILES.get('updatelogoimage') or None
     id=request.POST.get('id')
     carlogo=Carlogos.objects.get(pk=id)
+    files={'image':image}
+    serverip= Setting.objects.only('serverip').first()
+    serverip=serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.post(f'http://{serverip}/products/updatelogo', data={'id':id, 'name':request.POST.get('updatelogoname')}, files=files)
+            res.raise_for_status()
+        except req.exceptions.RequestException as e:
+            return JsonResponse({
+                'success':False,
+                'error':str(e)
+            })
     carlogo.name=request.POST.get('updatelogoname')
     if image:
         carlogo.image=image
@@ -9230,7 +9360,7 @@ def updaterepdata(request):
     try:
         res=req.get(f'http://{serverip}/products/updaterepdata', data)
         res.raise_for_status()
-    except:
+    except req.exceptions.RequestException as e:
         # in case connection failed
         return JsonResponse({
         'success':False,
@@ -9799,7 +9929,7 @@ def allowcatalog(request):
         return JsonResponse({
             'success':True
         })
-    except Exception as e:
+    except req.exceptions.RequestException as e:
         return JsonResponse({
             'success':False
         })

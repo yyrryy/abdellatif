@@ -983,6 +983,13 @@ def addmark(request):
             'error':'deja exist'
         })
     m=Mark.objects.create(name=name)
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    mrq=Mark.objects.create(name=name)
+    if serverip:
+        req.post(f'http://{serverip}/products/createmarque', {
+            'name':name,
+        })
     return JsonResponse({
         'success':True,
         'id':m.id,
@@ -997,6 +1004,21 @@ def addcategory(request):
             'error':'deja exist'
         })
     m=Category.objects.create(name=name)
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.post(f'http://{serverip}/products/createcategory', {
+                'name':name,
+                # get image file
+            })
+            res.raise_for_status()
+        except Exception as e:
+            return JsonResponse({
+                'success':False,
+                'error':'Error in request to the server'
+            })
+        
     return JsonResponse({
         'success':True,
         'id':m.id,
