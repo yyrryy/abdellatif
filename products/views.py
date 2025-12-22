@@ -405,7 +405,7 @@ def addoneproduct(request):
     serverip = serverip.serverip if serverip else None
     if serverip:
         try:
-            res=req.get(f'http://{serverip}/products/addoneproduct', {
+            res=req.get(f'http://{serverip}:8000/products/addoneproduct', {
                 'ref':ref,
                 'name':name,
                 'buyprice':buyprice,
