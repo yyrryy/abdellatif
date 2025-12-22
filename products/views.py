@@ -594,6 +594,10 @@ def updateproduct(request):
         }
         # if image:
         #     data['image']=product.image.url.replace('/media/', '') if product.image else '/media/default.png',
+        print('>> data to send', data)
+        print('>> headers to send', headers)
+        print('>> files to send', files)
+        
         try:
             res=req.post(f'http://{serverip}/products/updatepdctdata', data=data, files=files, headers=headers)
             res.raise_for_status()
