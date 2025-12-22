@@ -560,6 +560,9 @@ def updateproduct(request):
     files = {}
     if image:
         files['image'] = image
+    headers = {
+        'X-SYNC-TOKEN': '8a7f5b2c9d3e4f1g0h6j'
+    }
     if serverip:
         print('>> serverip', serverip)
         data={
@@ -592,7 +595,7 @@ def updateproduct(request):
         # if image:
         #     data['image']=product.image.url.replace('/media/', '') if product.image else '/media/default.png',
         try:
-            res=req.post(f'http://{serverip}/products/updatepdctdata', data=data, files=files)
+            res=req.post(f'http://{serverip}/products/updatepdctdata', data=data, files=files, headers=headers)
             res.raise_for_status()
         except req.exceptions.RequestException as e:
             print('>>> error', e)
