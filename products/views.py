@@ -561,7 +561,7 @@ def updateproduct(request):
     if image:
         files['image'] = image
     session = req.Session()
-    r = session.get('http://134.209.226.177/products/updatepdctdata')  # GET page to get CSRF cookie
+    r = session.get(f'http://{serverip}/products/updatepdctdata')  # GET page to get CSRF cookie
     csrf_token = session.cookies['csrftoken']
     headers = {
         'X-CSRFToken': csrf_token,
@@ -4873,14 +4873,15 @@ def excelclients(request):
         except:
             region=d.region
         city=d.city
+        clientname=d.clientname
         phone=str(d.phone)
         rep=d.rep
         ice=str(d.ice)
         address=None if pd.isna(d.address) else d.address
         try:
             client=Client.objects.get(Q(name=name) | Q(code=code))
-            with open('error.txt', 'a') as f:
-                f.write(f'{name} - {code} exist déja \n')
+            # with open('error.txt', 'a') as f:
+            #     f.write(f'{name} - {code} exist déja \n')
         except Client.DoesNotExist:
             print('client not exist')
             client=Client.objects.create(
@@ -4891,7 +4892,8 @@ def excelclients(request):
                 ice=ice,
                 region=region,
                 phone=phone,
-                address=address
+                address=address,
+                clientname=clientname
             )
     return JsonResponse({
         'success':True
