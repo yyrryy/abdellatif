@@ -405,7 +405,7 @@ def addoneproduct(request):
     serverip = serverip.serverip if serverip else None
     if serverip:
         try:
-            res=req.get(f'http://{serverip}:8000/products/addoneproduct', {
+            res=req.get(f'http://{serverip}/products/addoneproduct', {
                 'ref':ref,
                 'name':name,
                 'buyprice':buyprice,
@@ -599,7 +599,7 @@ def updateproduct(request):
         print('>> files to send', files)
         
         try:
-            res=req.post(f'http://{serverip}/products/updatepdctdata', data=data, files=files, headers=headers)
+            res=req.post(f'http://{serverip}:8000/products/updatepdctdata', data=data, files=files, headers=headers)
             res.raise_for_status()
         except req.exceptions.RequestException as e:
             print('>>> error', e)
