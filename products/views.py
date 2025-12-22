@@ -592,7 +592,7 @@ def updateproduct(request):
         # if image:
         #     data['image']=product.image.url.replace('/media/', '') if product.image else '/media/default.png',
         try:
-            res=req.post(f'http://{serverip}/products/updatepdctdata', data, files=files)
+            res=req.post(f'http://{serverip}/products/updatepdctdata', data=data, files=files)
             res.raise_for_status()
         except req.exceptions.RequestException as e:
             print('>>> error', e)
