@@ -3998,7 +3998,8 @@ def searchproduct(request):
             Q(refeq1__icontains=term) |
             Q(refeq2__icontains=term) |
             Q(refeq3__icontains=term) |
-            Q(refeq4__icontains=term)
+            Q(refeq4__icontains=term) |
+            Q(diametre__icontains=term)
         )
         # adding other products that have equivalent
         # if not products:
@@ -4023,7 +4024,8 @@ def searchproduct(request):
                     Q(refeq1__icontains=term) |
                     Q(refeq2__icontains=term) |
                     Q(refeq3__icontains=term) |
-                    Q(refeq4__icontains=term)
+                    Q(refeq4__icontains=term)|
+                    Q(diametre__icontains=term)
                 )
         # check if term in product.ref or product.name
         products=Produit.objects.filter(q_objects).order_by('-stocktotal')
@@ -5825,7 +5827,8 @@ def searchproductsforstock(request):
             Q(refeq1__icontains=term) |
             Q(refeq2__icontains=term) |
             Q(refeq3__icontains=term) |
-            Q(refeq4__icontains=term)
+            Q(refeq4__icontains=term)|
+            Q(diametre__icontains=term)
         )
         # check if term in product.ref or product.name
         products=Produit.objects.filter(ref__istartswith=term).order_by('-stocktotal')

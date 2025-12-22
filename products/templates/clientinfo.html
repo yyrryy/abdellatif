@@ -29,7 +29,7 @@
                         {{client.soldtotal|floatformat:2|intspace}}
                     </td>
                 </tr> -->
-                <tr>
+                <!-- <tr>
 
                     <td>
                         Username
@@ -37,16 +37,16 @@
                     <td>
                         {{client.user.username}}
                     </td>
-                </tr>
+                </tr> -->
                 <tr>
 
                     <td>
-                        Mot de passe
+                        Nouveau Compte
                     </td>
                     <td>
                         {% if client.user %}
                         <button class="btn w-100 btn-secondary" onclick="$('.cretenewacc{{client.id}}').toggleClass('d-none')">
-                            NEW account
+                            Creer Compte
                         </button>
                         {% endif %}
                     </td>
@@ -56,7 +56,10 @@
                         Compte
                     </td>
                     <td>
-                        {% if client.user %}
+                        <button class="btn w-100 btn-info" onclick="$('.creteacc{{client.id}}').toggleClass('d-none')">
+                            Creer compte
+                        </button>
+                        <!-- {% if client.user %}
                         {% if client.user.is_active %}
                         <button class="btn w-100 btn-danger" onclick="desactivercompte('{{client.user.id}}', 'client{{client.id}}', '/products/client/{{client.id}}')">
                             Desactiver
@@ -67,10 +70,8 @@
                         </button>
                         {% endif %}
                         {% else %}
-                        <button class="btn w-100 btn-info" onclick="$('.creteacc{{client.id}}').toggleClass('d-none')">
-                            Creer compte
-                        </button>
-                        {% endif %}
+                        
+                        {% endif %} -->
                     </td>
                 </tr>
                 <tr>
