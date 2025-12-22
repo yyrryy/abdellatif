@@ -4866,7 +4866,7 @@ def excelclients(request):
     df = df.fillna('')
     for d in df.itertuples():
         name=d.name
-        code=d.code
+        code=str(d.code)
         try:
             # this needs to be lowercase
             region=d.region.lower().strip()
