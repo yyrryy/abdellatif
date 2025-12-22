@@ -91,7 +91,7 @@ def createcategory(request):
     serverip = serverip.serverip if serverip else None
     if serverip:
         try:
-            res=req.post(f'http://{serverip}/products/createcategory', {
+            res=req.post(f'http://{serverip}:8000/products/createcategory', {
                 'name':name,
                 'code':code,
                 'affichage':affichage,
@@ -110,7 +110,7 @@ def createcategory(request):
     category=Category.objects.create(name=name, image=image, code=code, affichage=affichage, masqueclients=hideclient)
     # create category
     # try:
-    #     res=req.get(f'http://{serverip}/products/createcategory', {
+    #     res=req.get(f'http://{serverip}:8000/products/createcategory', {
 
     #         'name':name,
     #         'code':code,
@@ -144,7 +144,7 @@ def createcategory(request):
     #     # get image file
     #     'image':category.image.url.replace('/media/', '') if category.image else ''
     # })
-    # req.get(f'http://{serverip}/products/createcategory', {
+    # req.get(f'http://{serverip}:8000/products/createcategory', {
 
     #     'name':name,
     #     'code':code,
@@ -172,7 +172,7 @@ def updatecategory(request):
     serverip = serverip.serverip if serverip else None
     if serverip:
         try:
-            res=req.post(f'http://{serverip}/products/updatecategory', {
+            res=req.post(f'http://{serverip}:8000/products/updatecategory', {
                 'id':id,
                 'hideclient':hideclient,
                 'commercialexcluded':commercialexcluded,
@@ -201,7 +201,7 @@ def updatecategory(request):
         'categories':Category.objects.all().order_by('code'),
         'title':'Categories'
     }
-    # req.get(f'http://{serverip}/products/updatecategory', {
+    # req.get(f'http://{serverip}:8000/products/updatecategory', {
     #     'id':id,
     #     'image':category.image.url.replace('/media/', '') if category.image else '',
     #     'hideclient':hideclient,
@@ -235,7 +235,7 @@ def createmarque(request):
     serverip = serverip.serverip if serverip else None
     mrq=Mark.objects.create(name=name, image=image, masqueclients=hideclient)
     if serverip:
-        req.get(f'http://{serverip}/products/createmarque', {
+        req.get(f'http://{serverip}:8000/products/createmarque', {
             'name':name,
             'hideclient':hideclient,
             'commercialexcluded':commercialexcluded,
@@ -260,7 +260,7 @@ def updatemarque(request):
     serverip = serverip.serverip if serverip else None
     if serverip:
         try:
-            res=req.post(f'http://{serverip}/products/updatemarque', {
+            res=req.post(f'http://{serverip}:8000/products/updatemarque', {
                 'id':id,
                 'hideclient':hideclient,
                 'commercialexcluded':commercialexcluded,
@@ -278,7 +278,7 @@ def updatemarque(request):
     if image:
         mark.image=image
     mark.save()
-    req.get(f'http://{serverip}/products/updatemarque', {
+    req.get(f'http://{serverip}:8000/products/updatemarque', {
         'id':id,
         'name':request.POST.get('name'),
         'hideclient':hideclient,
@@ -405,7 +405,7 @@ def addoneproduct(request):
     serverip = serverip.serverip if serverip else None
     if serverip:
         try:
-            res=req.get(f'http://{serverip}/products/addoneproduct', {
+            res=req.get(f'http://{serverip}:8000/products/addoneproduct', {
                 'ref':ref,
                 'name':name,
                 'buyprice':buyprice,
@@ -655,12 +655,12 @@ def updateproduct(request):
     if image:
         product.image=image
     product.save()
-    # res=req.get(f'http://{serverip}/products/updateproduct', data)
+    # res=req.get(f'http://{serverip}:8000/products/updateproduct', data)
     # print('>>>>>>', res)
     # if not res.status_code == 200:
     #         print('Error message:', res.text)
     
-        # req.get(f'http://{serverip}/products/updatepdctdata', {
+        # req.get(f'http://{serverip}:8000/products/updatepdctdata', {
         #     'password':'gadwad123',
         #     'id':request.POST.get('productid'),
         #     'ref':request.POST.get('ref').lower().strip(),
@@ -1114,7 +1114,7 @@ def addcommercial(request):
     serverip = serverip.serverip if serverip else None
     if serverip:
         try:
-            request=req.get(f'http://{serverip}/products/addcommercial',{
+            request=req.get(f'http://{serverip}:8000/products/addcommercial',{
                 'repusername':repusername,
                 'reppassword':reppassword,
                 'repname':repname,
@@ -1208,7 +1208,7 @@ def addclient(request):
     serverip = serverip.serverip if serverip else None
     if serverip:
         try:
-            response=req.get(f'http://{serverip}/products/addclient', {
+            response=req.get(f'http://{serverip}:8000/products/addclient', {
                 'city':city,
                 'ice':ice,
                 'region':region,
@@ -1280,7 +1280,7 @@ def updateclient(request):
     serverip = serverip.serverip if serverip else None
     if serverip:
         try:
-            res=req.get(f'http://{serverip}/products/updateclient', {
+            res=req.get(f'http://{serverip}:8000/products/updateclient', {
                 'clientcode':oldcode,
                 'name':request.POST.get('updateclientname'),
                 'phone':request.POST.get('updateclientphone'),
@@ -1341,7 +1341,7 @@ def updatecommercial(request):
     serverip = serverip.serverip if serverip else None
     if serverip:
         try:
-            res=req.get(f'http://{serverip}/products/updatecommercial', {
+            res=req.get(f'http://{serverip}:8000/products/updatecommercial', {
                 'id':id,
                 'name':name,
                 'phone':phone,
@@ -1830,6 +1830,30 @@ def listfacturescopy(request):
 def activerproduct(request):
     id=request.POST.get('id')
     product=Produit.objects.get(pk=id)
+    uniqcode=product.uniqcide
+    serverip= Setting.objects.only('serverip').first()
+    serverip=serverip.serverip if serverip else None
+    if serverip:
+        res=req.get(f'http://{serverip}:8000/products/activerproduct', {
+            'uniqcode':uniqcode
+        })
+        if json.loads(res.text)['success']:
+            return JsonResponse({
+                'success':True
+            })
+        else:
+            return JsonResponse({
+                'success':False,
+                'error':f"{json.loads(res.text)['error']}"
+            })
+    # user=User.objects.filter(username=username).first()
+    # if user:
+    return JsonResponse({
+        'success':False,
+        'error':'No server'
+    })
+
+            
     product.isactive=True
     product.save()
     ctx={
@@ -1842,9 +1866,7 @@ def activerproduct(request):
         'entries':Stockin.objects.filter(product=product),
         'sorties':Orderitem.objects.filter(product=product),
     }
-    req.get(f'http://{serverip}/products/activerproduct', {
-        'id':request.POST.get('id')
-    })
+    
     return JsonResponse({
         'html':render(request, 'viewoneproduct.html', ctx).content.decode('utf-8')
     })
@@ -1852,24 +1874,44 @@ def activerproduct(request):
 def desactiverproduct(request):
     id=request.POST.get('id')
     product=Produit.objects.get(pk=id)
-    product.isactive=False
-    product.save()
-    ctx={
-        'title':'Detail de '+product.ref,
-        'product':product,
-        'cars':product.getcars(),
-        'categories':Category.objects.all(),
-        'marques':Mark.objects.all(),
-        'suppliers':Supplier.objects.all(),
-        'entries':Stockin.objects.filter(product=product),
-        'sorties':Orderitem.objects.filter(product=product),
-    }
-    req.get(f'http://{serverip}/products/desactiverproduct', {
-        'id':request.POST.get('id')
-    })
+    uniqcode=product.uniqcode
+    serverip= Setting.objects.only('serverip').first()
+    serverip=serverip.serverip if serverip else None
+    if serverip:
+        res=req.get(f'http://{serverip}:8000/products/desactiverproduct', {
+            'uniqcode':uniqcode
+        })
+        if json.loads(res.text)['success']:
+            return JsonResponse({
+                'success':True
+            })
+        else:
+            return JsonResponse({
+                'success':False,
+                'error':f"{json.loads(res.text)['error']}"
+            })
     return JsonResponse({
-        'html':render(request, 'viewoneproduct.html', ctx).content.decode('utf-8')
+        'success':False,
+        'error':'No server'
     })
+    # product.isactive=False
+    # product.save()
+    # ctx={
+    #     'title':'Detail de '+product.ref,
+    #     'product':product,
+    #     'cars':product.getcars(),
+    #     'categories':Category.objects.all(),
+    #     'marques':Mark.objects.all(),
+    #     'suppliers':Supplier.objects.all(),
+    #     'entries':Stockin.objects.filter(product=product),
+    #     'sorties':Orderitem.objects.filter(product=product),
+    # }
+    # req.get(f'http://{serverip}:8000/products/desactiverproduct', {
+    #     'id':request.POST.get('id')
+    # })
+    # return JsonResponse({
+    #     'html':render(request, 'viewoneproduct.html', ctx).content.decode('utf-8')
+    # })
 
 def generatefacture(request, id):
     livraison=Bonlivraison.objects.get(pk=id)
@@ -4438,7 +4480,7 @@ def createclientaccount(request):
     serverip = Setting.objects.only('serverip').first()
     serverip = serverip.serverip if serverip else None
     if serverip:
-        res=req.get(f'http://{serverip}/products/createclientaccount', {
+        res=req.get(f'http://{serverip}:8000/products/createclientaccount', {
             'clientcode':client.code,
             'username':username,
             'password':password
@@ -4484,7 +4526,7 @@ def createrepaccount(request):
     serverip = Setting.objects.only('serverip').first()
     serverip = serverip.serverip if serverip else None
     if serverip:
-        res=req.get(f'http://{serverip}/products/createrepaccount', {
+        res=req.get(f'http://{serverip}:8000/products/createrepaccount', {
             'repid':repid,
             'username':username,
             'password':password
@@ -4516,7 +4558,7 @@ def createrepaccount(request):
     # serverip = Setting.objects.only('serverip').first()
     # serverip = serverip.serverip if serverip else None
     # if serverip:
-    #     req.get(f'http://{serverip}/products/createrepaccount', {
+    #     req.get(f'http://{serverip}:8000/products/createrepaccount', {
     #         'repid':repid,
     #         'username':username,
     #         'password':password
@@ -4543,7 +4585,7 @@ def createlogo(request):
     serverip=serverip.serverip if serverip else None
     if serverip:
         try:
-            res=req.post(f'http://{serverip}/products/createlogo', data={'name':name}, files=files)
+            res=req.post(f'http://{serverip}:8000/products/createlogo', data={'name':name}, files=files)
             res.raise_for_status()
         except req.exceptions.RequestException as e:
             return JsonResponse({
@@ -4567,7 +4609,7 @@ def updatelogo(request):
     serverip=serverip.serverip if serverip else None
     if serverip:
         try:
-            res=req.post(f'http://{serverip}/products/updatelogo', data={'id':id, 'name':request.POST.get('updatelogoname')}, files=files)
+            res=req.post(f'http://{serverip}:8000/products/updatelogo', data={'id':id, 'name':request.POST.get('updatelogoname')}, files=files)
             res.raise_for_status()
         except req.exceptions.RequestException as e:
             return JsonResponse({
@@ -4920,32 +4962,69 @@ def excelpdcts(request):
 
 def deactivateaccount(request):
     userid=request.GET.get('userid')
-    user=User.objects.get(id=userid)
-    user.is_active=False
-    user.save()
-    req.get(f'http://{serverip}/products/deactivateaccount', {
-        'username':user.username,
-    })
-    # delete user session in django session
-    UserSession.objects.filter(user=user).delete()
-    # Clear the user's session
-    #Session.objects.filter(session_key__in=UserSession.objects.filter(user=user).values('session_key')).delete()
+    # user=User.objects.get(id=userid)
+    # user.is_active=False
+    # user.save()
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.get(f'http://{serverip}:8000/products/deactivateaccount', {
+                'userid':userid,
+            })
+            res.raise_for_status()
+        except req.exceptions.RequestException as e:
+            print('Error deactivating account on server:', e)
+            return JsonResponse({
+                'success':False,
+                'error':str(e)
+            })
+        
+    # # delete user session in django session
+    # UserSession.objects.filter(user=user).delete()
+    # # Clear the user's session
+    # #Session.objects.filter(session_key__in=UserSession.objects.filter(user=user).values('session_key')).delete()
 
     return JsonResponse({
-        'success':True
+        'success':False,
+        'error':'No server'
     })
 
 def activateaccount(request):
     userid=request.GET.get('userid')
-    user=User.objects.get(id=userid)
-    user.is_active=True
-    user.save()
-    req.get(f'http://{serverip}/products/activateaccount', {
-        'username':user.username,
-    })
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.get(f'http://{serverip}:8000/products/activateaccount', {
+                'userid':userid,
+            })
+            res.raise_for_status()
+        except req.exceptions.RequestException as e:
+            print('Error deactivating account on server:', e)
+            return JsonResponse({
+                'success':False,
+                'error':str(e)
+            })
+        
+    # # delete user session in django session
+    # UserSession.objects.filter(user=user).delete()
+    # # Clear the user's session
+    # #Session.objects.filter(session_key__in=UserSession.objects.filter(user=user).values('session_key')).delete()
+
     return JsonResponse({
-        'success':True
+        'success':False,
+        'error':'No server'
     })
+    # user=User.objects.get(id=userid)
+    # user.is_active=True
+    # user.save()
+    # req.get(f'http://{serverip}:8000/products/activateaccount', {
+    #     'username':user.username,
+    # })
+    # return JsonResponse({
+    #     'success':True
+    # })
 
 def stock(request):
     categories=Category.objects.all()
@@ -5583,20 +5662,25 @@ def boncommandes(request):
 
 def listeconnected(request):
     five_minutes_ago = timezone.now() - timedelta(minutes=10)
-    res=req.get(f'http://{serverip}/products/listeconnected')
-    print(json.loads(res.text)['connected'])
-    print('>>', res.text)
-    notconnected=Connectedusers.objects.filter(lasttime__lt=five_minutes_ago).order_by('-lasttime')
-    connected=Connectedusers.objects.filter(lasttime__gt=five_minutes_ago)
+    serverip= Setting.objects.only('serverip').first()
+    serverip=serverip.serverip if serverip else None
+    connectedserver=[]
+    lastactiveserver=[]
+    if serverip:
+        res=req.get(f'http://{serverip}:8000/products/listeconnected')
+        connectedserver=json.loads(res.text)['connected'],
+        lastactiveserver=json.loads(res.text)['active']
+        # notconnected=Connectedusers.objects.filter(lasttime__lt=five_minutes_ago).order_by('-lasttime')
+        # connected=Connectedusers.objects.filter(lasttime__gt=five_minutes_ago)
 
     ctx={
         'title':'List utilisateurs Active',
-        'connected':connected,
-        'active':notconnected,
+        # 'connected':connected,
+        # 'active':notconnected,
         'connectedserver':json.loads(res.text)['connected'],
         'lastactiveserver':json.loads(res.text)['active']
     }
-    return render(request, 'listconnected.html', ctx)
+    return render(request, 'listconnected.html', ctx) 
 
 
 def promotionspage(request):
@@ -5612,7 +5696,7 @@ def createpromotion(request):
     image=request.FILES.get('promotionimage')
     # create category
     pr=Promotion.objects.create(info=name, image=image)
-    req.get(f'http://{serverip}/products/createpromotion', {
+    req.get(f'http://{serverip}:8000/products/createpromotion', {
         'name':name,
         # get image file
         'image':pr.image.url.replace('/media/', '') if pr.image else ''
@@ -5633,7 +5717,7 @@ def updatepromotion(request):
     if image:
         promotion.image=image
     promotion.save()
-    req.get(f'http://{serverip}/products/updatepromotion', {
+    req.get(f'http://{serverip}:8000/products/updatepromotion', {
         'name':request.POST.get('name'),
         'id':id,
         # get image file
@@ -7911,6 +7995,29 @@ def createnewclientaccount(request):
     olduser=client.user
     username=request.POST.get('username').strip()
     password=request.POST.get('password')
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        res=req.get(f'http://{serverip}:8000/products/createnewclientaccount', {
+            'username':username,
+            'password':password,
+            'clientcode':client.code
+        })
+        if json.loads(res.text)['success']:
+            return JsonResponse({
+                'success':True
+            })
+        else:
+            return JsonResponse({
+                'success':False,
+                'error':f"{json.loads(res.text)['error']}"
+            })
+    # user=User.objects.filter(username=username).first()
+    # if user:
+    return JsonResponse({
+        'success':False,
+        'error':'No server'
+    })
     #check for username
     user=User.objects.filter(username=username).first()
     print('>>>>>>>>>>>', username, client.code)
@@ -7921,7 +8028,7 @@ def createnewclientaccount(request):
         })
     user=User.objects.create_user(username=username, password=password)
     try:
-        response=req.get(f'http://{serverip}/products/createnewclientaccount', {
+        response=req.get(f'http://{serverip}:8000/products/createnewclientaccount', {
             'username':username,
             'password':password,
             'clientcode':client.code
@@ -7961,44 +8068,55 @@ def createnewrepaccount(request):
     olduser=rep.user
     username=request.POST.get('username')
     password=request.POST.get('password')
-    user=User.objects.filter(username=username).first()
-    if user:
-        return JsonResponse({
-            'success':False,
-            'error':'Username exist déja'
-        })
-    try:
-        response=req.get(f'http://{serverip}/products/createnewrepaccount', {
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        res=req.get(f'http://{serverip}:8000/products/createnewrepaccount', {
             'username':username,
             'password':password,
             'repid':repid
         })
-        response.raise_for_status()
-        user=User.objects.create_user(username=username, password=password)
-        # assign user to rep
-        cart=Cart.objects.filter(user=olduser).first()
-        wich=Wich.objects.filter(user=olduser).first()
-        if cart:
-            cart.user=user
-            cart.save()
-        if wich:
-            wich.user=user
-            wich.save()
-        olduser.delete()
-        group, created = Group.objects.get_or_create(name="salsemen")
-        user.groups.add(group)
-        user.save()
-        rep.user=user
-        rep.save()
-        return JsonResponse({
-            'success':True
-        })
-    except Exception as e:
-        print('>>>>>>>', e)
-        return JsonResponse({
-            'success':False,
-            'error':'ERROR SERVER'
-        })
+        if json.loads(res.text)['success']:
+            return JsonResponse({
+                'success':True
+            })
+        else:
+            return JsonResponse({
+                'success':False,
+                'error':f"{json.loads(res.text)['error']}"
+            })
+    # user=User.objects.filter(username=username).first()
+    # if user:
+    return JsonResponse({
+        'success':False,
+        'error':'No server'
+    })
+    #     response.raise_for_status()
+    #     user=User.objects.create_user(username=username, password=password)
+    #     # assign user to rep
+    #     cart=Cart.objects.filter(user=olduser).first()
+    #     wich=Wich.objects.filter(user=olduser).first()
+    #     if cart:
+    #         cart.user=user
+    #         cart.save()
+    #     if wich:
+    #         wich.user=user
+    #         wich.save()
+    #     olduser.delete()
+    #     group, created = Group.objects.get_or_create(name="salsemen")
+    #     user.groups.add(group)
+    #     user.save()
+    #     rep.user=user
+    #     rep.save()
+    #     return JsonResponse({
+    #         'success':True
+    #     })
+    # except Exception as e:
+    #     print('>>>>>>>', e)
+    #     return JsonResponse({
+    #         'success':False,
+    #         'error':'ERROR SERVER'
+    #     })
 
 
 
@@ -9367,7 +9485,7 @@ def updaterepdata(request):
     'caneditprice':caneditprice
     }
     try:
-        res=req.get(f'http://{serverip}/products/updaterepdata', data)
+        res=req.get(f'http://{serverip}:8000/products/updaterepdata', data)
         res.raise_for_status()
     except req.exceptions.RequestException as e:
         # in case connection failed
@@ -9446,7 +9564,7 @@ def getitemsforlistbl(request):
         'categories':categories
     })
 def refspage(request):
-    res=req.get(f'http://{serverip}/products/refspage')
+    res=req.get(f'http://{serverip}:8000/products/refspage')
     print(res)
 
     refs=Refstats.objects.all().order_by('-lastdate')
@@ -9483,7 +9601,7 @@ def notavailable(request):
     return render(request, 'notavailable.html', ctx)
 
 def cartpage(request):
-    res=req.get(f'http://{serverip}/products/getcarts')
+    res=req.get(f'http://{serverip}:8000/products/getcarts')
 
     ctx={
         'carts':Cart.objects.all().order_by('-total').exclude(total=0),
@@ -9492,7 +9610,7 @@ def cartpage(request):
     return render(request, 'cartspage.html', ctx)
 
 def reliquatpage(request):
-    res=req.get(f'http://{serverip}/products/getwishs')
+    res=req.get(f'http://{serverip}:8000/products/getwishs')
     print(list(json.loads(res.text)['carts']))
     ctx={
         'carts':Wich.objects.all().order_by('-total'),
@@ -9727,7 +9845,7 @@ def listnotifications(request):
 def addnotification(request):
     notification=request.GET.get('notification')
     try:
-        req.get(f'http://{serverip}/products/addnotification', {'notificationid':notificationid,'notification':notification})
+        req.get(f'http://{serverip}:8000/products/addnotification', {'notificationid':notificationid,'notification':notification})
 
         Notification.objects.create(notification=notification)
         return JsonResponse({
@@ -9747,7 +9865,7 @@ def updatenotification(request):
         'success':True
     })
     # try:
-    #     req.get(f'http://{serverip}/products/updatenotification', {'notificationid':notificationid,'notification':notification})
+    #     req.get(f'http://{serverip}:8000/products/updatenotification', {'notificationid':notificationid,'notification':notification})
     #     notif=Notification.objects.get(pk=notificationid)
     #     notif.notification=notification
     #     notif.save()
@@ -9857,7 +9975,7 @@ def updateproductstock(request):
     product=Produit.objects.get(pk=productid)
     diff=int(stock)-int(product.stocktotal)
     Modifierstock.objects.create(stock=diff, product=product)
-    req.get(f'http://{serverip}/products/updatepdctdata', {
+    req.get(f'http://{serverip}:8000/products/updatepdctdata', {
 
         'id':productid,
         'ref':product.ref,
@@ -9925,23 +10043,39 @@ def getclientcode(request):
 
 def allowcatalog(request):
     clientcode=request.GET.get('clientcode')
-    try:
-        res=req.get(f'http://{serverip}/products/allowcatalog', {
+    serverip= Setting.objects.only('serverip').first()
+    serverip=serverip.serverip if serverip else None
+    if serverip:
+        res=req.get(f'http://{serverip}:8000/products/allowcatalog', {
             'clientcode':clientcode,
         })
-        print(res)
-        res.raise_for_status()
-        print('>><W>>>>>>>>>>>>>>>>>')
-        client=Client.objects.get(code=clientcode)
-        client.accesscatalog=not client.accesscatalog
-        client.save()
-        return JsonResponse({
-            'success':True
-        })
-    except req.exceptions.RequestException as e:
-        return JsonResponse({
-            'success':False
-        })
+        if json.loads(res.text)['success']:
+            return JsonResponse({
+                'success':True
+            })
+        else:
+            return JsonResponse({
+                'success':False,
+                'error':f"{json.loads(res.text)['error']}"
+            })
+    # user=User.objects.filter(username=username).first()
+    # if user:
+    return JsonResponse({
+        'success':False,
+        'error':'No server'
+    })
+    #     res.raise_for_status()
+    #     print('>><W>>>>>>>>>>>>>>>>>')
+    #     client=Client.objects.get(code=clientcode)
+    #     client.accesscatalog=not client.accesscatalog
+    #     client.save()
+    #     return JsonResponse({
+    #         'success':True
+    #     })
+    # except req.exceptions.RequestException as e:
+    #     return JsonResponse({
+    #         'success':False
+    #     })
 
 def filterepbons(request):
     repid=request.GET.get('repid')
