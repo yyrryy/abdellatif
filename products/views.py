@@ -1838,6 +1838,8 @@ def activerproduct(request):
             'uniqcode':uniqcode
         })
         if json.loads(res.text)['success']:
+            product.isactive=True
+            product.save()
             return JsonResponse({
                 'success':True
             })
@@ -4984,10 +4986,9 @@ def deactivateaccount(request):
     # UserSession.objects.filter(user=user).delete()
     # # Clear the user's session
     # #Session.objects.filter(session_key__in=UserSession.objects.filter(user=user).values('session_key')).delete()
-
+    product.isactive=False
     return JsonResponse({
-        'success':False,
-        'error':'No server'
+        'success':True,
     })
 
 def activateaccount(request):
