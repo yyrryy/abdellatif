@@ -5843,7 +5843,8 @@ def searchproductsforstock(request):
             Q(refeq1__icontains=term) |
             Q(refeq2__icontains=term) |
             Q(refeq3__icontains=term) |
-            Q(refeq4__icontains=term)
+            Q(refeq4__icontains=term) |
+            Q(diametre__icontains=term)
         )
             # adding other products that have equivalent
         products=products | Produit.objects.filter(q_objects).order_by('-stocktotal')
