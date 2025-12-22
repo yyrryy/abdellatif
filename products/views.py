@@ -560,7 +560,11 @@ def updateproduct(request):
     files = {}
     if image:
         files['image'] = image
+    session = req.Session()
+    r = session.get('http://134.209.226.177/products/updatepdctdata')  # GET page to get CSRF cookie
+    csrf_token = session.cookies['csrftoken']
     headers = {
+        'X-CSRFToken': csrf_token,
         'X-SYNC-TOKEN': '8a7f5b2c9d3e4f1g0h6j'
     }
     if serverip:
@@ -594,9 +598,6 @@ def updateproduct(request):
         }
         # if image:
         #     data['image']=product.image.url.replace('/media/', '') if product.image else '/media/default.png',
-        print('>> data to send', data)
-        print('>> headers to send', headers)
-        print('>> files to send', files)
         
         try:
             res=req.post(f'http://{serverip}:8000/products/updatepdctdata', data=data, files=files, headers=headers)
