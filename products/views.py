@@ -589,6 +589,7 @@ def updateproduct(request):
             'stock':product.stocktotal,
             'uniqcode':product.uniqcode
         }
+        print('>> data', data)
         # if image:
         #     data['image']=product.image.url.replace('/media/', '') if product.image else '/media/default.png',
         
