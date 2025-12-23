@@ -16,7 +16,7 @@ from django.db.models import Q
 import datetime
 from django.utils import timezone
 from itertools import chain
-
+import requests as req
 
 
 def product(request, id):
@@ -736,3 +736,4 @@ def getsimilar(request):
         'products':render(request, 'similarproducts.html', {'products':products, 'ref':ref.upper()}).content.decode('utf-8'),
         
     })
+

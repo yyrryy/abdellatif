@@ -1847,6 +1847,8 @@ def activerproduct(request):
             })
     # user=User.objects.filter(username=username).first()
     # if user:
+    product.isactive=True
+    product.save()
     return JsonResponse({
         'success':False,
         'error':'No server'
@@ -5580,6 +5582,23 @@ def updatebonavoirsupp(request):
 
 
 def notifyadmin(request):
+    serverip= Setting.objects.only('serverip').first()
+    serverip=serverip.serverip if serverip else None
+    if serverip:
+        try:
+            res=req.get(f'http://{serverip}/products/getcommandnumber')
+            return JsonResponse({
+                'length':json.loads(res.text)['length']
+            })
+            res.raise_for_status()
+        except req.exceptions.RequestException as e:
+            print('Error notifying admin on server:', e)
+            return JsonResponse({
+                'length':0,
+            })
+    return JsonResponse({
+        'length':0,
+    })
     oldnotif=Ordersnotif.objects.filter(isread=True)
     oldnotif.delete()
     newnotif=Ordersnotif.objects.filter(isread=False)
@@ -11820,3 +11839,41 @@ def configuration(request):
     if setting:
         ctx['setting']=setting
     return render(request, 'settings.html', ctx) 
+
+def commandfromserver(request):
+    serverip= Setting.objects.only('serverip').first()
+    serverip=serverip.serverip if serverip else None
+    if serverip:
+        res=req.get(f'http://{serverip}/')
+    items=request.GET.get('items')
+    clientcode=request.GET.get('clientcode')
+    total=request.GET.get('total')
+    notesorder=request.GET.get('notesorder')
+    #fix here, get rep from the
+    userid=request.GET.get('userid')
+    rep=request.GET.get('rep')
+    client=Client.objects.get(code=clientcode)
+    cmndfromclient=True if request.GET.get('cmndfromclient') == 'true' else False
+    print('>>>>>>>>>>>>cc',items)
+    print('>>>>>>>>>>>>client',cmndfromclient)
+    print('>>>>>>>>>>>>total',total)
+    print('>>>>>>>>>>>>represent', client.represent)
+    if cmndfromclient:
+        order=Order.objects.create(client=client, salseman=client.represent,  modpymnt='--', modlvrsn='--',total=total, isclientcommnd=True, note=notesorder)
+        print('>> order from client')
+    else:
+        order=Order.objects.create(client=client, salseman_id=rep,  modpymnt='--', modlvrsn='--',total=total, note=notesorder)
+        print('>> order from rep')
+
+    #Ordersnotif.objects.create(user_id=1)
+
+    # totalremise=request.POST.get('totalremise', 0)
+    for i in json.loads(items):
+        print(i['ref'])
+        Orderitem.objects.create(order=order, ref=i['ref'], name=i['name'], qty=int(i['qty']), product_id=i['productid'], remise=i['remise'], price=i['price'], total=i['total'])
+        print('>> create order item', i['name'])
+    
+    return JsonResponse({
+        'success':True
+    })
+

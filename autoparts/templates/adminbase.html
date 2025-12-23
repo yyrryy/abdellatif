@@ -2275,19 +2275,22 @@ function printbonachat(bonid){
                 // Handle the retrieved notifications and display them
                 if (data.length > 0){
                   // var audio = document.getElementById('notificationSound');
-                  new Audio('/media/notif.mp3').play();
-                  alertify.confirm('Commande', 'Nouveau Commande', function(){
-                    // stop playing audio
-                    // audio.pause();
-                    // audio.currentTime = 0;
-                    // user clicked "ok"
-                    $.get('/products/disablenotif', (data)=>{
-                      console.log(data)
-                    })
-                    setTimeout(getNotifications, 20000);  // Poll every 5 seconds (adjust as needed)
-                    createtab('addCommandestab', 'BON COMM', '/products/listboncommnd')
+                  // if there is commands, just make holder blink and display the nbr of commandes
+                  $('.boncommandesnumber').text(data.length)
+                  $('.boncommandesnumberholder').addClass('blink')
+                  // new Audio('/media/notif.mp3').play();
+                  // alertify.confirm('Commande', 'Nouveau Commande', function(){
+                  //   // stop playing audio
+                  //   // audio.pause();
+                  //   // audio.currentTime = 0;
+                  //   // user clicked "ok"
+                  //   $.get('/products/disablenotif', (data)=>{
+                  //     console.log(data)
+                  //   })
+                  //   setTimeout(getNotifications, 20000);  // Poll every 5 seconds (adjust as needed)
+                  //   createtab('addCommandestab', 'BON COMM', '/products/listboncommnd')
 
-                  }, function(){});
+                  // }, function(){});
 
                 }
                 else{
