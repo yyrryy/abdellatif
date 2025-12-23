@@ -596,7 +596,7 @@ def updateproduct(request):
             headers = {
                 'X-SYNC-TOKEN': '8a7f5b2c9d3e4f1g0h6j'
             }
-            res=req.post(f'http://{serverip}:8000/products/updatepdctdata', data=data, files=files, headers=headers)
+            res=req.post(f'http://{serverip}:8000/products/updateproduct', data=data, files=files, headers=headers)
             res.raise_for_status()
         except req.exceptions.RequestException as e:
             print('>>> error', e)
@@ -656,7 +656,7 @@ def updateproduct(request):
     # if not res.status_code == 200:
     #         print('Error message:', res.text)
     
-        # req.get(f'http://{serverip}:8000/products/updatepdctdata', {
+        # req.get(f'http://{serverip}:8000/products/updateproduct', {
         #     'password':'gadwad123',
         #     'id':request.POST.get('productid'),
         #     'ref':request.POST.get('ref').lower().strip(),
@@ -9993,7 +9993,7 @@ def updateproductstock(request):
     product=Produit.objects.get(pk=productid)
     diff=int(stock)-int(product.stocktotal)
     Modifierstock.objects.create(stock=diff, product=product)
-    req.get(f'http://{serverip}:8000/products/updatepdctdata', {
+    req.get(f'http://{serverip}:8000/products/updateproduct', {
 
         'id':productid,
         'ref':product.ref,
