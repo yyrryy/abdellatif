@@ -47,7 +47,7 @@
     {% for i in orderitems %}
     {% if forloop.counter == orderitems|length %}
     <!-- last iteration -->
-    <div class="px-5 d-flex flex-column postion-relative livraison{{order.id}}holder p-3" style="height: 1123px;width: 21cm; page-break-before: always;">
+    <div class="px-5 d-flex flex-column postion-relative livraison{{order.id}}holder" style="height: 1123px;width: 21cm; page-break-before: always;">
       <!-- header -->
       <div class="">
         <img src="/media/logos/logo2.jpg" alt="" style="width: 40%; visibility: hidden;" class="bllogo">
@@ -59,7 +59,7 @@
                 <strong>Date: {{ order.date|date:"d/m/Y" }}</strong>
               </div>
               <div>
-                <strong>N°: {{ bon_no }}</strong>
+                <strong>Bon livraison N°: {{ bon_no }}</strong>
               </div>
           </div>
           <h3>
@@ -94,10 +94,10 @@
         font-weight: 800;" class="text-center">
             <tr>
               <td style="">Ref</td>
-              <td style="width:53%;">Designation</td>
+              <td style="width:60%;">Designation</td>
               <td style="width: 5%;">Qté</td>
               <td style="width: 7%;">P.U</td>
-              <td style="width: 5%;">Rem</td>
+              <td style="width: 3%;">Rem</td>
               <td style="width: 13%;">Mantant</td>
             </tr>
           </thead>
@@ -106,14 +106,14 @@
               <td style="height: 195mm;white-space: nowrap; padding:3px">
                   {% for v in i %}
 
-                  {{v.ref.upper}}
+                  {{v.product.ref.upper}}
                   <br>
                   {% endfor %}
               </td>
               <td style="white-space: nowrap; padding:3px">
                   {% for v in i %}
 
-                  {{v.name.upper|slice:'45'}} {%if v.product.mark%}{{v.product.mark}}{%endif%}
+                  {{v.product.name.upper|slice:'45'}} {%if v.product.mark%}{{v.product.mark}}{%endif%}
                   <br>
                   {% endfor %}
               </td>
@@ -134,7 +134,7 @@
               <td class="text-center">
                   {% for v in i %}
 
-                  {{v.remise}}%
+                  {{v.remise}}
                   <br>
                   {% endfor %}
               </td>
@@ -174,7 +174,7 @@
 
     {% else %}
     <!-- other pages -->
-    <div class="px-5 d-flex flex-column postion-relative livraison{{order.id}}holder p-3" style="height: 1123px;width: 21cm; page-break-before: always;">
+    <div class="px-5 d-flex flex-column postion-relative livraison{{order.id}}holder" style="height: 1123px;width: 21cm; page-break-before: always;">
       <!-- header -->
       <div class="">
         <img src="/media/logos/logo2.jpg" alt="" style="width: 40%; visibility: hidden;" class="bllogo">
@@ -186,7 +186,7 @@
                 <strong>Date: {{ order.date|date:"d/m/Y" }}</strong>
               </div>
               <div>
-                <strong>N°: {{ bon_no }}</strong>
+                <strong>Bon livraison N°: {{ bon_no }}</strong>
               </div>
           </div>
           <h3>
@@ -221,10 +221,10 @@
         font-weight: 800;" class="text-center">
             <tr>
               <td style="">Ref</td>
-              <td style="width:53%;">Designation</td>
+              <td style="width:60%;">Designation</td>
               <td style="width: 5%;">Qté</td>
               <td style="width: 7%;">P.U</td>
-              <td style="width: 5%;">Rem</td>
+              <td style="width: 3%;">Rem</td>
               <td style="width: 13%;">Mantant</td>
             </tr>
           </thead>
@@ -233,14 +233,14 @@
               <td style="height: 195mm;white-space: nowrap; padding:3px">
                   {% for v in i %}
 
-                  {{v.ref.upper}}
+                  {{v.product.ref.upper}}
                   <br>
                   {% endfor %}
                   </td>
                 <td style="white-space: nowrap; padding:3px">
                   {% for v in i %}
 
-                  {{v.name.upper|slice:'45'}} {%if v.product.mark%}{{v.product.mark}}{%endif%}
+                  {{v.product.name.upper|slice:'45'}} {%if v.product.mark%}{{v.product.mark}}{%endif%}
                   <br>
                   {% endfor %}
               </td>
@@ -261,7 +261,7 @@
               <td class="text-center">
                   {% for v in i %}
 
-                  {{v.remise}}%
+                  {{v.remise}}
                   <br>
                   {% endfor %}
               </td>
