@@ -4860,45 +4860,63 @@ def sortdownfc(request):
         'html':render(request, 'fclist.html', {'bons':bons}).content.decode('utf-8')
     })
 
+from django.db.models import Q
+import pandas as pd
+
 def excelclients(request):
     myfile = request.FILES['excelFile']
-    df = pd.read_excel(myfile)
-    df = df.fillna('')
-    for d in df.itertuples():
-        name=d.name
-        code=str(d.code)
-        try:
-            # this needs to be lowercase
-            region=d.region.lower().strip()
-        except:
-            region=d.region
-        city=d.city
-        clientname=d.clientname
-        phone=str(d.phone)
-        rep=d.rep
-        ice=str(d.ice)
-        address=None if pd.isna(d.address) else d.address
-        try:
-            client=Client.objects.get(Q(name=name) | Q(code=code))
-            # with open('error.txt', 'a') as f:
-            #     f.write(f'{name} - {code} exist déja \n')
-        except Client.DoesNotExist:
-            print('client not exist')
-            client=Client.objects.create(
-                represent_id=rep,
-                code=code,
-                name=name,
-                city=city,
-                ice=ice,
-                region=region,
-                phone=phone,
-                address=address,
-                clientname=clientname
-            )
-    return JsonResponse({
-        'success':True
-    })
 
+    # Read Excel safely
+    df = pd.read_excel(myfile, dtype={'code': str})
+    df = df.fillna('')
+
+    # Normalize data
+    df['code'] = df['code'].astype(str).str.strip().str.zfill(6)
+    df['name'] = df['name'].astype(str).str.strip()
+
+    # Fetch existing clients ONCE
+    existing_clients = Client.objects.filter(
+        Q(code__in=df['code'].tolist()) |
+        Q(name__in=df['name'].tolist())
+    ).values_list('code', 'name')
+
+    existing_codes = set(c[0] for c in existing_clients)
+    existing_names = set(c[1] for c in existing_clients)
+
+    clients_to_create = []
+
+    for d in df.itertuples(index=False):
+        if d.code in existing_codes or d.name in existing_names:
+            continue
+
+        try:
+            region = d.region.lower().strip()
+        except Exception:
+            region = d.region
+
+        address = d.address if d.address else None
+
+        clients_to_create.append(
+            Client(
+                represent_id=d.rep,
+                code=d.code,
+                name=d.name,
+                city=d.city,
+                ice=str(d.ice).strip(),
+                region=region,
+                phone=str(d.phone).strip(),
+                address=address,
+                clientname=d.clientname,
+            )
+        )
+
+    # 🚀 Bulk insert
+    Client.objects.bulk_create(clients_to_create, batch_size=500)
+
+    return JsonResponse({
+        'success': True,
+        'created': len(clients_to_create)
+    })
 def excelpdcts(request):
     myfile = request.FILES['excelFile']
     df = pd.read_excel(myfile)
