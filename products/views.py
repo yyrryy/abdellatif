@@ -1893,6 +1893,8 @@ def desactiverproduct(request):
                 'success':False,
                 'error':f"{json.loads(res.text)['error']}"
             })
+    product.isactive=False
+    product.save()
     return JsonResponse({
         'success':False,
         'error':'No server'
