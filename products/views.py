@@ -4900,7 +4900,7 @@ def excelclients(request):
                 city=city,
                 ice=ice
                 region=region,
-                phone=phone
+                phone=phone,
                 address=address,
                 clientname=clientname,
             )
