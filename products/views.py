@@ -4875,38 +4875,34 @@ def excelclients(request):
     df['name'] = df['name'].astype(str).str.strip()
 
     # Fetch existing clients ONCE
-    existing_clients = Client.objects.filter(
-        Q(code__in=df['code'].tolist()) |
-        Q(name__in=df['name'].tolist())
-    ).values_list('code', 'name')
-
-    existing_codes = set(c[0] for c in existing_clients)
-    existing_names = set(c[1] for c in existing_clients)
+    
 
     clients_to_create = []
 
     for d in df.itertuples(index=False):
-        if d.code in existing_codes or d.name in existing_names:
-            continue
-
+        
         try:
             region = d.region.lower().strip()
         except Exception:
             region = d.region
 
-        address = d.address if d.address else None
+        address = None if pd.isna(d.address) else d.address
+        ice = None if pd.isna(d.ice) else d.ice
+        city = None if pd.isna(d.city) else d.city
+        phone = None if pd.isna(d.phone) else d.phone
+        clientname = None if pd.isna(d.clientname) else d.clientname
 
         clients_to_create.append(
             Client(
                 represent_id=d.rep,
                 code=d.code,
                 name=d.name,
-                city=d.city,
-                ice=str(d.ice).strip(),
+                city=city,
+                ice=ice
                 region=region,
-                phone=str(d.phone).strip(),
+                phone=phone
                 address=address,
-                clientname=d.clientname,
+                clientname=clientname,
             )
         )
 
@@ -4915,7 +4911,6 @@ def excelclients(request):
 
     return JsonResponse({
         'success': True,
-        'created': len(clients_to_create)
     })
 def excelpdcts(request):
     myfile = request.FILES['excelFile']
