@@ -89,7 +89,7 @@
         </div>
       </div>
       <div class="col-9">
-        {% if not facturesection %}
+        <!-- {% if not facturesection %}
         <div class="col-8 d-flex justify-content-between mt-2">
             <select>
                 {% for i in commerciaux %}
@@ -100,7 +100,7 @@
             <button class="btn btn-primary" onclick="filterclientspage(event)" >Filtrer</button>
             <button class="btn btn-success ms-5" onclick="tabletoexcel()"> Excel</button>
         </div>
-        {% endif %}
+        {% endif %} -->
         <div class="d-flex justify-content-between mt-2">
             <input  type="text" name="" id="" placeholder="Recherche" class="searchinputlistclients col-6" style="border-radius: 2em;height: 2.3em;background: #ffa50047;">
             <div class="d-flex">
@@ -156,7 +156,7 @@
                             </button>
                         </td>
                         <!-- <a href="onclick="createtab('client{{i.id}}', 'client: {{i.name}}', '/products/clientlier/{{i.id}}')""></a> -->
-                        <td onclick="createtab('client{{i.id}}', 'Client: {{i.name}}', '/products/client/{{i.id}}')">{{i.name}}</td>
+                        <td onclick="createtab('client{{i.id}}', 'Client: {{i.name}}', '/products/client/{{i.id}}')">{{i.name}} [{{i.clientname}}]</td>
                         <td >{{i.code}}</td>
                         <td>{{i.phone}}</td>
                         <td>{{i.city}}</td>
