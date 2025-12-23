@@ -561,7 +561,7 @@ def updateproduct(request):
     if image:
         files['image'] = image
     session = req.Session()
-    r = session.get(f'http://{serverip}/products/updatepdctdata')  # GET page to get CSRF cookie
+    r = session.get(f'http://{serverip}:8000/products/updatepdctdata')  # GET page to get CSRF cookie
     csrf_token = session.cookies['csrftoken']
     headers = {
         'X-CSRFToken': csrf_token,
