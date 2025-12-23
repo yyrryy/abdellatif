@@ -4898,7 +4898,7 @@ def excelclients(request):
                 code=d.code,
                 name=d.name,
                 city=city,
-                ice=ice
+                ice=ice,
                 region=region,
                 phone=phone,
                 address=address,
