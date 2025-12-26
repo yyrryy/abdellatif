@@ -1071,6 +1071,7 @@ a .uil {
                       <li class="nav-item">
                         <button class="nav-link bi bi-plus-circle-fill" onclick="createtab('maintab', 'Nouveau', '/products/maintab')"></button>
                       </li> -->
+                      {% if not user.groups.all.1.name == 'comptoir' %}
                       <li onmouseleave="$(this).find('.dropdown-menu').removeClass('show'),$(this).find('.nav-link').removeClass('active')">
                         <!-- dropdown -->
                         <button class="nav-link" type="button" onmouseover="$('.dropdown-menu').removeClass('show'),$('.nav-link').removeClass('active'),$(this).parent().find('.dropdown-menu').toggleClass('show'),$(this).toggleClass('active')">Produits</button>
@@ -1097,21 +1098,22 @@ a .uil {
                         </div>
 
                       </li>
-
+                      {%endif%}
                       <li onmouseleave="$(this).find('.dropdown-menu').removeClass('show'),$(this).find('.nav-link').removeClass('active')">
                         <!-- ventes dropdown -->
                         <button class="nav-link" type="button" onmouseover="$('.dropdown-menu').removeClass('show'),$('.nav-link').removeClass('active'),$(this).parent().find('.dropdown-menu').toggleClass('show'),$(this).toggleClass('active')">Les Ventes</button>
                         <div style="z-index: 999999;" class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                         
                           <a class="dropdown-item" href="#" onclick="createtab('addbonlivraison', '+livraison', '/products/bonlivraison')">+ bons livraison</a>
                           <a class="dropdown-item" href="#" onclick="createtab('facture', '+facture', '/products/facture')">+ Facture Manual</a>
                           <a class="dropdown-item" href="#" onclick="createtab('addlistbonlivraison', 'BON LIVRAISON', '/products/listbonlivraison')">List bons livraison</a>
                           <a class="dropdown-item" href="#" onclick="createtab('addlistfactures', 'FACTURES', '/products/listfactures')">List des Factures</a>
+                          {% if not user.groups.all.1.name == 'comptoir' %}
                           <a class="dropdown-item" href="#" onclick="createtab('addjournalvente', 'JOURN VENTE', '/products/journalvente')">Journal Ventes</a>
                           <a class="dropdown-item" href="#" onclick="createtab('addjournalventefc', 'JOURNAL VENTE FC', '/products/journalventefc')">Journal Ventes FC</a>
+                          {%endif%}
                         </div>
                       </li>
-
+                      {% if not user.groups.all.1.name == 'comptoir' %}
                       <li onmouseleave="$(this).find('.dropdown-menu').removeClass('show'),$(this).find('.nav-link').removeClass('active')">
                         <!-- les Achats dropdown -->
                         <button class="nav-link" type="button" onmouseover="$('.dropdown-menu').removeClass('show'),$('.nav-link').removeClass('active'),$(this).parent().find('.dropdown-menu').toggleClass('show'),$(this).toggleClass('active')">les Achats</button>
@@ -1180,6 +1182,7 @@ a .uil {
                           </a>
                         </div> -->
                       </li>
+                      {%endif%}
                       <!-- <button class="nav-link" type="button" onclick="createtab('Configuration', 'Configuration', '/products/settings')">Configuration</button> -->
                       <a class="nav-link" href="/catalog" target="_blank">CATALOGUE</a>
 

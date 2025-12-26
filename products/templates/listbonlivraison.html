@@ -74,8 +74,8 @@
         border: 1px solid;
         margin-left: 68px;
         border-radius: 12px;
-        background: #97c89742;" class="btn {% if boncommand > 0%}blink{% endif %}" onclick="createtab('addCommandestab', 'BON COMM', '/products/listboncommnd')">
-          Bon commande: <span style="color: red;">{{boncommand}} </span>
+        background: #97c89742;" class="btn boncommandesnumberholder {% if boncommand > 0%}blink{% endif %}" onclick="createtab('addCommandestab', 'BON COMM', '/products/listboncommnd')">
+          Bon commande: <span style="color: red;" class="boncommandesnumber">{{boncommand}} </span>
         </button>
       </div>
     </div>
