@@ -3297,6 +3297,24 @@ def listboncommnd(request):
     today = timezone.now().date()
     thisyear=timezone.now().year
     current_time = datetime.now().strftime('%H:%M:%S')
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        res=req.get('http://'+serverip+'/products/sendcommandstoserver')
+        data=json.loads(res.text)
+        if data.get('success'):
+            # means ther is order
+            orders=data['orders']
+            items=data['items']
+            print('orders', orders, 'items', items)
+            # for o in orders:
+            #     Order.objects.update_or_create(
+            #         nbon=o['nbon'],
+            #         date=datetime.strptime(o['date'], '%Y-%m-%d'),
+            #         total=o['total'],
+            #         order_no=o['order_no'],
+            #         isclientcommnd=o['isclientcommnd']
+            #     )
     orders=Order.objects.filter(date__year=thisyear).order_by('-id')[:50]
     ctx={
         'title':'List des bon commnd',
