@@ -1629,6 +1629,15 @@ a .uil {
   </div>
 
   <!-- connected useres -->
+  <div style="position: fixed; bottom: 0; left: 0; z-index: 1000;">
+    <button style="
+    border: 1px solid;
+    margin-left: 68px;
+    border-radius: 12px;
+    background: #97c89742;" class="btn boncommandesnumberholder {% if boncommand > 0%}blink{% endif %}" onclick="createtab('addCommandestab', 'BON COMM', '/products/listboncommnd')">
+      Bon commande: <span style="color: red;" class="boncommandesnumber">{{boncommand}} </span>
+    </button>
+  </div>
   <div class="fixed-bottomright bg-darkblue col-5 d-flex connectedholder">
     <!-- <button class="btn text-white" style="border:1px solid var(--orange);" onclick="getconnected(); getconnectedoutside()">
       ↻
@@ -2271,6 +2280,7 @@ function printbonachat(bonid){
 
 
       function getNotifications() {
+        console.log('checking for notifications...')
         $.ajax({
             url: '/products/notifyadmin',  // Replace with the actual URL of your API endpoint
             method: 'GET',
@@ -2279,8 +2289,8 @@ function printbonachat(bonid){
                 if (data.length > 0){
                   // var audio = document.getElementById('notificationSound');
                   // if there is commands, just make holder blink and display the nbr of commandes
-                  $('.boncommandesnumber').text(data.length)
                   $('.boncommandesnumberholder').addClass('blink')
+                  $('.boncommandesnumber').text(data.length)
                   // new Audio('/media/notif.mp3').play();
                   // alertify.confirm('Commande', 'Nouveau Commande', function(){
                   //   // stop playing audio
@@ -2290,7 +2300,7 @@ function printbonachat(bonid){
                   //   $.get('/products/disablenotif', (data)=>{
                   //     console.log(data)
                   //   })
-                  //   setTimeout(getNotifications, 20000);  // Poll every 5 seconds (adjust as needed)
+                  setTimeout(getNotifications, 20000);  // Poll every 5 seconds (adjust as needed)
                   //   createtab('addCommandestab', 'BON COMM', '/products/listboncommnd')
 
                   // }, function(){});
@@ -3201,7 +3211,7 @@ function printbonachat(bonid){
       $(document).ready(function () {
 
         // Start the initial AJAX request and schedule subsequent requests
-        //getNotifications();
+        getNotifications();
         //getoutsideNotifications();
         // get connected users
         //getconnected()

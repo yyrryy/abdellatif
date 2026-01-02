@@ -333,6 +333,8 @@ class Order(models.Model):
     clientaddress=models.CharField(max_length=500, null=True, default=None)
     client=models.ForeignKey(Client, on_delete=models.CASCADE, default=None, null=True)
     order_no=models.CharField(max_length=500, null=True, default=None)
+    senttoserver=models.BooleanField(default=False)
+
     # order by date
     class Meta:
         ordering = ['-date']
@@ -660,7 +662,9 @@ class Returnedsupplier(models.Model):
 
 
 class Ordersnotif(models.Model):
-    user=models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    length=models.IntegerField(default=0)
+    # catch the orders json from server
+    orders=models.JSONField(default=list, null=True, blank=True)
     isread=models.BooleanField(default=False)
 
 class Connectedusers(models.Model):

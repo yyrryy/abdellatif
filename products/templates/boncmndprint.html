@@ -96,14 +96,14 @@
             <td style="height: 200mm;">
                 {% for v in i %}
 
-                {{v.ref.upper}} {% if reliquat and not v.islivraison and v.product.stocktotal > 0 %}<button style="height:16px;" onclick="makeitemsent('{{v.id}}')"></button>{%endif%}
+                {{v.product.ref.upper}} {% if reliquat and not v.islivraison and v.product.stocktotal > 0 %}<button style="height:16px;" onclick="makeitemsent('{{v.id}}')"></button>{%endif%}
                 <br>
                 {% endfor %}
             </td>
             <td>
                 {% for v in i %}
 
-                {{v.name.upper|slice:"30"}}
+                {{v.product.name.upper|slice:"30"}}
                 <br>
                 {% endfor %}
             </td>
@@ -227,14 +227,14 @@
             <td style="height: 200mm;">
                 {% for v in i %}
 
-                {{v.ref.upper}} {% if reliquat and not v.islivraison and v.product.stocktotal > 0 %}<button style="height:16px;" onclick="makeitemsent('{{v.id}}')"></button>{%endif%}
+                {{v.product.ref.upper}} {% if reliquat and not v.islivraison and v.product.stocktotal > 0 %}<button style="height:16px;" onclick="makeitemsent('{{v.id}}')"></button>{%endif%}
                 <br>
                 {% endfor %}
                 </td>
               <td>
                 {% for v in i %}
 
-                {{v.name.upper|slice:"30"}}
+                {{v.product.name.upper|slice:"30"}}
                 <br>
                 {% endfor %}
             </td>

@@ -3297,24 +3297,50 @@ def listboncommnd(request):
     today = timezone.now().date()
     thisyear=timezone.now().year
     current_time = datetime.now().strftime('%H:%M:%S')
-    serverip = Setting.objects.only('serverip').first()
-    serverip = serverip.serverip if serverip else None
-    if serverip:
-        res=req.get('http://'+serverip+'/products/sendcommandstoserver')
-        data=json.loads(res.text)
-        if data.get('success'):
-            # means ther is order
-            orders=data['orders']
-            items=data['items']
-            print('orders', orders, 'items', items)
-            # for o in orders:
-            #     Order.objects.update_or_create(
-            #         nbon=o['nbon'],
-            #         date=datetime.strptime(o['date'], '%Y-%m-%d'),
-            #         total=o['total'],
-            #         order_no=o['order_no'],
-            #         isclientcommnd=o['isclientcommnd']
-            #     )
+    # serverip = Setting.objects.only('serverip').first()
+    # serverip = serverip.serverip if serverip else None
+    ordersnotif=Ordersnotif.objects.first()
+    if ordersnotif:
+        # means ther is order
+        orders=ordersnotif.orders
+        # items=data['items']
+        #print('orders', orders, 'items', items)
+        for o in orders:
+            # 1. Create order
+            order = Order.objects.create(
+                date=o['date'],
+                total=o['total'],
+                note=o['note'],
+                client=Client.objects.get(pk=o['client']),
+                salseman=Represent.objects.get(pk=o['salsemanid']),
+                order_no=o['order_no'],
+                isclientcommnd=o['isclientcommnd'],
+            )
+
+            items = o['items']
+
+            # 2. Collect uniqcodes
+            uniqcodes = [item['uniqcode'] for item in items]
+
+            # 3. Fetch products in ONE query
+            produits = Produit.objects.filter(uniqcode__in=uniqcodes)
+            produit_map = {p.uniqcode: p for p in produits}
+
+            # 4. Prepare Orderitem objects
+            order_items = [
+                Orderitem(
+                    order=order,
+                    product=produit_map[item['uniqcode']],
+                    qty=item['qty'],
+                    price=item['price'],
+                    total=item['total'],
+                )
+                for item in items
+            ]
+
+            # 5. Bulk insert
+            Orderitem.objects.bulk_create(order_items)
+        Ordersnotif.objects.all().delete()
     orders=Order.objects.filter(date__year=thisyear).order_by('-id')[:50]
     ctx={
         'title':'List des bon commnd',
@@ -5604,12 +5630,23 @@ def updatebonavoirsupp(request):
 def notifyadmin(request):
     serverip= Setting.objects.only('serverip').first()
     serverip=serverip.serverip if serverip else None
+    notification=Ordersnotif.objects.first()
+    if notification:
+        return JsonResponse({
+            'length':notification.length,
+        })
     if serverip:
         try:
+            # get the number of commands in server not yet sent to local server
             res=req.get(f'http://{serverip}/products/getcommandnumber')
-            return JsonResponse({
-                'length':json.loads(res.text)['length']
-            })
+            length=json.loads(res.text)['length']
+            print('length', length!=0, length)
+            if length!=0:
+                Ordersnotif.objects.create(length=json.loads(res.text)['length'], orders=json.loads(res.text)['orders'])
+                return JsonResponse({
+                    'length':json.loads(res.text)['length'],
+                    #'orders':json.loads(res.text)['orders']
+                })
             res.raise_for_status()
         except req.exceptions.RequestException as e:
             print('Error notifying admin on server:', e)
