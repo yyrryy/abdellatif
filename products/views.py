@@ -10070,12 +10070,12 @@ def updateproductstock(request):
     product=Produit.objects.get(pk=productid)
     diff=int(stock)-int(product.stocktotal)
     Modifierstock.objects.create(stock=diff, product=product)
-    req.get(f'http://{serverip}/products/updateproduct', {
+    # req.get(f'http://{serverip}/products/updateproduct', {
 
-        'id':productid,
-        'ref':product.ref,
-        'stocktotal':stock,
-    })
+    #     'id':productid,
+    #     'ref':product.ref,
+    #     'stocktotal':stock,
+    # })
     product.stocktotal=stock
     product.save()
     return JsonResponse({
