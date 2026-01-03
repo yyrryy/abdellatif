@@ -816,7 +816,7 @@ def addsupply(request):
     for i in json.loads(products):
         devise=0 if i['devise']=='' else i['devise']
         product=Produit.objects.get(pk=i['productid'])
-        remise=0 if i['remise']=='' else int(i['remise'])
+        remise=0 if i['remise']=='' else float(i['remise'])
         buyprice=0 if i['price']=='' else i['price']
         netprice=round(float(buyprice)-(float(buyprice)*float(remise)/100), 2)
         if isfacture:

@@ -227,7 +227,7 @@ class Stockin(models.Model):
     isinventaire=models.BooleanField(default=False)
     # qtyofprice will be used to track qty of this price
     qtyofprice=models.IntegerField(default=0)
-    remise=models.IntegerField(default=0)
+    remise=models.FloatField(default=0.00)
     total=models.FloatField(default=0.00)
     supplier=models.ForeignKey(Supplier, on_delete=models.CASCADE, default=None, null=True, blank=True)
     nbon=models.ForeignKey(Itemsbysupplier, on_delete=models.CASCADE, default=None, null=True, blank=True)
@@ -315,6 +315,7 @@ class Represent(models.Model):
 class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     code=models.CharField(max_length=50, null=True, default=None)
+
     # name will be a string
     # email will be a string and not requuired
     salseman=models.ForeignKey(Represent, on_delete=models.SET_NULL, default=None, null=True)
