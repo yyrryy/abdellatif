@@ -3311,7 +3311,7 @@ def listboncommnd(request):
                 date=o['date'],
                 total=o['total'],
                 note=o['note'],
-                client=Client.objects.get(pk=o['client']),
+                client=Client.objects.get(code=o['clientcode']),
                 salseman=Represent.objects.get(pk=o['salsemanid']),
                 order_no=o['order_no'],
                 isclientcommnd=o['isclientcommnd'],
@@ -5640,7 +5640,6 @@ def notifyadmin(request):
             # get the number of commands in server not yet sent to local server
             res=req.get(f'http://{serverip}/products/getcommandnumber')
             length=json.loads(res.text)['length']
-            print('length', length!=0, length)
             if length!=0:
                 Ordersnotif.objects.create(length=json.loads(res.text)['length'], orders=json.loads(res.text)['orders'])
                 return JsonResponse({
@@ -9642,7 +9641,7 @@ def getitemsforlistbl(request):
     brands = [{'id': mark.id if mark.id else None, 'name': mark.name if mark.name else None, 'image':mark.image.url if mark.image else '/media/default.png'} for mark in unique_brands]
     categories = [{'id': category.id, 'name': category.name, 'image':category.image.url if category.image else '/media/default.png'} for category in unique_categories]
     trs=[f'''<tr class="productsbrand{i.mark.id if i.mark else ''}">
-    <td><img src={i.image.url if i.image else ''}></td>
+    <td><img style="width=50%" src={i.image.url if i.image else ''}></td>
     <td>{i.ref.upper()}</td>
     <td>{i.name.upper()}</td>
     <td style="color: #ff6409;
