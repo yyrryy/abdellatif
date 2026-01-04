@@ -98,7 +98,6 @@ def createcategory(request):
                 'hideclient':hideclient,
                 'commercialexcluded':commercialexcluded,
                 # get image file
-                'image':category.image.url.replace('/media/', '') if category.image else ''
             }, files=files)
             res.raise_for_status()
         except req.exceptions.RequestException as e:
