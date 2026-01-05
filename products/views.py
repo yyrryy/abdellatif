@@ -11501,6 +11501,9 @@ def getetatblfc(request):
         # client_data['totalsituation'] = round(total_factures - total_avoirs - total_regls, 2)
         # serialized_data.append(client_data)
 
+
+    print('>>> soldbl', totalsoldbl)
+    print('>>> soldfc', totalsoldfc)
     return JsonResponse({
         'trs':render(request, 'etatblfctrs.html', {'data': serialized_data, 'months': months, 'monthtostart': start_date_str, 'monthtoend': end_date_str, 'totalsoldbl':totalsoldbl, 'totalsoldfc':totalsoldfc}).content.decode('utf-8'),
         'totalsoldbl':totalsoldbl,
