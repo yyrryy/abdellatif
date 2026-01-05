@@ -2286,11 +2286,11 @@ function printbonachat(bonid){
             method: 'GET',
             success: function (data) {
                 // Handle the retrieved notifications and display them
+                $('.boncommandesnumber').text(data.length)
                 if (data.length > 0){
                   // var audio = document.getElementById('notificationSound');
                   // if there is commands, just make holder blink and display the nbr of commandes
                   $('.boncommandesnumberholder').addClass('blink')
-                  $('.boncommandesnumber').text(data.length)
                   // new Audio('/media/notif.mp3').play();
                   // alertify.confirm('Commande', 'Nouveau Commande', function(){
                   //   // stop playing audio
