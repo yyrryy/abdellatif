@@ -131,6 +131,8 @@ function genereretatbl(event){
 		$('#etattable tbody').html('Loading ....')
 		$.get(`/products/getetatblfc?monthtostart=${monthtostart}&monthtoend=${monthtoend}&rep=${rep}&region=${region}`, (data)=>{
 			$('#etattable').html(data.trs)
+			$('.totalsoldbl').html(data.totalsoldbl)
+			$('.totalsoldfc').html(data.totalsoldfc)
 		})
 	}
 }

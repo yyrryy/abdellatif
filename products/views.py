@@ -11299,6 +11299,8 @@ def getetatblfc(request):
     print('>> clients', clients)
     serialized_data = []
     #client=Client.objects.get(pk=3758)
+    totalsoldbl=0
+    totalsoldfc=0
     for clientindex, client in enumerate(clients):
         sitdata=0
         client_data = {'client_name': client.name, 'client_id': client.id, 'client_code': client.code, 'client_city': client.city, 'client_region': client.region, 'client_moderegl': client.moderegl, 'client_represent': client.represent.name, 'monthly_data': [], 'totalsituation': 0, 'soldfc':client.soldfacture, 'soldbl':client.soldbl}
@@ -11423,9 +11425,11 @@ def getetatblfc(request):
 
             # Calculate total situation for the client
         client_data['totalsituationfc'] = round(total_factures - total_avoirfc - total_reglfc, 2)
+        totalsoldfc+=round(total_factures - total_avoirfc - total_reglfc, 2)
         # Calculate total situation for the client
         client_data['totalsituation'] = round(total_bons - total_avoirs - total_regls, 2)
         serialized_data.append(client_data)
+        totalsoldbl+=round(total_bons - total_avoirs - total_regls, 2)
 
         # Define start and end months for the date range
         # sitdata=0
@@ -11498,7 +11502,9 @@ def getetatblfc(request):
         # serialized_data.append(client_data)
 
     return JsonResponse({
-        'trs':render(request, 'etatblfctrs.html', {'data': serialized_data, 'months': months, 'monthtostart': start_date_str, 'monthtoend': end_date_str}).content.decode('utf-8')
+        'trs':render(request, 'etatblfctrs.html', {'data': serialized_data, 'months': months, 'monthtostart': start_date_str, 'monthtoend': end_date_str}).content.decode('utf-8'),
+        'totalsoldbl':totalsoldbl,
+        'totalsoldfc':totalsoldfc,
     })
 
 
