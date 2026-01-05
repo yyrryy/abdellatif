@@ -11502,7 +11502,7 @@ def getetatblfc(request):
         # serialized_data.append(client_data)
 
     return JsonResponse({
-        'trs':render(request, 'etatblfctrs.html', {'data': serialized_data, 'months': months, 'monthtostart': start_date_str, 'monthtoend': end_date_str}).content.decode('utf-8'),
+        'trs':render(request, 'etatblfctrs.html', {'data': serialized_data, 'months': months, 'monthtostart': start_date_str, 'monthtoend': end_date_str, 'totalsoldbl':totalsoldbl, 'totalsoldfc':totalsoldfc}).content.decode('utf-8'),
         'totalsoldbl':totalsoldbl,
         'totalsoldfc':totalsoldfc,
     })
