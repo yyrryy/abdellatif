@@ -319,6 +319,7 @@
         });
     }
     function createclientaccount(event){
+        $(event.target).addClass('disabled btn-loading')
         parentdiv=$(event.target).parent().parent().parent()
         var username = parentdiv.find('input[name="clientusername"]').val();
         var password = parentdiv.find('input[name="clientpassword"]').val();
