@@ -16,9 +16,9 @@
 		<button class="btn btn-dark" onclick="genereretatbl(event)">Generer</button>
 	</div>
 	<input class="col-4" placeholder="recherche" onkeyup="searchtableetat(event)">
-	<button class="btn btn-primary" onclick="tabletoexcel()">Excel</button>
+	<!-- <button class="btn btn-primary" onclick="tabletoexcel()">Excel</button> -->
 	<button class="btn btn-info bi bi-download" onclick="printetat()"></button>
-	<button class="btn btn-dark" onclick="hidezero()">Zero</button>
+	<!-- <button class="btn btn-dark" onclick="hidezero()">Zero</button> -->
 </div>
 
 <div class="mt-5 printetat p-2 position-relative" id="printetat">
@@ -43,6 +43,14 @@
 
 
 		</tbody>
+	</table>
+	<table class="table table-bordered">
+		<tr>
+			<td>Total BL</td>
+			<td class="totalsoldbl">0.00</td>
+			<td>Total FC</td>
+			<td class="totalsoldfc">0.00</td>
+		</tr>
 
 	</table>
 </div>
