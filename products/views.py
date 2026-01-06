@@ -11293,9 +11293,9 @@ def getetatblfc(request):
             current = datetime(current.year, current.month + 1, 1)
     print('>> region: ', region, months)
     if region == '':
-        clients = Client.objects.filter(represent_id=rep).order_by('city').exclude(diver=True).exclude(name__istartswith='.').exclude(name__istartswith='test')
+        clients = Client.objects.filter(represent_id=rep).order_by('code').exclude(diver=True).exclude(name__istartswith='.').exclude(name__istartswith='test')
     else:
-        clients = Client.objects.filter(represent_id=rep, region=region).order_by('city').exclude(diver=True).exclude(name__istartswith='.').exclude(name__istartswith='test')
+        clients = Client.objects.filter(represent_id=rep, region=region).order_by('code').exclude(diver=True).exclude(name__istartswith='.').exclude(name__istartswith='test')
     print('>> clients', clients)
     serialized_data = []
     #client=Client.objects.get(pk=3758)
