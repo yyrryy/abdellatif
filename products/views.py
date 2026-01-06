@@ -943,7 +943,7 @@ def addbonlivraison(request):
     serverip = Setting.objects.only('serverip').first()
     serverip = serverip.serverip if serverip else None
     if serverip:
-        Thread(target=updatestockoutremoteserver, args=(uniqcides, serverip)).start()
+        Thread(target=updatestockinremoteserver, args=(uniqcides, serverip)).start()
     # increment it
     return JsonResponse({
         "success":True
