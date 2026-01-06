@@ -25,6 +25,9 @@ from collections import defaultdict
 import calendar
 from django.db.models.functions import TruncDay
 import uuid
+from .funcs import updatestockinremoteserver
+from threading import Thread
+
 today = timezone.now().date()
 thisyear=timezone.now().year
 
@@ -812,6 +815,8 @@ def addsupply(request):
         tva=tva,
         dateentree=datefacture
     )
+    # update stock of products in onothr thread, because it may take time if there are many products, my idea is to catch the uniqcode of products then send them to the remote server
+    uniqcodes=[]
     for i in json.loads(products):
         devise=0 if i['devise']=='' else i['devise']
         product=Produit.objects.get(pk=i['productid'])
@@ -857,6 +862,12 @@ def addsupply(request):
         product.qtycommande=0
         product.supplier=supplier
         product.save()
+        uniqcodes.append([product.uniqcode, product.stocktotal])
+    # after the loop, we will have the uniqcides of the products in the list, a function in a tread
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        Thread(target=updatestockinremoteserver, args=(uniqcodes, serverip)).start()
     return JsonResponse({
         'html': render(request, 'recevoir.html', {'title':'Recevoir Les produits', 'suppliers':Supplier.objects.all(), #'products':Produit.objects.all()
         }).content.decode('utf-8')
@@ -908,6 +919,7 @@ def addbonlivraison(request):
         paymenttype=paymenttype
     )
     print('>>>>>>', len(json.loads(products))>0)
+    uniqcides=[]
     if len(json.loads(products))>0:
         with transaction.atomic():
             for i in json.loads(products):
@@ -926,8 +938,12 @@ def addbonlivraison(request):
                     client_id=clientid,
                     date=datebon
                 )
-
-
+                uniqcides.append([product.uniqcode, product.stocktotal])
+    # after the loop, we will have the uniqcides of the products in the list, a function in a tread
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        Thread(target=updatestockoutremoteserver, args=(uniqcides, serverip)).start()
     # increment it
     return JsonResponse({
         "success":True
@@ -2233,6 +2249,7 @@ def updatebonlivraison(request):
         i.delete()
 
     print('client:', livraison.client.id)
+    uniqcodes=[]
     for i in json.loads(request.POST.get('products')):
         # ABORTER FOR NOW
         # clientpricehistory=Clientprices.objects.filter(client_id=livraison.client.id, product_id=i['productid']) or None
@@ -2263,6 +2280,12 @@ def updatebonlivraison(request):
             date=datebon,
             client=client
         )
+        uniqcodes.append([product.uniqcode, product.stocktotal])
+    # after the loop, we will have the uniqcides of the products in the list, a function in a tread
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        Thread(target=updatestockinremoteserver, args=(uniqcodes, serverip)).start()
 
     return JsonResponse({
         'success':True
@@ -3420,7 +3443,7 @@ def updatebonachat(request):
     if isfacture:
         bon.tva=tva
     bon.save()
-
+    uniqcodes=[]
     with transaction.atomic():
         for i in json.loads(request.POST.get('products')):
 
@@ -3454,6 +3477,12 @@ def updatebonachat(request):
             product.coutmoyen=round(totalprices/totalqty, 2)
             product.buyprice=0 if i['price']=="" else i['price']
             product.save()
+            uniqcodes.append([product.uniqcode, product.stocktotal])
+    # after the loop, we will have the uniqcides of the products in the list, a function in a tread
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        Thread(target=updatestockinremoteserver, args=(uniqcodes, serverip)).start()
 
     return JsonResponse({
         'success':True
