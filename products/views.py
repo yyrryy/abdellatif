@@ -10472,7 +10472,7 @@ def bonlivraisonprint(request, id):
     orderitems=Livraisonitem.objects.filter(bon=order, isfacture=False).order_by('product__name')
     reglements=PaymentClientbl.objects.filter(bons__in=[order])
     orderitems=list(orderitems)
-    orderitems=[orderitems[i:i+38] for i in range(0, len(orderitems), 38)]
+    orderitems=[orderitems[i:i+41] for i in range(0, len(orderitems), 41)]
     ctx={
         'title':f'Bon de livraison {order.bon_no}',
         'order':order,
