@@ -97,7 +97,7 @@
                 {% for v in i %}
 
                 {{v.product.ref.upper}} {% if reliquat and not v.islivraison and v.product.stocktotal > 0 %}<button style="height:16px;" onclick="makeitemsent('{{v.id}}')"></button>{%endif%}
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td>
@@ -105,42 +105,42 @@
 
                   {{v.product.name.upper|slice:'65'}} {%if v.product.mark%}{{v.product.mark}}{%endif%} {%if v.product.diametre%}{{v.product.diametre}}{%endif%}
 
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td class="text-center">
                 {% for v in i %}
 
                 {{v.product.stocktotal}}
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td class="text-center">
                 {% for v in i %}
 
                 {{v.qty}}
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td class="text-center">
                 {% for v in i %}
 
                 {{v.price|floatformat:2}}
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td class="text-center">
                 {% for v in i %}
 
-                {{v.remise}}%
-                <br>
+                0%
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td class="text-center">
                 {% for v in i %}
 
                 {{v.total|floatformat:2}}
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
 
@@ -229,7 +229,7 @@
                 {% for v in i %}
 
                 {{v.product.ref.upper}} {% if reliquat and not v.islivraison and v.product.stocktotal > 0 %}<button style="height:16px;" onclick="makeitemsent('{{v.id}}')"></button>{%endif%}
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
                 </td>
               <td>
@@ -237,42 +237,42 @@
 
                   {{v.product.name.upper|slice:'65'}} {%if v.product.mark%}{{v.product.mark}}{%endif%} {%if v.product.diametre%}{{v.product.diametre}}{%endif%}
 
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td class="text-center">
                 {% for v in i %}
 
                 {{v.product.stocktotal}}
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td class="text-center">
                 {% for v in i %}
 
                 {{v.qty}}
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td class="text-center">
                 {% for v in i %}
 
                 {{v.price|floatformat:2}}
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td class="text-center">
                 {% for v in i %}
 
-                {{v.remise}}%
-                <br>
+                0%
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
             <td class="text-center">
                 {% for v in i %}
 
                 {{v.total|floatformat:2}}
-                <br>
+                <hr style="margin:0; padding:0;opacity: 1;">
                 {% endfor %}
             </td>
 
