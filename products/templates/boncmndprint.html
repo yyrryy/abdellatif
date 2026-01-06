@@ -103,7 +103,8 @@
             <td>
                 {% for v in i %}
 
-                {{v.product.name.upper|slice:"30"}}
+                  {{v.product.name.upper|slice:'65'}} {%if v.product.mark%}{{v.product.mark}}{%endif%} {%if v.product.diametre%}{{v.product.diametre}}{%endif%}
+
                 <br>
                 {% endfor %}
             </td>
@@ -234,7 +235,8 @@
               <td>
                 {% for v in i %}
 
-                {{v.product.name.upper|slice:"30"}}
+                  {{v.product.name.upper|slice:'65'}} {%if v.product.mark%}{{v.product.mark}}{%endif%} {%if v.product.diametre%}{{v.product.diametre}}{%endif%}
+
                 <br>
                 {% endfor %}
             </td>
