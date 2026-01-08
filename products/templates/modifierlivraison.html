@@ -159,7 +159,7 @@ margin: 0;
               <tr class="itemrow">
                   <td class="ref" onclick="removelineupdatebl(event, '{{livraison.id}}', '{{i.product.id}}')">{{i.product.ref}}</td>
                   <td class="name">{{i.product.name}}</td>
-                  <td>{{i.product.buyprice}}</td>
+                  <td></td>
                   <td>{{i.product.stocktotal}}</td>
                   <td class="clientprice">{{i.clientprice}}</td>
                   <td><input type="number" class="calculate qty" onkeyup="calculatelivraison(event, '{{livraison.id}}')" name="qty" value="{{i.qty}}"></td>
@@ -291,7 +291,7 @@ margin: 0;
           <tr class="itemrow ${stock<=0? "text-danger":"" }">: 2
               <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelineupdatebl(event, '{{livraison.id}}', ${id})">${ref}</td>
               <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${name}</td>
-              <td style="paddingpx 0; font-size: 13px;">${dp}</td>
+              <td style="paddingpx 0; font-size: 13px;"></td>
               <td style="padding: 2px 0; font-size: 13px;">${stock}</td>
               <td style="padding: 2px 0; font-size: 13px;" class="clientprice">${priceclient}</td>
               <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notemptylivraison" onkeyup="calculate(event)" name="qty" value="${addqty.val()}" style="height:23px; width:100%;"></td>
@@ -337,7 +337,7 @@ margin: 0;
     <tr class="itemrow ${stock<=0? "text-danger":"" }">: 2
         <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelineupdatebl(event, '{{livraison.id}}', ${id})">${ref}</td>
         <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${name}</td>
-        <td style="paddingpx 0; font-size: 13px;">${dp}</td>
+        <td style="paddingpx 0; font-size: 13px;"></td>
         <td style="padding: 2px 0; font-size: 13px;">${stock}</td>
         <td style="padding: 2px 0; font-size: 13px;" class="clientprice">${priceclient}</td>
         <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notemptylivraison" onkeyup="calculate(event)" name="qty" value="${addqty.val()}" style="height:23px; width:100%;"></td>
