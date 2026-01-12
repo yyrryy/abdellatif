@@ -535,6 +535,7 @@ margin: 0;
           parentdiv.find('.tableholder').addClass('border border-danger')
           return
       }
+      //check aty and price
       parentdiv.find('.tableholder').removeClass('border border-danger')
         var isAnyEmpty = $('.notemptylivraison{{livraison.id}}').filter(function() { return $(this).val() == ''; }).length > 0;
           if (isAnyEmpty){
