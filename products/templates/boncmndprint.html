@@ -87,7 +87,7 @@
         <tbody>
           {% for i in orderitems %}
           <tr>
-            <td style="height: 200mm;">
+            <td>
               {{i.product.ref.upper}} {% if reliquat and not i.islivraison and i.product.stocktotal > 0 %}<button style="height:16px;" onclick="makeitemsent('{{i.id}}')"></button>{%endif%}  
             </td>
             <td>
