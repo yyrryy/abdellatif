@@ -10535,8 +10535,8 @@ def boncmndprint(request, id):
     orderitems=Orderitem.objects.filter(order=order).order_by('product__name')
 
 
-    orderitems=list(orderitems)
-    orderitems=[orderitems[i:i+39] for i in range(0, len(orderitems), 39)]
+    # orderitems=list(orderitems)
+    # orderitems=[orderitems[i:i+39] for i in range(0, len(orderitems), 39)]
     ctx={
         'title':f'Bon commande {order.order_no}',
         'order':order,
