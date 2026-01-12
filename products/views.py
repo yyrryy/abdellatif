@@ -10536,7 +10536,7 @@ def boncmndprint(request, id):
 
 
     orderitems=list(orderitems)
-    orderitems=[orderitems[i:i+45] for i in range(0, len(orderitems), 45)]
+    orderitems=[orderitems[i:i+39] for i in range(0, len(orderitems), 39)]
     ctx={
         'title':f'Bon commande {order.order_no}',
         'order':order,
