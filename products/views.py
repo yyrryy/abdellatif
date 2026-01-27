@@ -42,7 +42,7 @@ def getproductsbycategory(request):
     # category = Category.objects.get(pk=request.POST.get('category'))
     # products = category.product.filter(category=category)[:10]
     # get ten products from the category
-    products = Produit.objects.filter(category__pk=request.GET.get('category')).order_by('code')
+    products = Produit.objects.filter(category__pk=request.GET.get('category')).order_by('name')
     facture=request.GET.get('facture')=='1'
     print('>> facture', facture)
     # get marks of the products filtered
