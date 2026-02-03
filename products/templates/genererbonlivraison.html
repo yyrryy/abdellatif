@@ -221,7 +221,7 @@
                     <tr class="itemrow {% if i.product.stocktotal < i.qty %}bg-warning{%endif%}">
                         <td class="ref" onclick="removelinegenbl(event, '{{i.product.id}}')">{{i.product.ref}}</td>
                         <td class="name">{{i.product.name}}</td>
-                        <td>{{i.product.buyprice}}</td>
+                        <td>--</td>
                         <td>{{i.product.stocktotal}}</td>
                         <!-- <td>{{i.product.sellprice}}</td> -->
                         <td><input type="number" class="calculate qty " onkeyup="calculate(event)" name="qty" value="{{i.qty}}"></td>
