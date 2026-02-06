@@ -24,22 +24,27 @@ remote_user = "boxer"
 remote_host = "167.71.77.64"
 
 def runserver():
-    # Serve your Django app with Waitress
-    serve(application, host=ip, port=local_port)
+    serve(application, host="0.0.0.0", port=local_port)
 
 def start_ssh_tunnel():
-    sleep(2)  # Give Waitress a moment to start
-    # Run SSH reverse tunnel in background
-    cmd = [
-        "ssh",
-        "-fN",  # Run in background, no remote command
-        "-R", f"{remote_port}:{ip}:{local_port}",
-        f"{remote_user}@{remote_host}"
-    ]
-    print("Starting SSH reverse tunnel...")
-    subprocess.Popen(cmd)
-    print(f"Tunnel established: {remote_host}:{remote_port} -> {ip}:{local_port}")
+    sleep(2)
 
+    while True:
+        print("Starting SSH reverse tunnel...")
+        cmd = [
+            "ssh",
+            "-N",
+            "-o", "ServerAliveInterval=30",
+            "-o", "ServerAliveCountMax=3",
+            "-o", "ExitOnForwardFailure=yes",
+            "-R", f"{remote_port}:127.0.0.1:{local_port}",
+            f"{remote_user}@{remote_host}"
+        ]
+
+        proc = subprocess.Popen(cmd)
+        proc.wait()
+        print("SSH tunnel dropped. Restarting in 5 seconds...")
+        sleep(5)
 def launch_chrome():
     sleep(4)  # Give Waitress a bit more time
     os.system(f'start chrome http://{ip}:{local_port}')
