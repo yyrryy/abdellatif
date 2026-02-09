@@ -25,7 +25,7 @@ remote_host = "167.71.77.64"
 
 def runserver():
     # Serve your Django app with Waitress
-    serve(application, host=ip, port=local_port)
+    serve(application, host="0.0.0.0", port=local_port)
 
 def start_ssh_tunnel():
     sleep(2)  # Give Waitress a moment to start
