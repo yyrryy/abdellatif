@@ -2,8 +2,9 @@ import subprocess
 import time
 import signal
 import sys
-local_port = 80       # Local port for Waitress
-remote_port = 8081      # Port on remote server
+
+local_port = 80
+remote_port = 8081
 remote_user = "boxer"
 remote_host = "167.71.77.64"
 
@@ -13,15 +14,17 @@ running = True
 
 
 def start_ssh_tunnel():
-    # Run SSH reverse tunnel in background
+    global process
+
     cmd = [
         "ssh",
-        "-N",  # Run in background, no remote command
+        "-N",
         "-R", f"{remote_port}:localhost:{local_port}",
         f"{remote_user}@{remote_host}"
     ]
+
     print("Starting SSH reverse tunnel...")
-    subprocess.Popen(cmd)
+    process = subprocess.Popen(cmd)
     print(f"Tunnel established: {remote_host}:{remote_port} -> localhost:{local_port}")
 
 
@@ -49,6 +52,8 @@ signal.signal(signal.SIGTERM, handle_exit)
 
 
 def main():
+    global process
+
     while running:
         start_ssh_tunnel()
         exit_code = process.wait()
