@@ -12,20 +12,30 @@ RESTART_DELAY = 5
 process = None
 running = True
 
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+    except:
+        ip = 'localhost'
+    finally:
+        s.close()
+    return ip
 
+ip = get_local_ip()
 def start_ssh_tunnel():
     global process
 
     cmd = [
         "ssh",
-        "-N",
-        "-R", f"{remote_port}:localhost:{local_port}",
+        "-R", f"{remote_port}:{ip}:{local_port}",
         f"{remote_user}@{remote_host}"
     ]
 
     print("Starting SSH reverse tunnel...")
     process = subprocess.Popen(cmd)
-    print(f"Tunnel established: {remote_host}:{remote_port} -> localhost:{local_port}")
+    print(f"Tunnel established: {remote_host}:{remote_port} -> {ip}:{local_port}")
 
 
 def stop_tunnel():
