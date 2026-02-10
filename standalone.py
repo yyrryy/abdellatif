@@ -46,9 +46,9 @@ def launch_chrome():
 
 # Start server, SSH tunnel, and optional Chrome in parallel
 t_server = Thread(target=runserver)
-t_ssh = Thread(target=start_ssh_tunnel)
+# t_ssh = Thread(target=start_ssh_tunnel)
 t_chrome = Thread(target=launch_chrome)
 
 t_server.start()
-t_ssh.start()
+# t_ssh.start()
 t_chrome.start()
