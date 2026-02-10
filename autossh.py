@@ -2,18 +2,16 @@ import subprocess
 import time
 import signal
 import sys
-
+local_port = 80       # Local port for Waitress
+remote_port = 8081      # Port on remote server
+remote_user = "boxer"
+remote_host = "167.71.77.64"
 SSH_CMD = [
-    "ssh",
-    "-N",
-    "-o", "BatchMode=yes",
-    "-o", "ServerAliveInterval=30",
-    "-o", "ServerAliveCountMax=3",
-    "-o", "ExitOnForwardFailure=yes",
-    "-o", "TCPKeepAlive=yes",
-    "-R", "8081:localhost:80",
-    "boxer@167.71.77.64",
-]
+        "ssh",
+        "-fN",  # Run in background, no remote command
+        "-R", f"{remote_port}:{ip}:{local_port}",
+        f"{remote_user}@{remote_host}"
+    ]
 
 RESTART_DELAY = 5
 process = None
