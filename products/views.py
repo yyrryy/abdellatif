@@ -5699,8 +5699,18 @@ def disablenotif(request):
 
 def listecheance(request):
     # get payments that are cheque or effet in mode
-    reglbl=PaymentClientbl.objects.filter(Q(mode="cheque") | Q(mode="effet"), ispaid=False, echance__lte=today).order_by('-refused').order_by('-echance')
-    reglfc=PaymentClientfc.objects.filter(Q(mode="cheque") | Q(mode="effet"), ispaid=False, echance__lte=today).order_by('-refused').order_by('-echance')
+    limit_date = today + timedelta(days=5)
+
+    reglbl=PaymentClientbl.objects.filter(
+        Q(mode="cheque") | Q(mode="effet"),
+        ispaid=False,
+        echance__range=[today, limit_date]
+    ).order_by('-refused', '-echance')
+    reglfc=PaymentClientfc.objects.filter(
+        Q(mode="cheque") | Q(mode="effet"),
+        ispaid=False,
+        echance__range=[today, limit_date]
+    ).order_by('-refused', '-echance')
     echeance = chain(*[
     ((rbl, 'bl') for rbl in reglbl),
     ((rfc, 'fc') for rfc in reglfc),
@@ -10227,6 +10237,7 @@ def filterepbons(request):
     else:
         bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid).exclude(total=0).order_by('-id')
         # this gets only bons from tablete
+        reglements=Paymentclient.objects.filter(bons__in=[bons])
         repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
 
         systembons=bons.exclude(pk__in=[bon.pk for bon in repbons])
@@ -10236,6 +10247,7 @@ def filterepbons(request):
         repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
         systemfactures=factures.exclude(pk__in=[i.pk for i in repfactures])
     totalbl=bons.aggregate(Sum('total'))['total__sum'] or 0
+    totalreglements=reglements.aggregate(Sum('amount'))['amount__sum'] or 0
     totalfc=factures.aggregate(Sum('total'))['total__sum'] or 0
     totalblfctable=round(totalbl+totalfc, 2)
     avoirs=Avoirclient.objects.filter(date__range=[startdate, enddate], representant_id=repid)
@@ -10325,7 +10337,7 @@ def filterepbons(request):
         'totalavoirs':totalavoirs,
         'resultttc':systemtotalblfc,
         'resultht':systemresultht,
-
+        'totalreglements':totalreglements,
         'reptotalblfc':reptotalblfc,
         #'represultttc':represultttc,
         'represultttc':represultttc,

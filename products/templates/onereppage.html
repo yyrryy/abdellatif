@@ -372,10 +372,10 @@
                 <div class="col-3">
                     <div class="bg-darkblue text-white rounded shadow d-flex align-items-center text-center mb-2 p-2 d-flex flex-column align-items-center">
 
-                        Pourcentage
-                        <div>
-                            <input type="text" style="width: 80%"  class="reppercentage" onkeyup="getrepresultsrep(event)">%
-                        </div>
+                        Reglements
+                        <div  class="totalreglements">
+                            --
+                        </div>Dh
                     </div>
                 </div>
 
@@ -461,12 +461,14 @@
         totalfactures=parseFloat(parent.find('.totalfactures').text())
         totalavoirs=parseFloat(parent.find('.totalavoirs').text())
         resultht=parseFloat(parent.find('.resultht').text().replace(/\s/g, ''))
+        totalreglements=parseFloat(parent.find('.totalreglements').text().replace(/\s/g, ''))
+        resultttc=parseFloat(parent.find('.resultttc').text().replace(/\s/g, ''))
         console.log(resultht)
         totalcharges=parseFloat(parent.find('.totalcharges').val())
         percentage=parseFloat(parent.find('.percentage').val())
-        aftercharges=(resultht-totalcharges).toFixed(2)
+        aftercharges=(resultttc-totalcharges).toFixed(2)
         $('.aftercharges').text(aftercharges)
-        afterpercentage=((aftercharges*percentage)/100).toFixed(2)
+        afterpercentage=(aftercharges-totalreglements).toFixed(2)
         $('.finalresult').text(afterpercentage)
         console.log(totalcharges, totalavoirs, totalfactures, resultht)
     }
@@ -500,6 +502,7 @@
             $('.totalsystembons').text('loading.........')
             $('.totalrepbons').text('loading.........')
             $('.totalrepfactures').text('loading.........')
+            $('.totalreglements').text('loading.........')
             $('.reptotalcharges').val('')
             $('.reptotaldiff').val('')
             $('.totalcharges').val('')
@@ -523,6 +526,7 @@
             }, (data)=>{
                 $('.totalsystembons').text(data.totalbons.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
                 $('.totalrepbons').text(data.totalrepbons.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
+                $('.totalreglements').text(data.totalreglements.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
                 $('.totalrepfactures').text(data.totalrepfactures.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
                 $('.totalfactures').text(data.totalfactures.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
                 //$('.totalavoirs').text(data.totalavoirs.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
