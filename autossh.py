@@ -2,7 +2,7 @@ import subprocess
 import time
 import signal
 import sys
-
+import socket
 local_port = 80
 remote_port = 8081
 remote_user = "boxer"
