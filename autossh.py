@@ -29,6 +29,7 @@ def start_ssh_tunnel():
 
     cmd = [
         "ssh",
+        "-fN",  # Run in background, no remote command
         "-R", f"{remote_port}:{ip}:{local_port}",
         f"{remote_user}@{remote_host}"
     ]
