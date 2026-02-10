@@ -9,7 +9,7 @@ remote_host = "167.71.77.64"
 SSH_CMD = [
         "ssh",
         "-fN",  # Run in background, no remote command
-        "-R", f"{remote_port}:{ip}:{local_port}",
+        "-R", f"{remote_port}:localhost:{local_port}",
         f"{remote_user}@{remote_host}"
     ]
 
