@@ -10237,7 +10237,7 @@ def filterepbons(request):
     else:
         bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid).exclude(total=0).order_by('-id')
         # this gets only bons from tablete
-        reglements=Paymentclient.objects.filter(bons__in=[bons])
+        reglements=Paymentclientbl.objects.filter(bons__in=[bons])
         repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
 
         systembons=bons.exclude(pk__in=[bon.pk for bon in repbons])
