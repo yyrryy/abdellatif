@@ -42,7 +42,7 @@ def getproductsbycategory(request):
     # category = Category.objects.get(pk=request.POST.get('category'))
     # products = category.product.filter(category=category)[:10]
     # get ten products from the category
-    products = Produit.objects.filter(category__pk=request.GET.get('category')).order_by('name')
+    products = Produit.objects.filter(category__pk=request.GET.get('category')).order_by('code')
     facture=request.GET.get('facture')=='1'
     print('>> facture', facture)
     # get marks of the products filtered
@@ -10215,44 +10215,46 @@ def filterepbons(request):
     enddate=request.GET.get('enddate')
     bontarget=request.GET.get('bontarget')
 
-    if bontarget=='1':
-        bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=True).order_by('-id')
-        repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
+    # if bontarget=='1':
+    #     bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=True).order_by('-id')
+    #     repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
 
 
 
-        factures=Facture.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=True).order_by('-id')
-        repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
+    #     factures=Facture.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=True).order_by('-id')
+    #     repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
 
 
-    elif bontarget=='0':
-        bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=False).order_by('-id')
-        repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
+    # elif bontarget=='0':
+    #     bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=False).order_by('-id')
+    #     repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
 
 
 
-        factures=Facture.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=False).order_by('-id')
-        repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
+    #     factures=Facture.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=False).order_by('-id')
+    #     repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
 
-    else:
-        bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid).exclude(total=0).order_by('-id')
-        # this gets only bons from tablete
-        repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
+    # else:
+    bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid).exclude(total=0).order_by('-id')
+    # # this gets only bons from tablete
+    repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
 
-        systembons=bons.exclude(pk__in=[bon.pk for bon in repbons])
-        print('>>>>>>>>>>> system bons', systembons)
-        factures=Facture.objects.filter(date__range=[startdate, enddate], salseman_id=repid).order_by('-id')
-        # this gets only bons from tablete
-        repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
-        systemfactures=factures.exclude(pk__in=[i.pk for i in repfactures])
-    reglements=PaymentClientbl.objects.filter(bons__in=[bons])
+    systembons=bons.exclude(pk__in=[bon.pk for bon in repbons])
+    print('>>>>>>>>>>> system bons', systembons)
+    factures=Facture.objects.filter(date__range=[startdate, enddate], salseman_id=repid).order_by('-id')
+    # this gets only bons from tablete
+    repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
+    systemfactures=factures.exclude(pk__in=[i.pk for i in repfactures])
+    reglements=PaymentClientbl.objects.filter(bons__in=bons)
+    reglementsfc=PaymentClientfc.objects.filter(factures__in=factures)
     totalbl=bons.aggregate(Sum('total'))['total__sum'] or 0
     totalreglements=reglements.aggregate(Sum('amount'))['amount__sum'] or 0
+    totalreglements+= reglementsfc.aggregate(Sum('amount'))['amount__sum'] or 0
     totalfc=factures.aggregate(Sum('total'))['total__sum'] or 0
     totalblfctable=round(totalbl+totalfc, 2)
     avoirs=Avoirclient.objects.filter(date__range=[startdate, enddate], representant_id=repid)
     systemtotalblfc=round(systembons.aggregate(Sum('total'))['total__sum'] or 0, 2)+round(systemfactures.aggregate(Sum('total'))['total__sum'] or 0, 2)
-    reptotalblfc=round(repbons.aggregate(Sum('total'))['total__sum'] or 0, 2)+round(repfactures.aggregate(Sum('total'))['total__sum'] or 0, 2)
+    reptotalblfc=round(bons.aggregate(Sum('total'))['total__sum'] or 0, 2)+round(factures.aggregate(Sum('total'))['total__sum'] or 0, 2)
     totalavoirs=round(avoirs.aggregate(Sum('total'))['total__sum'] or 0, 2)
     systemresultttc=systemtotalblfc-totalavoirs
     represultttc=reptotalblfc-totalavoirs
@@ -10343,8 +10345,9 @@ def filterepbons(request):
         'represultttc':represultttc,
         #'represultht':represultht,
         'represultht':represultht,
-        'totalrepbons':round(repbons.aggregate(Sum('total'))['total__sum'] or 0, 2),
-        'totalrepfactures':round(repfactures.aggregate(Sum('total'))['total__sum'] or 0, 2),
+        'totalrepbons':round(bons.aggregate(Sum('total'))['total__sum'] or 0, 2),
+        'totalbons':round(bons.aggregate(Sum('total'))['total__sum'] or 0, 2),
+        'totalrepfactures':round(factures.aggregate(Sum('total'))['total__sum'] or 0, 2),
         'bons':''.join(trsbons),
         'factures':''.join(trsfactures),
         'totalblfctable':totalblfctable

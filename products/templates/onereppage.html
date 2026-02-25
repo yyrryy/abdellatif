@@ -233,7 +233,7 @@
                         </div>DH
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3" hidden>
                     <div class="bg-darkblue text-white rounded shadow d-flex align-items-center text-center mb-2 p-2 d-flex flex-column align-items-center">
 
                         Result HT
@@ -256,7 +256,7 @@
                 <div class="col-3">
                     <div class="bg-success text-white rounded shadow d-flex align-items-center text-center mb-2 p-2 d-flex flex-column align-items-center">
 
-                        apres charges HT
+                        apres charges TTC
                         <div class="aftercharges">
                             --
                         </div>DH
@@ -340,7 +340,7 @@
                         </div>DH
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3" hidden>
                     <div class="bg-darkblue text-white rounded shadow d-flex align-items-center text-center mb-2 p-2 d-flex flex-column align-items-center">
 
                         Result HT
@@ -478,6 +478,7 @@
         totalfactures=parseFloat(parent.find('.totalrepfactures').text())
         totalavoirs=parseFloat(parent.find('.totalrepavoirs').text().replace(/\s/g, ''))
         resultht=parseFloat(parent.find('.represultht').text().replace(/\s/g, ''))
+        resultttc=parseFloat(parent.find('.represultttc').text().replace(/\s/g, ''))
         totalblfc=parseFloat(parent.find('.reptotalblfc').text().replace(/\s/g, ''))
         totalcharges=parseFloat(parent.find('.reptotalcharges').val()?parent.find('.reptotalcharges').val():0)
         totaldiff=parseFloat(parent.find('.reptotaldiff').val()?parent.find('.reptotaldiff').val():0)
@@ -487,9 +488,10 @@
         htafterdif=(afterdiff/1.2).toFixed(2)
         parent.find('.represultttc').text(afterdiff)
         parent.find('.represultht').text(htafterdif)
-        aftercharges=(htafterdif-totalcharges).toFixed(2)
+        totalreglements=parseFloat(parent.find('.totalreglements').text().replace(/\s/g, ''))
+        aftercharges=(resultttc-totalcharges).toFixed(2)
         $('.repaftercharges').text(aftercharges)
-        afterpercentage=((aftercharges*percentage)/100).toFixed(2)
+        afterpercentage=(aftercharges-totalreglements).toFixed(2)
         $('.repfinalresult').text(afterpercentage)
         console.log(totalcharges, totalavoirs, totalfactures, resultht)
     }

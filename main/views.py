@@ -109,7 +109,6 @@ def profile(request):
     return render(request, 'profile.html')
 
 def loginpage(request):
-
     print(request.user.groups.all())
     if request.user.groups.all():
         if (request.user.groups.first().name=='salsemen'):
