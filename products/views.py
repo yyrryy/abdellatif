@@ -10350,7 +10350,9 @@ def filterepbons(request):
         'totalrepfactures':round(factures.aggregate(Sum('total'))['total__sum'] or 0, 2),
         'bons':''.join(trsbons),
         'factures':''.join(trsfactures),
-        'totalblfctable':totalblfctable
+        'totalblfctable':totalblfctable,
+        'avoir_html': render(request, 'avoirtrs.html', {'avoirs':avoirs}),
+        'reglement_html': render(request, 'rgelementtrs.html', {'reglements':reglements, 'reglementsfc':reglementsfc})
     })
 def updateavoirnote(request):
     avoirid=request.GET.get('avoirid')

@@ -390,6 +390,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="mt-2">
              <div style="height: 45vh; overflow: scroll;" class="">
                 <table class="table table-bordered table-hover table-striped " style="font-size: 12px;" id="addbonlivraisonle">
@@ -450,9 +451,71 @@
                     </td>
                   </tfoot>
                 </table>
+            </div>
+        </div>
+        
+        <div class="mt-2">
+            <div style="height: 70vh; overflow: scroll;">
+                <table class="table table-bordered table-hover table-striped listavcltable" style="font-size: 12px;" id="addbonlivraisonle">
+                <thead style="background: #676767; color: white; position: sticky; top: 0; z-index: 99;">
+                    <tr>
+                    <td style="width: 8%;">N° bon</td>
+                    <td style="width: 8%;">Date</td>
+                    <td style="width: 12%;">Client</td>
+                    <td style="width: 5%;">Code client</td>
+                    <td style="width: 5%;">Total</td>
+                    <td style="width: 5%;">Region</td>
+                    <td style="width: 5%;">Ville</td>
+                    {% if facturesection %}<td style="width: 5%;">Solde</td>{% endif %}
+                    <td style="width: 5%;">Repr</td>
+                    <td style="width: 5%;">status</td>
+                    <td style="width: 5%;">Note</td>
+                    </tr>
+                </thead>
+                <tbody class="listavclbody">
+                    
+                </tbody>
+                
+                </table>
+            </div>
+        </div>
+
+    
+        <div class="mt-2">
+            <div style="height: 62vh; overflow: scroll;" class="reglbltableholder mt-2">
+                <table class="table table-bordered reglbltable text-center table-hover" style="font-size: 12px;">
+                    <thead style="position: sticky; top: 0;" class="bg-darkblue text-white">
+                        <th onclick="sorttable(event)">
+                            Type
+                        </th>
+                        <th onclick="sorttable(event)">
+                            N°
+                        </th>
+                        <th onclick="sorttable(event)">
+                            Mantant
+                        </th>
+                        <th onclick="sorttable(event)">
+                            Date saisie
+                        </th>
+                        <th onclick="sorttable(event)" class="text-start">
+                            Client
+                        </th>
+                        <th onclick="sorttable(event)">
+                            Code cl.
+                        </th>
+                        <th onclick="sorttable(event)">
+                            Echeance
+                        </th>
+                        <th onclick="sorttable(event)">
+                            N° Bons
+                        </th>
+                    </thead>
+                    <tbody class="listreglement">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 <script>
     function getrepresults(event){
 
@@ -540,6 +603,8 @@
                 $('.resultht').text(data.resultht.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
                 $('.represultht').text(data.represultht.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
                 $('.listblbodyinreponfo').html(data.bons)
+                $(".listavclbody").html(data.avoir_html)
+                $(".listreglement").html(data.reglement_html)
                 $('.listblbodyinreponfo').append(data.factures)
                 $('.totalbonfc').text(data.totalblfctable)
 
