@@ -10351,8 +10351,8 @@ def filterepbons(request):
         'bons':''.join(trsbons),
         'factures':''.join(trsfactures),
         'totalblfctable':totalblfctable,
-        'avoir_html': render(request, 'avoirtrs.html', {'avoirs':avoirs}),
-        'reglement_html': render(request, 'rgelementtrs.html', {'reglements':reglements, 'reglementsfc':reglementsfc})
+        'avoir_html': render(request, 'avoirtrs.html', {'avoirs':avoirs}).content.decode("utf-8"),
+        'reglement_html': render(request, 'rgelementtrs.html', {'reglements':reglements, 'reglementsfc':reglementsfc}).content.decode("utf-8")
     })
 def updateavoirnote(request):
     avoirid=request.GET.get('avoirid')
