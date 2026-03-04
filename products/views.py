@@ -1385,7 +1385,7 @@ def updatecommercial(request):
 def onereppage(request, id):
     rep=Represent.objects.get(pk=id)
     note=Notesrepresentant.objects.filter(represent=rep).first()
-    print('>>>>>>>> nnnnnnn', note)
+    print('>>>>>>>>', note)
     ctx={
         'title':f'Page de {rep.name}',
         'rep':rep,

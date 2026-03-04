@@ -1,3 +1,5 @@
+{% load global_tags %}
+
 {% for order in bons %}
   <tr class="ord" orderid="{{order.code}}" ondblclick="createtab('avoir{{order.id}}', 'avoir {{order.no}}', '/products/avoirdetails/{{order.id}}')">
     <td>{{ order.no }}</td>

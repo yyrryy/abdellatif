@@ -1,3 +1,5 @@
+{% load global_tags %}
+
 {% for i in reglements %}
                <tr class="reglbl-row"
                {% if not i.ispaid and i.mode != 'espece' and i.mode != 'avoir' %}
