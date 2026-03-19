@@ -323,7 +323,7 @@ urlpatterns = [
     path('updateiscontrebon', views.updateiscontrebon, name='updateiscontrebon'),
     path('getcontrenonpaid', views.getcontrenonpaid, name='getcontrenonpaid'),
     path('minidashboard', views.minidashboard, name='minidashboard'),
-    #path('yeardatafccopy', views.yeardatafccopy, name='yeardatafccopy'),
+    path('addcharges', views.addcharges, name='addcharges'),
     #path('yeardatafccopy', views.yeardatafccopy, name='yeardatafccopy'),
     # check views used to be only for check views but now, it's the 2nd views file
     path('makethisprint', checkviews.makethisprint, name='makethisprint'),

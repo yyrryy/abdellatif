@@ -1,0 +1,4 @@
+users and permissions
+login requiired each time
+point vente devis
+Modifer devis

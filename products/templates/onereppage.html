@@ -248,7 +248,7 @@
 
                         Charges
                         <div class="">
-                            <input type="text" style="width: 100%" class="totalcharges" onchange="getrepresults(event)">DH
+                            <input type="number" style="width: 100%" class="totalcharges" onchange="getrepresults(event)">DH
                         </div>
                     </div>
                 </div>
@@ -355,7 +355,7 @@
 
                         Charges
                         <div class="">
-                            <input type="text" style="width: 100%" class="reptotalcharges" onkeyup="getrepresultsrep(event)">DH
+                            <input type="number" style="width: 100%" class="reptotalcharges" onchange="getrepresultsrep(event)">DH
                         </div>
                     </div>
                 </div>
@@ -545,6 +545,17 @@
         resultttc=parseFloat(parent.find('.represultttc').text().replace(/\s/g, ''))
         totalblfc=parseFloat(parent.find('.reptotalblfc').text().replace(/\s/g, ''))
         totalcharges=parseFloat(parent.find('.reptotalcharges').val()?parent.find('.reptotalcharges').val():0)
+        $.get("/products/addcharges", {
+            'charge': totalcharges,
+            'date':$('.startdatefilterreponfo{{rep.id}}').val(),
+        }, (data)=>{
+            if (data.success){
+                console.log('charge added')
+            }else{
+                console.log('error adding charge')
+            }
+        })
+        // # add charges to database uning the start date
         totaldiff=parseFloat(parent.find('.reptotaldiff').val()?parent.find('.reptotaldiff').val():0)
         percentage=parseFloat(parent.find('.reppercentage').val()?parent.find('.reppercentage').val():0)
         console.log('afterdiff',totalblfc,totaldiff,totalavoirs)
@@ -595,6 +606,7 @@
                 $('.totalreglements').text(data.totalreglements.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
                 $('.totalrepfactures').text(data.totalrepfactures.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
                 $('.totalfactures').text(data.totalfactures.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
+                $('.reptotalcharges').val(data.charges)
                 //$('.totalavoirs').text(data.totalavoirs.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
                 $('.totalrepavoirs').text(data.totalavoirs.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
                 $('.totalblfc').text(data.totalblfc.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ' '))
@@ -608,7 +620,8 @@
                 $(".listreglement").html(data.reglement_html)
                 $('.listblbodyinreponfo').append(data.factures)
                 $('.totalbonfc').text(data.totalblfctable)
-
+                $('.repaftercharges').text(data.aftercharges)
+                $('.repfinalresult').text(data.repfinalresult)
             })
         }
     }

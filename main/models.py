@@ -876,3 +876,8 @@ class Setting(models.Model):
     logo=models.ImageField(upload_to='logos/', null=True, blank=True)
     logoheadfacture=models.ImageField(upload_to='logos/', null=True, blank=True)
     logobodyfacture=models.ImageField(upload_to='logos/', null=True, blank=True)
+# charge turne, eqch ture of representant has charges that need to be stored
+class Chargeturne(models.Model):
+    represent = models.ForeignKey('Represent', on_delete=models.CASCADE, default=None, null=True)
+    date = models.DateField()
+    charge = models.FloatField()

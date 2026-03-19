@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from main.models import Produit, Mark, Category, Supplier, Stockin, Itemsbysupplier, Client, Represent, Order, Orderitem, Clientprices, Bonlivraison, Facture, Outfacture, Livraisonitem, PaymentClientbl, PaymentClientfc,  PaymentSupplier, Bonsregle, Returnedsupplier, Avoirclient, Returned, Avoirsupplier, Orderitem, Carlogos, Ordersnotif, Connectedusers, Promotion, UserSession, Refstats, Notavailable, Cart, Wich, Wishlist, Notification, Modifierstock, Cartitems, Notesrepresentant, Achathistory, Excelecheances, Tva, Etude, EtudeItem, Setting
+from main.models import Produit, Mark, Category, Supplier, Stockin, Itemsbysupplier, Client, Represent, Order, Orderitem, Clientprices, Bonlivraison, Facture, Outfacture, Livraisonitem, PaymentClientbl, PaymentClientfc,  PaymentSupplier, Bonsregle, Returnedsupplier, Avoirclient, Returned, Avoirsupplier, Orderitem, Carlogos, Ordersnotif, Connectedusers, Promotion, UserSession, Refstats, Notavailable, Cart, Wich, Wishlist, Notification, Modifierstock, Cartitems, Notesrepresentant, Achathistory, Excelecheances, Tva, Etude, EtudeItem, Setting, Chargeturne
 from django.contrib.auth import logout
 from django.http import JsonResponse, HttpResponse
 import openpyxl
@@ -2477,6 +2477,7 @@ def filternonreglr(request):
         'soldbl':Client.objects.get(pk=clientid).soldbl
     })
 
+
 def filternonreglrfc(request):
     clientid=request.GET.get('clientid')
     print(clientid)
@@ -3424,17 +3425,7 @@ def updatebonachat(request):
         print('new', supplier.rest)
     # bon.supplier.rest=float(bon.supplier.rest)-float(bon.total)
     # bon.supplier.save()
-    items=Stockin.objects.filter(nbon=bon)
-    # update this items
-    for i in items:
-        product=i.product
-        print('removing from total')
-        product.stocktotal=int(product.stocktotal)-int(i.quantity)
-        if bon.isfacture:
-            print('removing from facture')
-            product.stockfacture=int(product.stockfacture)-int(i.quantity)
-        product.save()
-        i.delete()
+    
 
     bon.supplier=supplier
     bon.total=totalbon
@@ -3445,6 +3436,17 @@ def updatebonachat(request):
     bon.save()
     uniqcodes=[]
     with transaction.atomic():
+        items=Stockin.objects.filter(nbon=bon)
+        # update this items
+        for i in items:
+            product=i.product
+            print('removing from total')
+            product.stocktotal=int(product.stocktotal)-int(i.quantity)
+            if bon.isfacture:
+                print('removing from facture')
+                product.stockfacture=int(product.stockfacture)-int(i.quantity)
+            product.save()
+            i.delete()
         for i in json.loads(request.POST.get('products')):
 
 
@@ -10235,6 +10237,7 @@ def filterepbons(request):
     #     repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
 
     # else:
+    charges = Chargeturne.objects.filter(represent_id=repid, date__range=[startdate, enddate]).aggregate(Sum('charge'))['charge__sum'] or 0
     bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid).exclude(total=0).order_by('-id')
     # # this gets only bons from tablete
     repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
@@ -10259,6 +10262,8 @@ def filterepbons(request):
     systemresultttc=systemtotalblfc-totalavoirs
     represultttc=reptotalblfc-totalavoirs
     systemresultht=round(systemtotalblfc/1.2, 2)
+    aftercharges = represultttc - charges
+    repfinalresult= aftercharges - totalreglements
     #systemresultht=round(systemresultttc/1.2, 2)
     #represultht=round(represultttc/1.2, 2)
     represultht=round(represultttc/1.2, 2)
@@ -10352,7 +10357,10 @@ def filterepbons(request):
         'factures':''.join(trsfactures),
         'totalblfctable':totalblfctable,
         'avoir_html': render(request, 'avoirtrs.html', {'avoirs':avoirs}).content.decode("utf-8"),
-        'reglement_html': render(request, 'rgelementtrs.html', {'reglements':reglements, 'reglementsfc':reglementsfc}).content.decode("utf-8")
+        'reglement_html': render(request, 'rgelementtrs.html', {'reglements':reglements, 'reglementsfc':reglementsfc}).content.decode("utf-8"),
+        'charges':charges,
+        'aftercharges': aftercharges,
+        'repfinalresult': repfinalresult
     })
 def updateavoirnote(request):
     avoirid=request.GET.get('avoirid')
@@ -11987,3 +11995,11 @@ def commandfromserver(request):
         'success':True
     })
 
+def addcharges(request):
+    charge=request.GET.get('charge')
+    date=request.GET.get('date')
+    date = datetime.strptime(date, '%Y-%m-%d')
+    Chargeturne.objects.get_or_create(date=date, defaults={'charge': charge})
+    return JsonResponse({
+        'success':True
+    })
