@@ -10248,7 +10248,7 @@ def filterepbons(request):
     # this gets only bons from tablete
     repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
     systemfactures=factures.exclude(pk__in=[i.pk for i in repfactures])
-    reglements=PaymentClientbl.objects.filter(bons__in=bons)
+    reglements=PaymentClientbl.objects.filter(bons__in=bons).order_by('echance')
     reglementsfc=PaymentClientfc.objects.filter(factures__in=factures)
     totalbl=bons.aggregate(Sum('total'))['total__sum'] or 0
     totalreglements=reglements.aggregate(Sum('amount'))['amount__sum'] or 0
