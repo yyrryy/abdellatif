@@ -33,9 +33,13 @@ DEBUG = True
 
 
 ALLOWED_HOSTS = ['*']
+STATIC_URL = '/static/'
 usesqlite = os.getenv('DEBUG')=='True' or os.getenv('HOME')=='/home/aaliali'
 print('usesqlite', usesqlite)
 if usesqlite:
+    STATICFILES_DIRS = [
+        BASE_DIR / "static",
+    ]
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -43,6 +47,14 @@ if usesqlite:
         }
     }
 else:
+    STATIC_ROOT = BASE_DIR / 'static'
+
+    #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+    STATICFILES_DIRS = [
+        BASE_DIR / "autoparts/static",
+    ]
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -180,16 +192,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
 
-STATIC_ROOT = BASE_DIR / 'static'
-
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-STATICFILES_DIRS = [
-    BASE_DIR / "autoparts/static",
-]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root/')
 # Default primary key field type

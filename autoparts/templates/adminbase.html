@@ -1181,6 +1181,17 @@ a .uil {
                           </a>
                         </div> -->
                       </li>
+                      <li onmouseleave="$(this).find('.dropdown-menu').removeClass('show'),$(this).find('.nav-link').removeClass('active')">
+                        <!-- ventes dropdown -->
+                        <button class="nav-link" type="button" onclick="createtab('addreplist', 'REPRESENTANTS', '/products/initpage')">Configuration</button>
+                        
+                        <!-- <button class="nav-link" type="button" onmouseover="$('.dropdown-menu').removeClass('show'),$('.nav-link').removeClass('active'),$(this).parent().find('.dropdown-menu').toggleClass('show'),$(this).toggleClass('active')">Les Representants</button>
+                        <div style="z-index: 999999;" class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                          <a class="dropdown-item" onclick="createtab('addreplist', 'REPRESENTANTS', '/products/commercialspage')">
+                            List des commercials
+                          </a>
+                        </div> -->
+                      </li>
                       <!-- <button class="nav-link" type="button" onclick="createtab('Configuration', 'Configuration', '/products/settings')">Configuration</button> -->
                       <a class="nav-link" href="/catalog" target="_blank">CATALOGUE</a>
 
@@ -1190,7 +1201,7 @@ a .uil {
                     <button class="nav-btn prev-btn">&lt;</button> -->
                   </div>
 
-                  <div class="tab-content p-2 position-relative" id="myTabsContent" style="height: 92vh; overflow-y: scroll; overflow-x: hidden;">
+                  <div class="tab-content p-2 position-relative" id="myTabsContent" style="height: 89vh; overflow-y: scroll; overflow-x: hidden;">
                     <div class="d-flex flex-column align-items-center justify-content-center loadingscreen position-fixed d-none"
                     style="height: 100vh; width: 100vw; z-index: 9999;"
                     >
@@ -1206,7 +1217,7 @@ a .uil {
                     </div>
                     </div>
                       <!-- Tab content will be dynamically loaded here -->
-                      <div class="tab-pane fade active show" id="maintab">
+                      <div class="tab-pane fade active show" id="maintab" style="height: 95vh;">
 
                         {% block content %}
                         {% endblock %}
@@ -1690,7 +1701,6 @@ a .uil {
     </div>
   </div>
 
-  <audio id="notificationSound" src="/media/notif.wav" style="display: none"></audio>
   <!-- scripts -->
     <script src="{% static 'js/bootstrap.bundle.min.js'%}"></script>
     <script src="{% static 'js/select2.min.js'%}"></script>

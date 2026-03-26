@@ -275,7 +275,7 @@
                 <div class="col-3">
                     <div class="bg-darkblue text-white rounded shadow d-flex align-items-center text-center mb-2 p-2 d-flex flex-column align-items-center">
 
-                        Resultat
+                        REST
                         <div class="finalresult" >
                             --
                         </div>DH
@@ -313,7 +313,7 @@
                         </div>DH
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-3" hidden>
                     <div class="bg-darkblue text-white rounded shadow d-flex align-items-center text-center mb-2 p-2 d-flex flex-column align-items-center">
 
                       Difference
@@ -382,7 +382,7 @@
                 <div class="col-3">
                     <div class="bg-darkblue text-white rounded shadow d-flex align-items-center text-center mb-2 p-2 d-flex flex-column align-items-center">
 
-                        Resultat
+                        REST
                         <div class="repfinalresult" >
                             --
                         </div>DH
@@ -546,8 +546,10 @@
         totalblfc=parseFloat(parent.find('.reptotalblfc').text().replace(/\s/g, ''))
         totalcharges=parseFloat(parent.find('.reptotalcharges').val()?parent.find('.reptotalcharges').val():0)
         $.get("/products/addcharges", {
+            'repid':"{{rep.id}}",
             'charge': totalcharges,
-            'date':$('.startdatefilterreponfo{{rep.id}}').val(),
+            'startdate':$('.startdatefilterreponfo{{rep.id}}').val(),
+            'enddate':$('.enddatefilterreponfo{{rep.id}}').val(),
         }, (data)=>{
             if (data.success){
                 console.log('charge added')

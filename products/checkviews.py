@@ -902,7 +902,13 @@ def getitemsinWishlist(request):
         return JsonResponse(json.loads(res.text))
     return JsonResponse([], safe=False)
 def initpage(request):
-    return render(request, 'initpage.html')
+    setting=Setting.objects.first()
+    ctx={
+        'title':'Configuration'
+    }
+    if setting:
+        ctx['setting']=setting
+    return render(request, 'initpage.html', ctx)
 
 def getetudesofyear(request):
     year=request.GET.get('year')

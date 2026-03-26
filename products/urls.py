@@ -324,7 +324,12 @@ urlpatterns = [
     path('getcontrenonpaid', views.getcontrenonpaid, name='getcontrenonpaid'),
     path('minidashboard', views.minidashboard, name='minidashboard'),
     path('addcharges', views.addcharges, name='addcharges'),
-    #path('yeardatafccopy', views.yeardatafccopy, name='yeardatafccopy'),
+    path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
+    #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
+    #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
+    #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
+    #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
+    #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
     # check views used to be only for check views but now, it's the 2nd views file
     path('makethisprint', checkviews.makethisprint, name='makethisprint'),
     path('downloadfcfromech', checkviews.downloadfcfromech, name='downloadfcfromech'),

@@ -10237,7 +10237,7 @@ def filterepbons(request):
     #     repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
 
     # else:
-    charges = Chargeturne.objects.filter(represent_id=repid, date__range=[startdate, enddate]).aggregate(Sum('charge'))['charge__sum'] or 0
+    charges = Chargeturne.objects.filter(represent_id=repid, enddate=enddate).aggregate(Sum('charge'))['charge__sum'] or 0
     bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid).exclude(total=0).order_by('-id')
     # # this gets only bons from tablete
     repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
@@ -10575,7 +10575,7 @@ def factureprint(request, id):
     # split the orderitems into chunks of 10 items
     orderitems=list(orderitems)
     orderitems=[orderitems[i:i+30] for i in range(0, len(orderitems), 30)]
-
+    setting=Setting.objects.first()
     ctx={
         'title':f'Facture {order.facture_no}',
         'facture':order,
@@ -10583,6 +10583,7 @@ def factureprint(request, id):
         'tva':order.tva,
         'ttc':order.total,
         'ht':round(order.total-order.tva, 2),
+        "setting":setting
     }
     return render(request, 'factureprint.html', ctx)
 
@@ -11997,9 +11998,45 @@ def commandfromserver(request):
 
 def addcharges(request):
     charge=request.GET.get('charge')
-    date=request.GET.get('date')
-    date = datetime.strptime(date, '%Y-%m-%d')
-    Chargeturne.objects.get_or_create(date=date, defaults={'charge': charge})
+    repid=request.GET.get('repid')
+    startdate=request.GET.get('startdate')
+    enddate=request.GET.get('enddate')
+    startdate = datetime.strptime(startdate, '%Y-%m-%d')
+    enddate = datetime.strptime(enddate, '%Y-%m-%d')
+    Chargeturne.objects.update_or_create(represent_id=repid, enddate=enddate, defaults={'charge': charge})
+    return JsonResponse({
+        'success':True
+    })
+
+def saveconfiguration(request):
+    name=request.POST.get('name')
+    address=request.POST.get('address')
+    phone=request.POST.get('phone')
+    fix=request.POST.get('fix')
+    cnss=request.POST.get('cnss')
+    ice=request.POST.get('ice')
+    idfiscal=request.POST.get('id_fiscal')
+    print("eee", idfiscal)
+    pt=request.POST.get('pt')
+    rc=request.POST.get('rc')
+    #logo zill be logoheadfacture
+    logo=request.FILES.get('logo')
+    settings=Setting.objects.first()
+    if settings:
+        settings.name=name
+        settings.fix=fix
+        settings.ice=ice
+        settings.cnss=cnss
+        settings.address=address
+        settings.pt=pt
+        settings.rc=rc
+        settings.idfiscal=idfiscal
+        settings.phone=phone
+        if logo:
+            settings.logoheadfacture=logo
+        settings.save()
+    else:
+        Setting.objects.create(name=name, ice=ice, address=address, pt=pt, rc=rc, idfiscal=idfiscal, phone=phone, logoheadfacture=logo, cnss=cnss, fix=fix)
     return JsonResponse({
         'success':True
     })

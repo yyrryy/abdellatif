@@ -872,6 +872,10 @@ class Setting(models.Model):
     idfiscal=models.CharField(max_length=500, default=None, null=True, blank=True)
     cnss=models.CharField(max_length=500, default=None, null=True, blank=True)
     address=models.CharField(max_length=500, default=None, null=True, blank=True)
+    phone=models.CharField(max_length=500, default=None, null=True, blank=True)
+    fix=models.CharField(max_length=500, default=None, null=True, blank=True)
+    # patente
+    pt=models.CharField(max_length=500, default=None, null=True, blank=True)
     serverip=models.CharField(max_length=500, default=None, null=True, blank=True)
     logo=models.ImageField(upload_to='logos/', null=True, blank=True)
     logoheadfacture=models.ImageField(upload_to='logos/', null=True, blank=True)
@@ -879,5 +883,6 @@ class Setting(models.Model):
 # charge turne, eqch ture of representant has charges that need to be stored
 class Chargeturne(models.Model):
     represent = models.ForeignKey('Represent', on_delete=models.CASCADE, default=None, null=True)
-    date = models.DateField()
+    startdate = models.DateField(default=None)
+    enddate = models.DateField(default=None)
     charge = models.FloatField()
