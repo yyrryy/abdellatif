@@ -12003,7 +12003,7 @@ def addcharges(request):
     enddate=request.GET.get('enddate')
     startdate = datetime.strptime(startdate, '%Y-%m-%d')
     enddate = datetime.strptime(enddate, '%Y-%m-%d')
-    Chargeturne.objects.update_or_create(represent_id=repid, enddate=enddate, defaults={'charge': charge})
+    Chargeturne.objects.update_or_create(represent_id=repid, enddate=enddate, startdate=startdate, defaults={'charge': charge})
     return JsonResponse({
         'success':True
     })
