@@ -47,7 +47,7 @@
     <img src="{% if setting.logoheadfacture%}{{setting.logoheadfacture.url}}{%endif%}" alt="" class="factureheader">
     <div class="d-flex justify-content-between">
       <div class="col-4" style="border-top:3px solid;">
-        <table>
+        <table class="w-100">
           <tr>
             <td>Date</td>
             <td ><strong>{{facture.date|date:"d/m/Y"}}</strong></td>
@@ -58,7 +58,7 @@
           </tr>
           <tr>
             <td>Mode de paiement</td>
-            <td ><strong>{{facture.payment_method}}</strong></td>
+            <td ><strong>{{facture.note}}</strong></td>
           </tr>
 
         </table>
@@ -163,7 +163,7 @@
     </div>
     <div style="font-size: 15px; text-align: start; border: 2px solid;">
       Arreter la presente facture à la somme en Dirham: <br>
-      <span class="totalfactureprint" style="font-size:18px ;"></span>
+      <span class="totalfactureprint" style="font-size:16px ;"></span>
     </div>
     <div class="text-center">
       
@@ -187,7 +187,7 @@
     <img src="{% if setting.logoheadfacture%}{{setting.logoheadfacture.url}}{%endif%}" alt="" class="factureheader">
     <div class="d-flex justify-content-between">
       <div class="col-4" style="border-top:3px solid;">
-        <table>
+        <table class="w-100">
           <tr>
             <td>Date</td>
             <td ><strong>{{facture.date|date:"d/m/Y"}}</strong></td>
@@ -198,7 +198,7 @@
           </tr>
           <tr>
             <td>Mode de paiement</td>
-            <td ><strong>{{facture.payment_method}}</strong></td>
+            <td ><strong>{{facture.note}}</strong></td>
           </tr>
 
         </table>
