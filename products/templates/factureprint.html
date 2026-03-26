@@ -142,7 +142,11 @@
 
     <div class="row">
       <div class="col-4">
-        Taux TVA: 20%
+        Taux TVA: 20% <br>
+        <div style="font-size: 15px; text-align: start;">
+            Arreter la presente facture à la somme en Dirham: <br>
+          <span class="totalfactureprint" style="font-size:18px ;"></span>
+        </div>
       </div>
       <div class="col-4"></div>
       <div class="col-4">
@@ -163,19 +167,16 @@
       </div>
     </div>
     <div class="text-center">
-      <div style="font-size: 15px; text-align: start;">
-          Arreter la presente facture à la somme en Dirham: <br>
-        <span class="totalfactureprint" style="font-size:18px ;"></span>
-      </div>
+      
       <hr>
       <div style="font-size:11px">
-        {{setting.name}}     Siege  Social : {{setting.address}}  <br>
+        {{setting.name.upper}}     Siege  Social : {{setting.address.upper}}  <br>
         RC: {{setting.rc}} IF: {{setting.idfiscal}} PATENTE: {{setting.pt}} ICE: {{setting.ice}}   <br>
         Fix : {{setting.fix}}         GSM: {{setting.phone}}
       </div>
     </div>
     <small>
-      page: {{forloop.counter}}/{{orderitems|length}}
+      page: {{forloop.counter}}/{{orderitems|length}}            {{setting.gmail}}
     </small>
   </div>
   {% else %}

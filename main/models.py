@@ -873,6 +873,7 @@ class Setting(models.Model):
     cnss=models.CharField(max_length=500, default=None, null=True, blank=True)
     address=models.CharField(max_length=500, default=None, null=True, blank=True)
     phone=models.CharField(max_length=500, default=None, null=True, blank=True)
+    gmail=models.CharField(max_length=500, default=None, null=True, blank=True)
     fix=models.CharField(max_length=500, default=None, null=True, blank=True)
     # patente
     pt=models.CharField(max_length=500, default=None, null=True, blank=True)

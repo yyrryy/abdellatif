@@ -12010,6 +12010,7 @@ def addcharges(request):
 
 def saveconfiguration(request):
     name=request.POST.get('name')
+    gmail=request.POST.get('gmail')
     address=request.POST.get('address')
     phone=request.POST.get('phone')
     fix=request.POST.get('fix')
@@ -12024,6 +12025,7 @@ def saveconfiguration(request):
     settings=Setting.objects.first()
     if settings:
         settings.name=name
+        settings.gmail=gmail
         settings.fix=fix
         settings.ice=ice
         settings.cnss=cnss
@@ -12036,7 +12038,7 @@ def saveconfiguration(request):
             settings.logoheadfacture=logo
         settings.save()
     else:
-        Setting.objects.create(name=name, ice=ice, address=address, pt=pt, rc=rc, idfiscal=idfiscal, phone=phone, logoheadfacture=logo, cnss=cnss, fix=fix)
+        Setting.objects.create(name=name, ice=ice, gmail=gmail, address=address, pt=pt, rc=rc, idfiscal=idfiscal, phone=phone, logoheadfacture=logo, cnss=cnss, fix=fix)
     return JsonResponse({
         'success':True
     })
