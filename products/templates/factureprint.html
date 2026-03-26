@@ -46,8 +46,7 @@
     <!-- facture header -->
     <img src="{% if setting.logoheadfacture%}{{setting.logoheadfacture.url}}{%endif%}" alt="" class="factureheader">
     <div class="d-flex justify-content-between">
-      <div>
-        <hr style="height: 3px;">
+      <div class="col-4" style="border-top:3px solid;">
         <table>
           <tr>
             <td>Date</td>
@@ -64,8 +63,7 @@
 
         </table>
       </div>
-      <div>
-        <hr style="height: 3px;">
+      <div class="col-4" style="border-top:3px solid;">
         Client: <br><strong>{{facture.client.name.upper}}</strong><br>
         <strong>{{facture.client.address.upper}}</strong><br>
         ICE: <strong>{{facture.client.ice.upper}}</strong><br>
@@ -95,7 +93,7 @@
         </thead>
         <tbody>
                 <tr>
-                    <td style="height: 150mm;padding-left:3px">
+                    <td style="height: 145mm;padding-left:3px">
                       {% for v in i %}
                       {{v.ref.upper}} {{i.id}}
                       {% if not forloop.counter == i|length %}<br>{% endif %}
@@ -188,8 +186,7 @@
      <!-- facture header -->
     <img src="{% if setting.logoheadfacture%}{{setting.logoheadfacture.url}}{%endif%}" alt="" class="factureheader">
     <div class="d-flex justify-content-between">
-      <div>
-        <hr style="height: 3px;">
+      <div class="col-4" style="border-top:3px solid;">
         <table>
           <tr>
             <td>Date</td>
@@ -206,8 +203,7 @@
 
         </table>
       </div>
-      <div>
-        <hr style="height: 3px;">
+      <div class="col-4" style="border-top:3px solid;">
         Client: <br><strong>{{facture.client.name.upper}}</strong><br>
         <strong>{{facture.client.address.upper}}</strong><br>
         ICE: <strong>{{facture.client.ice.upper}}</strong><br>
