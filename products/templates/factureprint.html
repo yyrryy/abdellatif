@@ -44,10 +44,10 @@
 
 
     <!-- facture header -->
+    <img src="{% if setting.logoheadfacture%}{{setting.logoheadfacture.url}}{%endif%}" alt="" class="factureheader">
     <div class="d-flex justify-content-between">
       <div>
-        <img src="{% if setting.logoheadfacture%}{{setting.logoheadfacture.url}}{%endif%}" alt="" class="factureheader">
-        <hr>
+        <hr style="height: 3px;">
         <table>
           <tr>
             <td>Date</td>
@@ -65,6 +65,7 @@
         </table>
       </div>
       <div>
+        <hr style="height: 3px;">
         Client: <br><strong>{{facture.client.name.upper}}</strong><br>
         <strong>{{facture.client.address.upper}}</strong><br>
         ICE: <strong>{{facture.client.ice.upper}}</strong><br>
@@ -81,7 +82,7 @@
     top: 5em;
     ">
       <table class="table table-bordered fcitems" style="border-color: black;font-family: serif; font-size:13px;">
-        <thead style="background: #26147b;color:white; font-size: 10px;
+        <thead style="background: red;color:white; font-size: 10px;
         font-weight: 800;" class="text-center">
           <tr>
             <td style="width: 21%;">Ref</td>
@@ -143,10 +144,7 @@
     <div class="row">
       <div class="col-8">
         Taux TVA: 20% <br>
-        <div style="font-size: 15px; text-align: start;">
-            Arreter la presente facture à la somme en Dirham: <br>
-          <span class="totalfactureprint" style="font-size:18px ;"></span>
-        </div>
+        
       </div>
       <div class="col-4">
         <table class="table table-bordered w-100">
@@ -165,6 +163,10 @@
         </table>
       </div>
     </div>
+    <div style="font-size: 15px; text-align: start; border: 2px solid;">
+      Arreter la presente facture à la somme en Dirham: <br>
+      <span class="totalfactureprint" style="font-size:18px ;"></span>
+    </div>
     <div class="text-center">
       
       <hr>
@@ -174,8 +176,9 @@
         Fix : {{setting.fix}}         GSM: {{setting.phone}}
       </div>
     </div>
-    <small>
-      page: {{forloop.counter}}/{{orderitems|length}}            {{setting.gmail}}
+    <small style="color: red;">
+      <!-- page: {{forloop.counter}}/{{orderitems|length}}             -->
+      {{setting.gmail}}
     </small>
   </div>
   {% else %}
@@ -183,10 +186,10 @@
 
 
      <!-- facture header -->
+    <img src="{% if setting.logoheadfacture%}{{setting.logoheadfacture.url}}{%endif%}" alt="" class="factureheader">
     <div class="d-flex justify-content-between">
       <div>
-        <img src="{% if setting.logoheadfacture%}{{setting.logoheadfacture.url}}{%endif%}" alt="" class="factureheader">
-        <hr>
+        <hr style="height: 3px;">
         <table>
           <tr>
             <td>Date</td>
@@ -204,6 +207,7 @@
         </table>
       </div>
       <div>
+        <hr style="height: 3px;">
         Client: <br><strong>{{facture.client.name.upper}}</strong><br>
         <strong>{{facture.client.address.upper}}</strong><br>
         ICE: <strong>{{facture.client.ice.upper}}</strong><br>
@@ -220,7 +224,7 @@
     top: 2em;
     ">
       <table class="table table-bordered fcitems" style="border-color: black;font-family: serif; font-size:13px;">
-        <thead style="background: #26147b;color:white; font-size: 10px;
+        <thead style="background: red;color:white; font-size: 10px;
         font-weight: 800;" class="text-center">
           <tr>
             <td style="width: 21%;">Ref</td>
