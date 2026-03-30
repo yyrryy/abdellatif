@@ -26,11 +26,12 @@ def get_local_ip():
 ip = get_local_ip()
 def start_ssh_tunnel():
     global process
-
     cmd = [
         "ssh",
-        "-fN",  # Run in background, no remote command
+        "-N",  # no remote command
         "-R", f"{remote_port}:{ip}:{local_port}",
+        "-o", "ServerAliveInterval=10",  # send keepalive every 10s
+        "-o", "ServerAliveCountMax=3",   # disconnect if 3 keepalives fail
         f"{remote_user}@{remote_host}"
     ]
 
@@ -49,6 +50,17 @@ def stop_tunnel():
         except subprocess.TimeoutExpired:
             process.kill()
 
+def stop_tunnel():
+    """Stop the SSH tunnel if running."""
+    global process
+    if process and process.poll() is None:
+        print("[INFO] Stopping SSH tunnel...")
+        process.terminate()
+        try:
+            process.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            process.kill()
+        process = None
 
 def handle_exit(signum, frame):
     global running
@@ -57,18 +69,30 @@ def handle_exit(signum, frame):
     stop_tunnel()
     sys.exit(0)
 
-
 signal.signal(signal.SIGINT, handle_exit)
 signal.signal(signal.SIGTERM, handle_exit)
 
+def is_tunnel_alive():
+    """Check if the remote port is reachable (tunnel alive)."""
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(2)
+    try:
+        s.connect((remote_host, remote_port))
+        return True
+    except:
+        return False
+    finally:
+        s.close()
 
 def main():
     global process
 
     while running:
-        start_ssh_tunnel()
-        exit_code = process.wait()
-        print(f"SSH exited (code {exit_code}), restarting in {RESTART_DELAY}s")
+        if process is None or process.poll() is not None or not is_tunnel_alive():
+            if process:
+                print("[WARN] Tunnel lost or SSH exited, restarting...")
+                stop_tunnel()
+            start_ssh_tunnel()
         time.sleep(RESTART_DELAY)
 
 
