@@ -4498,9 +4498,8 @@ def boncommandedetails(request, id):
 
     order=Order.objects.get(pk=id)
     orderitems=Orderitem.objects.filter(order=order).order_by('product__name')
+    lenproducts=len(orderitems)
     reliquat=Orderitem.objects.filter(order__client_id=order.client.id, order__note__icontains='Reliquat', product__stocktotal__gt=F('qty'), islivraison= False).exists()
-
-    print('>>>>>>Reliquat', reliquat)
     orderitems=list(orderitems)
     orderitems=[orderitems[i:i+40] for i in range(0, len(orderitems), 40)]
     ctx={
@@ -4509,6 +4508,7 @@ def boncommandedetails(request, id):
         'order':order,
         'reliquat':'Reliquat' in order.note,
         'orderitems':orderitems,
+        "lenproducts":lenproducts
     }
     return render(request, 'boncommandedetails.html', ctx)
 

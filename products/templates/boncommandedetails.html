@@ -55,6 +55,7 @@
           </div>
           <div style="width: 10em; border: 3px solid; padding: 3px; box-shadow: 4px 3px black;border-radius: 12px">
             <div>Note</div>
+            {{lenproducts}}
             {{order.note|linebreaks}}
           </div>
           <div style="width: 10em; text-align: center;margin-right: 10px; border: 3px solid; padding: 3px; box-shadow: 4px 3px black;border-radius: 12px">
@@ -169,17 +170,14 @@
     <div class="d-flex flex-column postion-relative cmnd{{order.id}}holder p-3" style="min-height: 29.7cm;width: 21cm;">
       <!-- header -->
       <div class="">
-
-        <div class="row">
-
-          <div class="col-8">
+        <div class="d-flex justify-content-between">
+          <div>
             <h3>
               <b>
                 Bon de Commande
               </b>
             </h3>
             <div class="">
-
               <div>
                 <strong>Date: {{ order.date|date:"d/m/Y" }}</strong>
               </div>
@@ -188,7 +186,12 @@
               </div>
             </div>
           </div>
-          <div style="width: 15em; text-align: center;margin-right: 10px; border: 3px solid; padding: 3px; box-shadow: 4px 3px black;border-radius: 12px">
+          <div style="width: 10em; border: 3px solid; padding: 3px; box-shadow: 4px 3px black;border-radius: 12px">
+            <div>Note</div>
+            {{lenproducts}}
+            {{order.note|linebreaks}}
+          </div>
+          <div style="width: 10em; text-align: center;margin-right: 10px; border: 3px solid; padding: 3px; box-shadow: 4px 3px black;border-radius: 12px">
             <div>Client</div>
             <div>{{order.client.name.upper}}</div>
             <div>{{order.client.code.upper}}</div>

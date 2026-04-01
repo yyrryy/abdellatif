@@ -321,7 +321,7 @@
                 <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${name}</td>
                 <td style="paddingpx 0; font-size: 13px;">--</td>
                 <td style="padding: 2px 0; font-size: 13px;">${stock}</td>
-                <td style="padding: 2px 0; font-size: 13px;" class="clientprice">${priceclient}</td>
+                <td style="padding: 2px 0; font-size: 13px;" class="clientprice">--</td>
                 <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notemptylivraison" onkeyup="calculate(event)" name="qty" value="${addqty.val()}" style="height:23px; width:100%;"></td>
                 <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate price notemptylivraison" onkeyup="calculate(event)" name="price" value="${addprice.val()}" step=0.01 style="height:23px; width:100%;"></td>
                 <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise.val()}" class="calculate remise" onkeyup="calculate(event)" name="remise" style="height:23px; width:100%;"></td>
@@ -366,9 +366,9 @@
         <tr class="itemrow ${stock<=0? "text-danger":"" }">: 2
             <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelinebl(event, ${id})">${ref}</td>
             <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${name}</td>
-            <td style="paddingpx 0; font-size: 13px;">${dp}</td>
+            <td style="paddingpx 0; font-size: 13px;">--</td>
             <td style="padding: 2px 0; font-size: 13px;">${stock}</td>
-            <td style="padding: 2px 0; font-size: 13px;" class="clientprice">${priceclient}</td>
+            <td style="padding: 2px 0; font-size: 13px;" class="clientprice">--</td>
             <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notemptylivraison" onkeyup="calculate(event)" name="qty" value="${addqty.val()}" style="height:23px; width:100%;"></td>
             <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate price notemptylivraison" onkeyup="calculate(event)" name="price" value="${addprice.val()}" step=0.01 style="height:23px; width:100%;"></td>
             <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="${addremise.val()}" class="calculate remise" onkeyup="calculate(event)" name="remise" style="height:23px; width:100%;"></td>

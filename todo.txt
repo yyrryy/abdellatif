@@ -1,3 +1,1 @@
-facture print
-representnt urne charge
 number of articles in bon commande
