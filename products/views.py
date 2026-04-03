@@ -10538,7 +10538,7 @@ def boncmndprint(request, id):
     order=Order.objects.get(pk=id)
     orderitems=Orderitem.objects.filter(order=order).order_by('product__name')
 
-    lenproduct=len(order)
+    lenproduct=len(orderitems)
     # orderitems=list(orderitems)
     # orderitems=[orderitems[i:i+39] for i in range(0, len(orderitems), 39)]
     ctx={
