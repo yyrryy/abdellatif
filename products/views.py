@@ -4495,7 +4495,6 @@ def getlastsuppprice(request):
 
 
 def boncommandedetails(request, id):
-
     order=Order.objects.get(pk=id)
     orderitems=Orderitem.objects.filter(order=order).order_by('product__name')
     lenproducts=len(orderitems)
@@ -10217,26 +10216,6 @@ def filterepbons(request):
     enddate=request.GET.get('enddate')
     bontarget=request.GET.get('bontarget')
 
-    # if bontarget=='1':
-    #     bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=True).order_by('-id')
-    #     repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
-
-
-
-    #     factures=Facture.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=True).order_by('-id')
-    #     repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
-
-
-    # elif bontarget=='0':
-    #     bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=False).order_by('-id')
-    #     repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
-
-
-
-    #     factures=Facture.objects.filter(date__range=[startdate, enddate], salseman_id=repid, ispaid=False).order_by('-id')
-    #     repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
-
-    # else:
     charges = Chargeturne.objects.filter(represent_id=repid, enddate=enddate).aggregate(Sum('charge'))['charge__sum'] or 0
     bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid).exclude(total=0).order_by('-id')
     # # this gets only bons from tablete
@@ -10248,8 +10227,8 @@ def filterepbons(request):
     # this gets only bons from tablete
     repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
     systemfactures=factures.exclude(pk__in=[i.pk for i in repfactures])
-    reglements=PaymentClientbl.objects.filter(bons__in=bons).order_by('echance')
-    reglementsfc=PaymentClientfc.objects.filter(factures__in=factures)
+    reglements=PaymentClientbl.objects.filter(date__range=[startdate, enddate], client__represent__id=repid).order_by('echance')
+    reglementsfc=PaymentClientfc.objects.filter(date__range=[startdate, enddate], client__represent__id=repid)
     totalbl=bons.aggregate(Sum('total'))['total__sum'] or 0
     totalreglements=reglements.aggregate(Sum('amount'))['amount__sum'] or 0
     totalreglements+= reglementsfc.aggregate(Sum('amount'))['amount__sum'] or 0
@@ -10559,13 +10538,14 @@ def boncmndprint(request, id):
     order=Order.objects.get(pk=id)
     orderitems=Orderitem.objects.filter(order=order).order_by('product__name')
 
-
+    lenproduct=len(order)
     # orderitems=list(orderitems)
     # orderitems=[orderitems[i:i+39] for i in range(0, len(orderitems), 39)]
     ctx={
         'title':f'Bon commande {order.order_no}',
         'order':order,
         'orderitems':orderitems,
+        'lenproduct':lenproduct
     }
     return render(request, 'boncmndprint.html', ctx)
 
