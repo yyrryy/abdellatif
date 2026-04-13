@@ -577,44 +577,27 @@
     function printrepturne(repid){
 
         if ($('.startdatefilterreponfo{{rep.id}}').val()=='' || $('.enddatefilterreponfo{{rep.id}}').val()==''){
-            // $.get('/products/printrepturne', {
-            //     'repid':repid,
-            //     'startdate':$('.startdatefilterreponfo{{rep.id}}').val(),
-            //     'enddate':$('.enddatefilterreponfo{{rep.id}}').val(),
-            //     'bontarget':$('.bontarget').val()
-            //     }, (data)=>{
-                    
-            //     }
-            // )}
-     /*var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-     document.body.innerHTML = printContents;
-     $('.blitems').css({'font-size': '15px','font-family':'serif'})
-     $("table > tbody > tr > td").css({'padding':'5px', 'border-bottom':'0px', 'border-top':'0px'});
-     //  $('body').addClass('d-flex flex-column vh-100 p-3')
-     window.print();
-     document.body.innerHTML = originalContents;*/
-     url = window.location.pathname.split( '/' );[0]
-     var myWindow = window.open(`http://${window.location.href.split( '/' )[2]}/products/printrepturne?repid=${repid}&startdate=${$('.startdatefilterreponfo{{rep.id}}').val()}&enddate=${$('.enddatefilterreponfo{{rep.id}}').val()}`, '', 'width=900,height=900');
+            alertify.error('Date')
+        }else{
+            url = window.location.pathname.split( '/' );[0]
+            var myWindow = window.open(`http://${window.location.href.split( '/' )[2]}/products/printrepturne?repid=${repid}&startdate=${$('.startdatefilterreponfo{{rep.id}}').val()}&enddate=${$('.enddatefilterreponfo{{rep.id}}').val()}`, '', 'width=900,height=900');
 
-      myWindow.focus();
+            myWindow.focus();
 
-      myWindow.addEventListener('load', function() {
-    console.log('New window loaded.');
+            myWindow.addEventListener('load', function() {
 
-    // Wait for 5 seconds before printing
-    setTimeout(function() {
-      try {
-        myWindow.print();
-        console.log('Print command issued.');
-        myWindow.close();
-        console.log('New window closed.');
-      } catch (e) {
-        console.error('Failed to print and close the window:', e);
-      }
-    }, 300); // 1000 milliseconds = 1 seconds
-  }, false);
-}
+            // Wait for 5 seconds before printing
+                setTimeout(function() {
+                    try {
+                        myWindow.print();
+                        myWindow.close();
+                    } catch (e) {
+                        console.error('Failed to print and close the window:', e);
+                    }
+                }, 300); // 1000 milliseconds = 1 seconds
+            })
+        }
+    }
 
     function filterepbons(repid){
 
