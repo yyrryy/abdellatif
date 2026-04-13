@@ -168,8 +168,8 @@
                     </tr>
                   </thead>
                   <tbody class="listblbodyinreponfo">
-                    {{bons}}
-                    {{factures}}
+                    {{bons|safe}}
+                    {{factures|safe}}
                   </tbody>
                   <tfoot style="background:white;">
                     <td style="width: 12%;" onclick="sorttable(event)">
@@ -224,7 +224,7 @@
                     </tr>
                 </thead>
                 <tbody class="listavclbody">
-                    {{avoir_html}}
+                    {{avoir_html|safe}}
                 </tbody>
                 
                 </table>
@@ -262,8 +262,8 @@
                         </th>
                     </thead>
                     <tbody class="listreglement">
-                        {{reglement_html}}
-                        {{reglementsfc}}
+                        {{reglement_html|safe}}
+                        {{reglementsfc|safe}}
                     </tbody>
                 </table>
             </div>
