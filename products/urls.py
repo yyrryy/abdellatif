@@ -314,8 +314,6 @@ urlpatterns = [
     path('relevclientglobal', views.relevclientglobal, name='relevclientglobal'),
     path('printrelevclientglobal', views.printrelevclientglobal, name='printrelevclientglobal'),
     path('yeardatafccopy', views.yeardatafccopy, name='yeardatafccopy'),
-    path('loadlistfccopy', views.loadlistfccopy, name='loadlistfccopy'),
-
     path('filterfccopydate', views.filterfccopydate, name='filterfccopydate'),
     path('factureprintcopy/<int:id>', views.factureprintcopy, name='factureprintcopy'),
     path('searchforlistfccopy', views.searchforlistfccopy, name='searchforlistfccopy'),
@@ -325,7 +323,7 @@ urlpatterns = [
     path('minidashboard', views.minidashboard, name='minidashboard'),
     path('addcharges', views.addcharges, name='addcharges'),
     path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
-    #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
+    path('printrepturne', views.printrepturne, name='printrepturne'),
     #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
     #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
     #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),

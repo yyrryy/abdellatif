@@ -12022,3 +12022,134 @@ def saveconfiguration(request):
     return JsonResponse({
         'success':True
     })
+
+def printrepturne(request):
+    repid=request.GET.get('repid')
+    startdate=request.GET.get('startdate')
+    enddate=request.GET.get('enddate')
+    charges = Chargeturne.objects.filter(represent_id=repid, enddate=enddate).aggregate(Sum('charge'))['charge__sum'] or 0
+    bons=Bonlivraison.objects.filter(date__range=[startdate, enddate], salseman_id=repid).exclude(total=0).order_by('-id')
+    # # this gets only bons from tablete
+    repbons=bons.filter(commande__isnull= False, commande__isclientcommnd=False)
+
+    systembons=bons.exclude(pk__in=[bon.pk for bon in repbons])
+    print('>>>>>>>>>>> system bons', systembons)
+    factures=Facture.objects.filter(date__range=[startdate, enddate], salseman_id=repid).order_by('-id')
+    # this gets only bons from tablete
+    repfactures=factures.filter(bon__commande__isnull= False, bon__commande__isclientcommnd=False)
+    systemfactures=factures.exclude(pk__in=[i.pk for i in repfactures])
+    reglements=PaymentClientbl.objects.filter(date__range=[startdate, enddate], client__represent__id=repid).order_by('echance')
+    reglementsfc=PaymentClientfc.objects.filter(date__range=[startdate, enddate], client__represent__id=repid)
+    totalbl=bons.aggregate(Sum('total'))['total__sum'] or 0
+    totalreglements=reglements.aggregate(Sum('amount'))['amount__sum'] or 0
+    totalreglements+= reglementsfc.aggregate(Sum('amount'))['amount__sum'] or 0
+    totalfc=factures.aggregate(Sum('total'))['total__sum'] or 0
+    totalblfctable=round(totalbl+totalfc, 2)
+    avoirs=Avoirclient.objects.filter(date__range=[startdate, enddate], representant_id=repid)
+    systemtotalblfc=round(systembons.aggregate(Sum('total'))['total__sum'] or 0, 2)+round(systemfactures.aggregate(Sum('total'))['total__sum'] or 0, 2)
+    reptotalblfc=round(bons.aggregate(Sum('total'))['total__sum'] or 0, 2)+round(factures.aggregate(Sum('total'))['total__sum'] or 0, 2)
+    totalavoirs=round(avoirs.aggregate(Sum('total'))['total__sum'] or 0, 2)
+    systemresultttc=systemtotalblfc-totalavoirs
+    represultttc=reptotalblfc-totalavoirs
+    systemresultht=round(systemtotalblfc/1.2, 2)
+    aftercharges = represultttc - charges
+    repfinalresult= aftercharges - totalreglements
+    #systemresultht=round(systemresultttc/1.2, 2)
+    #represultht=round(represultttc/1.2, 2)
+    represultht=round(represultttc/1.2, 2)
+    print('>>>', bons)
+    trsbons=[f"""
+    <tr
+    style="background: {"lightgreen;" if i.isdelivered else ""} color:{"blue" if i.isfacture else ""} "
+    class="ord {"text-danger" if i.ispaid else ''}"
+    orderid="{i.id}">
+        <td>{ i.bon_no }</td>
+            <td>{ i.date.strftime("%d/%m/%Y")}</td>
+            <td>{ i.client.name }</td>
+            <td>{ i.client.code }</td>
+            <td style="color: blue;">{ i.total}</td>
+            <td>{ i.client.region}</td>
+            <td>{ i.client.city}</td>
+            <td>{ "%.2f" % i.client.soldbl} </td>
+            <td>{ i.salseman }</td>
+            <td class="d-flex justify-content-between">
+            <div>
+            {'R0' if i.ispaid else 'N1' }
+
+            </div>
+            <div style="width:15px; height:15px; border-radius:50%; background:{'green' if i.ispaid else 'orange' };" ></div>
+
+            </td>
+            <td>
+            {'OUI' if i.isfacture else 'NON'}
+            </td>
+
+            <td>
+                {i.commande.order_no if i.commande else "---"}
+            </td>
+            <td>
+            {i.modlvrsn}
+            </td>
+            <td>
+            {i.note}
+            </td>
+            <td>
+
+            </td>
+
+      </tr>
+    """ for i in bons]
+    trsfactures=[f"""
+    <tr class="ord {"text-danger" if i.ispaid else ''}">
+        <td>{ i.facture_no }</td>
+        <td>{ i.date.strftime("%d/%m/%Y")}</td>
+        <td>{ i.client.name }</td>
+        <td>{ i.client.code }</td>
+        <td>{ i.total}</td>
+        <td>{ i.client.region}</td>
+        <td>{ i.client.city}</td>
+        <td>{ i.client.soldfacture:.2f}</td>
+        <td>{ i.salseman }</td>
+        <td class="d-flex justify-content-between">
+        <div style="width:15px; height:15px; border-radius:50%; background:{'green' if i.ispaid else 'orange' };" ></div>
+
+        </td>
+        <td></td>
+        <td>
+        {i.bon.bon_no if i.bon else "--"}
+        </td>
+
+        <td class="d-flex">
+
+        </td>
+        <td>
+        {i.note}
+        </td>
+    </tr>
+    """ for i in factures]
+    ctx = {
+        'totalbons':round(systembons.aggregate(Sum('total'))['total__sum'] or 0, 2),
+        'totalfactures':round(systemfactures.aggregate(Sum('total'))['total__sum'] or 0, 2),
+        'totalblfc':systemtotalblfc,
+        'totalavoirs':totalavoirs,
+        'resultttc':systemtotalblfc,
+        'resultht':systemresultht,
+        'totalreglements':totalreglements,
+        'reptotalblfc':reptotalblfc,
+        #'represultttc':represultttc,
+        'represultttc':represultttc,
+        #'represultht':represultht,
+        'represultht':represultht,
+        'totalrepbons':round(bons.aggregate(Sum('total'))['total__sum'] or 0, 2),
+        'totalbons':round(bons.aggregate(Sum('total'))['total__sum'] or 0, 2),
+        'totalrepfactures':round(factures.aggregate(Sum('total'))['total__sum'] or 0, 2),
+        'bons':''.join(trsbons),
+        'factures':''.join(trsfactures),
+        'totalblfctable':totalblfctable,
+        'avoir_html': render(request, 'avoirtrs.html', {'avoirs':avoirs}).content.decode("utf-8"),
+        'reglement_html': render(request, 'rgelementtrs.html', {'reglements':reglements, 'reglementsfc':reglementsfc}).content.decode("utf-8"),
+        'charges':charges,
+        'aftercharges': aftercharges,
+        'repfinalresult': repfinalresult
+    }
+    return render(request, 'printrepturne.html', ctx)

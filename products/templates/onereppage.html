@@ -181,6 +181,7 @@
                     <option value="0">Non reglé</option>
                 </select>
             <button class="btn btn-sm bg-dark text-white" onclick="filterepbons('{{rep.id}}')">Filtrer</button>
+            <button class="btn btn-sm bg-dark text-white" onclick="printrepturne('{{rep.id}}')">Imprimer</button>
             </div>
             <button class="btn btn-sm bg-dark text-white" onclick="$('.systembons').toggleClass('d-none')"></button>
             </div>
@@ -571,6 +572,20 @@
         afterpercentage=(aftercharges-totalreglements).toFixed(2)
         $('.repfinalresult').text(afterpercentage)
         console.log(totalcharges, totalavoirs, totalfactures, resultht)
+    }
+
+    function printrepturne(repid){
+
+        if ($('.startdatefilterreponfo{{rep.id}}').val()=='' || $('.enddatefilterreponfo{{rep.id}}').val()==''){
+            $.get('/products/printrepturne', {
+                'repid':repid,
+                'startdate':$('.startdatefilterreponfo{{rep.id}}').val(),
+                'enddate':$('.enddatefilterreponfo{{rep.id}}').val(),
+                'bontarget':$('.bontarget').val()
+                }, (data)=>{
+                    
+                }
+            )}
     }
 
     function filterepbons(repid){
