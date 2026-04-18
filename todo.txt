@@ -1,1 +1,2 @@
-number of articles in bon commande
+hide a category for a client
+hide or show client sold
