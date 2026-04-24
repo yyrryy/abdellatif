@@ -12116,7 +12116,6 @@ def printrepturne(request):
     return render(request, 'printrepturne.html', ctx)
 
 
-@csrf_exempt  # Use only if you're sending requests without CSRF token (e.g., API)
 def zz(request):
     
     # Read and parse the JSON file
