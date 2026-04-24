@@ -12131,11 +12131,11 @@ def zz(request):
         qty = int(item.get('QTE'))
         
         try:
-            product = Product.objects.get(ref=ref.lower())
+            product = Produit.objects.get(ref=ref.lower())
             # Update stock (example: subtract sold quantity or add to stock)
             product.stockfacture += qty  # or product.stock += qty depending on your logic
             product.save()
-        except Product.DoesNotExist:
+        except Produit.DoesNotExist:
             errors.append(f'Product with ref {ref} not found')
         except Exception as e:
             errors.append(f'Error updating {ref}: {str(e)}')
