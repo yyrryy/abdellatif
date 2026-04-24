@@ -40,7 +40,14 @@
                             <input type="file" name="updatecategoryimage" class="form-control imageinp">
                             <input type="text" name="updatecategoryname" class="form-control nameinp mb-2" value="{{i.name}}" placeholder="Nom de categorie">
                             <input type="text" name="updatecategorycode" class="form-control codeinp" value="{{i.code}}" placeholder="Code">
-                            
+                            clients caché:
+                            <select class="select" name="clientexcluded" multiple="multiple" style="width:100%;">
+                                {% for c in clients %}
+                                <option value="{{c.id}}" {% if c in i.excludedclient.all %}selected{% endif %}>
+                                    {{c.name}}
+                                </option>
+                                {% endfor %}
+                            </select>
                             <button class="btn btn-sm btn-success w-100 updatecategorybtn" id="{{i.id}}">Mise à jour</button>
                         </form>
                     </div>

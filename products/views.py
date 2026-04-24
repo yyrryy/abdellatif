@@ -76,6 +76,7 @@ def categoriespage(request):
     ctx={
         'categories':Category.objects.all().order_by('code'),
         'commercials':Represent.objects.all(),
+        'clients':Client.objects.all(),
         'title':'Categories'
     }
     return render(request, 'categories.html', ctx)
@@ -87,7 +88,7 @@ def createcategory(request):
     hideclient=request.POST.get('hideclient')=='True'
     commercialexcluded=request.POST.getlist('commercialexcluded')
     reps=Represent.objects.filter(pk__in=commercialexcluded)
-    # get image file
+    # get image file 
     image=request.FILES.get('categoryimage')
     files={'image':image}
     serverip = Setting.objects.only('serverip').first()
@@ -108,56 +109,9 @@ def createcategory(request):
                 'success':False,
                 'error':'Error in request to the server'
             })
-        
     category=Category.objects.create(name=name, image=image, code=code, affichage=affichage, masqueclients=hideclient)
-    # create category
-    # try:
-    #     res=req.get(f'http://{serverip}/products/createcategory', {
-
-    #         'name':name,
-    #         'code':code,
-    #         'affichage':affichage,
-    #         'hideclient':hideclient,
-    #         'commercialexcluded':commercialexcluded,
-    #         # get image file
-    #         #'image':category.image.url.replace('/media/', '') if category.image else ''
-    #     })
-    #     res.raise_for_status()
-    # except req.exceptions.RequestException as e:
-    #     print('Error in request:', e)
-    #     return JsonResponse({
-    #         'success':False,
-    #         'error':'Error in request to the server'
-    #     })
-    
-    if len(commercialexcluded) > 0:
-        category.excludedrep.set(reps)
-    ctx={
-        'categories':Category.objects.all().order_by('code'),
-        'title':'Categories'
-    }
-    # print({
-
-    #     'name':name,
-    #     'code':code,
-    #     'affichage':affichage,
-    #     'hideclient':hideclient,
-    #     'commercialexcluded':commercialexcluded,
-    #     # get image file
-    #     'image':category.image.url.replace('/media/', '') if category.image else ''
-    # })
-    # req.get(f'http://{serverip}/products/createcategory', {
-
-    #     'name':name,
-    #     'code':code,
-    #     'affichage':affichage,
-    #     'hideclient':hideclient,
-    #     'commercialexcluded':commercialexcluded,
-    #     # get image file
-    #     'image':category.image.url.replace('/media/', '') if category.image else ''
-    # })
     return JsonResponse({
-        'html':render(request, 'categories.html', ctx).content.decode('utf-8')
+        'success':True,
     })
 
 def updatecategory(request):
@@ -167,7 +121,10 @@ def updatecategory(request):
     hideclient=request.POST.get('hideclient')=='True'
     print('>>>>>>>in updtae',request.POST.get('hideclient'))
     commercialexcluded=request.POST.getlist('commercialexcluded')
+    clientexcluded=request.POST.getlist('clientexcluded')
     reps=Represent.objects.filter(pk__in=commercialexcluded)
+    clients=Client.objects.filter(pk__in=clientexcluded)
+    clientscodes = [i.code for i in clients]
     category=Category.objects.get(pk=id)
     files={'image':image}
     serverip = Setting.objects.only('serverip').first()
@@ -178,6 +135,8 @@ def updatecategory(request):
                 'id':id,
                 'hideclient':hideclient,
                 'commercialexcluded':commercialexcluded,
+                #send client codes
+                'clientscodes':json.dumps(clientscodes),
                 'name':request.POST.get('updatecategoryname'),
                 'code':request.POST.get('updatecategorycode'),
                 'affichage':request.POST.get('updatecategoryaffichage')
@@ -192,6 +151,8 @@ def updatecategory(request):
     category.masqueclients=hideclient
     category.excludedrep.clear()
     category.excludedrep.set(reps)
+    category.excludedclient.clear()
+    category.excludedclient.set(clients)
     category.name=request.POST.get('updatecategoryname')
     category.code=request.POST.get('updatecategorycode')
     category.affichage=request.POST.get('updatecategoryaffichage')
@@ -12153,3 +12114,35 @@ def printrepturne(request):
         'repfinalresult': repfinalresult
     }
     return render(request, 'printrepturne.html', ctx)
+
+
+@csrf_exempt  # Use only if you're sending requests without CSRF token (e.g., API)
+def zz(request):
+    
+    # Read and parse the JSON file
+    with open("data.json", 'r', encoding='utf-8') as file:
+        data = json.load(file)
+    
+    # Process each item
+    updated_products = []
+    errors = []
+    
+    for item in data:
+        ref = item.get('REF')
+        qty = int(item.get('QTE'))
+        
+        try:
+            product = Product.objects.get(ref=ref.lower())
+            # Update stock (example: subtract sold quantity or add to stock)
+            product.stockfacture += qty  # or product.stock += qty depending on your logic
+            product.save()
+        except Product.DoesNotExist:
+            errors.append(f'Product with ref {ref} not found')
+        except Exception as e:
+            errors.append(f'Error updating {ref}: {str(e)}')
+    print(errors)
+    
+    return JsonResponse({
+        'status': 'success',
+        'errors': errors
+    })

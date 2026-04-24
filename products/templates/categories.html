@@ -64,6 +64,14 @@
                                 <option value="table" {% if i.affichage == "table" %} selected {% endif %}>table</option>
                                 <option value="double" {% if i.affichage == "double" %} selected {% endif %}>double</option>
                             </select>
+                            clients caché:
+                            <select class="select" name="commercialexcluded" multiple="multiple" style="width:100%;">
+                                {% for c in clients %}
+                                <option value="{{c.id}}" {% if c in i.excludedclient.all %}selected{% endif %}>
+                                    {{c.name}}
+                                </option>
+                                {% endfor %}
+                            </select>
                             <!-- Representants caché:
                             <select class="select" name="commercialexcluded" multiple="multiple" style="width:100%;">
                                 {% for c in commercials %}

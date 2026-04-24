@@ -16,6 +16,7 @@ class Category(models.Model):
     code=models.CharField(max_length=150, default=None, null=True)
     masqueclients=models.BooleanField(default=False)
     excludedrep=models.ManyToManyField('Represent', default=None, blank=True)
+    excludedclient=models.ManyToManyField('Client', default=None, blank=True)
     image=models.ImageField(upload_to='categories_images/', null=True, blank=True)
     def __str__(self) -> str:
         return self.name
