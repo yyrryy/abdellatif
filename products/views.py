@@ -12116,32 +12116,32 @@ def printrepturne(request):
     return render(request, 'printrepturne.html', ctx)
 
 
-def zz(request):
+# def zz(request):
     
-    # Read and parse the JSON file
-    with open("data.json", 'r', encoding='utf-8') as file:
-        data = json.load(file)
+#     # Read and parse the JSON file
+#     with open("data.json", 'r', encoding='utf-8') as file:
+#         data = json.load(file)
     
-    # Process each item
-    updated_products = []
-    errors = []
+#     # Process each item
+#     updated_products = []
+#     errors = []
     
-    for item in data:
-        ref = item.get('REF')
-        qty = int(item.get('QTE'))
+#     for item in data:
+#         ref = item.get('REF')
+#         qty = int(item.get('QTE'))
         
-        try:
-            product = Produit.objects.get(ref=ref.lower())
-            # Update stock (example: subtract sold quantity or add to stock)
-            product.stockfacture += qty  # or product.stock += qty depending on your logic
-            product.save()
-        except Produit.DoesNotExist:
-            errors.append(f'Product with ref {ref} not found')
-        except Exception as e:
-            errors.append(f'Error updating {ref}: {str(e)}')
-    print(errors)
+#         try:
+#             product = Produit.objects.get(ref=ref.lower())
+#             # Update stock (example: subtract sold quantity or add to stock)
+#             product.stockfacture += qty  # or product.stock += qty depending on your logic
+#             product.save()
+#         except Produit.DoesNotExist:
+#             errors.append(f'Product with ref {ref} not found')
+#         except Exception as e:
+#             errors.append(f'Error updating {ref}: {str(e)}')
+#     print(errors)
     
-    return JsonResponse({
-        'status': 'success',
-        'errors': errors
-    })
+#     return JsonResponse({
+#         'status': 'success',
+#         'errors': errors
+#     })
