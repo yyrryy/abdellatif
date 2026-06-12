@@ -60,6 +60,9 @@
                         <button class="btn w-100 btn-info" onclick="$('.creteacc{{client.id}}').toggleClass('d-none')">
                             Creer compte
                         </button>
+                        <button class="btn w-100 btn-info" onclick="allowmultiplepc('{{client.code}}')">
+                            ajouter un PC
+                        </button>
                         <!-- {% if client.user %}
                         {% if client.user.is_active %}
                         <button class="btn w-100 btn-danger" onclick="desactivercompte('{{client.user.id}}', 'client{{client.id}}', '/products/client/{{client.id}}')">
@@ -284,6 +287,11 @@
 
 </div>
 <script>
+    function allowmultiplepc(clientcode){
+        $.get('/products/allowmultiplepc', {'clientcode':clientcode}, (data)=>{
+            updatetab('client{{client.id}}', '/products/client/{{client.id}}')
+        })
+    }
     function allowcatalog(clientcode){
         $.get('/products/allowcatalog', {'clientcode':clientcode}, (data)=>{
             updatetab('client{{client.id}}', '/products/client/{{client.id}}')

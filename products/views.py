@@ -10152,24 +10152,32 @@ def allowcatalog(request):
                 'success':False,
                 'error':f"{json.loads(res.text)['error']}"
             })
-    # user=User.objects.filter(username=username).first()
-    # if user:
     return JsonResponse({
         'success':False,
         'error':'No server'
     })
-    #     res.raise_for_status()
-    #     print('>><W>>>>>>>>>>>>>>>>>')
-    #     client=Client.objects.get(code=clientcode)
-    #     client.accesscatalog=not client.accesscatalog
-    #     client.save()
-    #     return JsonResponse({
-    #         'success':True
-    #     })
-    # except req.exceptions.RequestException as e:
-    #     return JsonResponse({
-    #         'success':False
-    #     })
+
+def allowmultiplepc(request):
+    clientcode=request.GET.get('clientcode')
+    serverip= Setting.objects.only('serverip').first()
+    serverip=serverip.serverip if serverip else None
+    if serverip:
+        res=req.get(f'http://{serverip}/products/allowmultiplepc', {
+            'clientcode':clientcode,
+        })
+        if json.loads(res.text)['success']:
+            return JsonResponse({
+                'success':True
+            })
+        else:
+            return JsonResponse({
+                'success':False,
+                'error':f"{json.loads(res.text)['error']}"
+            })
+    return JsonResponse({
+        'success':False,
+        'error':'No server'
+    })
 
 def filterepbons(request):
     repid=request.GET.get('repid')
