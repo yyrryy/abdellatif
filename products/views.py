@@ -10162,6 +10162,7 @@ def allowmultiplepc(request):
     serverip= Setting.objects.only('serverip').first()
     serverip=serverip.serverip if serverip else None
     if serverip:
+        print('>>>', serverip)
         res=req.get(f'http://{serverip}/products/allowmultiplepc', {
             'clientcode':clientcode,
         })
