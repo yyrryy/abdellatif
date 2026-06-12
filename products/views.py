@@ -10165,15 +10165,7 @@ def allowmultiplepc(request):
         res=req.get(f'http://{serverip}/products/allowmultiplepc', {
             'clientcode':clientcode,
         })
-        if json.loads(res.text)['success']:
-            return JsonResponse({
-                'success':True
-            })
-        else:
-            return JsonResponse({
-                'success':False,
-                'error':f"{json.loads(res.text)['error']}"
-            })
+        return res
     return JsonResponse({
         'success':False,
         'error':'No server'
