@@ -995,8 +995,6 @@ def supplierinfo(request, id):
 
 def clientinfo(request, id):
     client=Client.objects.get(pk=id)
-    print('>>> client', client)
-    print('>>> client soldtotal', client.mehtodsoldbl)
     ctx={
         'client':client,
         'totalavoirs':Avoirclient.objects.filter(client=client).aggregate(Sum('total'))['total__sum'] or 0,

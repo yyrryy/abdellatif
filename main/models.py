@@ -276,7 +276,6 @@ class Client(models.Model):
         norangereglementsbl=round(PaymentClientbl.objects.filter(client=self).aggregate(Sum('amount'))['amount__sum'] or 0, 2)
         norangebons=round(Bonlivraison.objects.filter(client=self).aggregate(Sum('total'))['total__sum'] or 0, 2)
         soldbbb=round(norangebons-norangereglementsbl-norangeavoirsbl, 2)
-        print('>>> soldbbb', norangebons, norangereglementsbl, norangeavoirsbl, soldbbb)
         # self.doldbl=soldbbb
         # self.save()
         return soldbbb
