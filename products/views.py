@@ -6938,51 +6938,7 @@ def searchforlistbl(request):
 
         bons=Bonlivraison.objects.filter(date__year=year).order_by('-bon_no')[:50]
         total=round(Bonlivraison.objects.filter(date__year=year).aggregate(Sum('total'))['total__sum'] or 0, 2)
-        trs=''
-        for i in bons:
-            trs+=f'''
-            <tr class="ord {"text-danger" if i.ispaid else ''} bl-row" orderid="{i.id}" ondblclick="createtab('bonl{i.id}', 'Bon livraison {i.bon_no}', '/products/bonlivraisondetails/{i.id}')">
-                <td>{ i.bon_no }</td>
-                <td>{ i.date.strftime("%d/%m/%Y")}</td>
-                <td>{ i.client.name }</td>
-                <td>{ i.client.code }</td>
-                <td>{ i.total}</td>
-                <td>{ i.client.region}</td>
-                <td>{ i.client.city}</td>
-                <td>{ i.client.soldbl}</td>
-                <td>{ i.salseman }</td>
-                <td class="d-flex justify-content-between">
-                <div>
-                {'R0' if i.ispaid else 'N1' }
-
-                </div>
-                <div style="width:15px; height:15px; border-radius:50%; background:{'green' if i.ispaid else 'orange' };" ></div>
-
-                </td>
-                <td class="text-danger">
-
-                </td>
-                <td class="text-danger">
-                {'OUI' if i.isfacture else 'NON'}
-
-                </td>
-
-                <td>
-
-
-                </td>
-                <td>
-                {i.note}
-                </td>
-                <td>
-                {i.modlvrsn}
-                </td>
-                <td class="d-flex">
-                  <button class="btn btn-sm btn-info" onclick="makedelivered('{i.id}', event)"></button>
-                <button class="btn btn-sm bi bi-download" onclick="printlivraison('{i.id}')"></button>
-                </td>
-            </tr>
-            '''
+        
         return JsonResponse({
             'trs':render(request, 'bllist.html', {'bons':bons}).content.decode('utf-8')
         })
@@ -7040,53 +6996,8 @@ def searchforlistbl(request):
         if facture:
             bons=Bonlivraison.objects.filter(q_objects).filter(date__range=[startdate, enddate], isfacture=True).order_by('-bon_no')[:50]
         total=round(Bonlivraison.objects.filter(q_objects).filter(date__range=[startdate, enddate]).order_by('-bon_no').aggregate(Sum('total'))['total__sum'] or 0, 2)
-    trs=''
-    for i in bons:
-        trs+=f'''
-            <tr
-            style="background: {"lightgreen;" if i.isdelivered else ""} color:{"blue" if i.isfacture else ""} "
-            class="ord bl-row {"text-danger" if i.ispaid else ''}" term={term} orderid="{i.id}" ondblclick="createtab('bonl{i.id}', 'Bon livraison {i.bon_no}', '/products/bonlivraisondetails/{i.id}')"
-            >
-                <td>{ i.bon_no }</td>
-                <td>{ i.date.strftime("%d/%m/%Y")}</td>
-                <td>{ i.client.name }</td>
-                <td>{ i.client.code }</td>
-                <td style="color: blue;">{ i.total:.2f}</td>
-                <td>{ i.client.region}</td>
-                <td>{ i.client.city}</td>
-                <td>{ i.client.soldbl:.2f}</td>
-                <td>{ i.salseman }</td>
-                <td class="d-flex justify-content-between">
-                <div>
-                {'R0' if i.ispaid else 'N1' }
-
-                </div>
-                <div style="width:15px; height:15px; border-radius:50%; background:{'green' if i.ispaid else 'orange' };" ></div>
-
-                </td>
-                <td>
-                {'OUI' if i.isfacture else 'NON'}
-
-                </td>
-
-                <td>
-                    {i.commande.order_no if i.commande else '--'}
-                </td>
-                <td>
-                {i.note}
-                </td>
-                <td>
-                {i.modlvrsn}
-                </td>
-                <td class="d-flex">
-                    <button class="btn btn-sm btn-info" onclick="makedelivered('{i.id}', event)"></button>
-                    <button class="btn btn-sm bi bi-download" onclick="printlivraison('{i.id}')"></button>
-                </td>
-            </tr>
-            '''
-
     return JsonResponse({
-        'trs':trs,
+        'trs':render(request, 'bllist.html', {'bons':bons}).content.decode('utf-8'),
         'total':total
     })
 
