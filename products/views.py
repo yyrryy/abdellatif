@@ -6927,6 +6927,7 @@ def searchforlistachat(request):
     })
 
 def searchforlistbl(request):
+    print('>>>>> in search for list bl')
     #thisyear=timezone.now().year
     term=request.GET.get('term')
     year=request.GET.get('year')
