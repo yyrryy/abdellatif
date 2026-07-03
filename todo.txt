@@ -1,2 +1,3 @@
-hide a category for a client
-hide or show client sold
+facture achat manuel wahmia
+plafon client
+panier client
