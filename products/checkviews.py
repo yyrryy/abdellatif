@@ -440,6 +440,7 @@ def checktvas(request):
     })
 def checkoldunpaidbons(request):
     clientid=request.GET.get('clientid')
+    client=Client.objects.get(pk=clientid)
     three_months_ago = timezone.now() - timedelta(days=90)  # Assuming 30 days per month on average
 
     # Query for Bonlivraison objects that have a 'date' field earlier than three months ago
@@ -449,10 +450,12 @@ def checkoldunpaidbons(request):
     if bons or factures:
         return JsonResponse({
         'exist':True,
+        depassplafon=client.soldmethodbl >= client.plafon
         })
     else:
         return JsonResponse({
         'exist':False,
+        depassplafon=client.soldmethodbl >= client.plafon
         })
 def getlastcodeclient(request):
     try:

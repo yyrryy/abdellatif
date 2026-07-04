@@ -30,15 +30,16 @@
                         {{client.soldtotal|floatformat:2|intspace}}
                     </td>
                 </tr> -->
-                <!-- <tr>
+                <tr>
 
                     <td>
-                        Username
+                        plafon
                     </td>
                     <td>
-                        {{client.user.username}}
+                        <input type="text" class="form-control" value="{{client.plafon|floatformat:2|intspace}}">
+                        <button class="btn btn-sm btn-primary mt-2" onclick="updateplafon('{{client.id}}', $(this).prev().val())">modifier</button>
                     </td>
-                </tr> -->
+                </tr>
                 <!-- <tr>
 
                     <td>
@@ -287,6 +288,11 @@
 
 </div>
 <script>
+    function updateplafon(clientid, plafon){
+        $.get('/products/updateplafon', {'clientid':clientid, 'plafon':plafon}, (data)=>{
+            updatetab('client{{client.id}}', '/products/client/{{client.id}}')
+        })
+    }
     function allowmultiplepc(clientcode){
         $.get('/products/allowmultiplepc', {'clientcode':clientcode}, (data)=>{
             console.log(data)

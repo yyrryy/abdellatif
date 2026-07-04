@@ -1117,6 +1117,7 @@ a .uil {
                         <div style="z-index: 999999;" class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                           
                           <a class="dropdown-item" href="#" onclick="createtab('addrecevoir', '+Achat', '/products/recevoir')">+ Bon achat</a>
+                          <a class="dropdown-item" href="#" onclick="createtab('addrecevoirfacture', '+Achat facture', '/products/recevoirfacture')">+ achat stock facture</a>
                           <a class="dropdown-item" href="#" onclick="createtab('addlistbonachat', 'BON ACHAT', '/products/listbonachat')">List Bons achat</a>
                           {% if not user.groups.all.1.name == 'comptoir' %}
                           <a class="dropdown-item" href="#" onclick="createtab('addjournalachat', 'JOURN ACHAT', '/products/journalachat')">Journal Achat</a>

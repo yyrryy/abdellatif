@@ -672,6 +672,10 @@ def cacelcommand(request):
 def recevoir(request):
     return render(request, 'recevoir.html', {'title':"Bon d'achat", 'suppliers':Supplier.objects.all(), 'today':timezone.now().date()})
 
+def recevoirfacture(request):
+    return render(request, 'recevoirfacture.html', {'title':"Bon d'achat", 'suppliers':Supplier.objects.all(), 'today':timezone.now().date()})
+
+
 def bonlivraison(request):
     # get the last order_no
     # if there is no order_no then set it to this format 'ym0001'
@@ -835,6 +839,46 @@ def addsupply(request):
     })
 
 
+def addsupplyfacture(request):
+    products=request.POST.get('products')
+    datebon=datetime.strptime(request.POST.get('datebon'), '%Y-%m-%d')
+    datefacture=datetime.strptime(request.POST.get('datefacture'), '%Y-%m-%d')
+    nbon=request.POST.get('nbon')
+    isfacture= True
+    totalbon=request.POST.get('totalbon')
+    tva=round(float(totalbon)-(float(totalbon)/1.2), 2)
+    
+    bon=Itemsbysupplier.objects.create(
+        ismanual=True
+        supplier=None,
+        total=totalbon,
+        date=datebon,
+        nbon=nbon,
+        isfacture=isfacture,
+        tva=tva,
+        dateentree=datefacture
+    )
+    # update stock of products in onothr thread, because it may take time if there are many products, my idea is to catch the uniqcode of products then send them to the remote server
+    for i in json.loads(products):
+        product=Produit.objects.get(pk=i['productid'])
+        product.stockfacture=int(product.stockfacture)+int(i['qty'])
+
+        #product.isnew=True
+        Stockin.objects.create(
+            date=datebon,
+            product=product,
+            quantity=i['qty'],
+            total=i['total'],
+            supplier=None,
+            nbon=bon,
+            facture=isfacture
+        )
+    return JsonResponse({
+        'html': render(request, 'recevoirfacture.html', {'title':'Recevoir Les produits', 'suppliers':Supplier.objects.all(), #'products':Produit.objects.all()
+        }).content.decode('utf-8')
+    })
+
+
 def addbonlivraison(request):
 
     #current_time = datetime.now().strftime('%H:%M:%S')
@@ -850,9 +894,6 @@ def addbonlivraison(request):
     datebon=request.POST.get('datebon')
     datebon=datetime.strptime(f'{datebon}', '%Y-%m-%d')
     client=Client.objects.get(pk=clientid)
-    client.soldtotal=round(float(client.soldtotal)+float(totalbon), 2)
-    client.soldbl=round(float(client.soldbl)+float(totalbon), 2)
-    client.save()
     if orderid is not None:
         cmnd=Order.objects.get(pk=orderid)
         cmnd.isdelivered=True
@@ -12028,7 +12069,15 @@ def printrepturne(request):
     }
     return render(request, 'printrepturne.html', ctx)
 
-
+def updateplafon(request):
+    plafon=request.GET.get('plafon')
+    clientid=request.GET.get('clientid')
+    client=Client.objects.get(pk=clientid)
+    client.plafon=plafon
+    client.save()
+    return JsonResponse({
+        'success':True
+    })
 # def zz(request):
     
 #     # Read and parse the JSON file

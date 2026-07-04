@@ -1,3 +1,4 @@
 facture achat manuel wahmia
 plafon client
 panier client
+add article instantly in bon achat if not exist

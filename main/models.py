@@ -251,6 +251,7 @@ class Region(models.Model):
         return self.name
 # can command
 class Client(models.Model):
+    plafon=models.FloatField(default=150000.00, null=True, blank=True)
     represent=models.ForeignKey('Represent', on_delete=models.CASCADE, default=None, null=True, related_name="repclient")
     user = models.OneToOneField(User, on_delete=models.SET_NULL, default=None, null=True)
     moderegl=models.CharField(max_length=200, default=0, null=True, blank=True)
