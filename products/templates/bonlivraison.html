@@ -474,10 +474,31 @@
           }else{
             $('.oldbonswarning').addClass('d-none')
           }
+          if (data.depassplafon){
+            alertify.error('Le client a depassé son plafond')
+            return
+          }
         })
         parentdiv.find('.productsholder').addClass('d-none')
         return
       }else{
+        $.get('/products/getclientrep/'+$(this).val(), function(data){
+          console.log(data)
+          $('.repblname').text(data.name)
+          $('.repsselectsbl').val(data.id).trigger('change')
+        })
+        console.log('check for old unpaid bons')
+        $.get('/products/checkoldunpaidbons', {"clientid":$(this).val()}, (data)=>{
+          if (data.exist){
+            $('.oldbonswarning').removeClass('d-none')
+          }else{
+            $('.oldbonswarning').addClass('d-none')
+          }
+          if (data.depassplafon){
+            alertify.error('Le client a depassé son plafond')
+            return
+          }
+        })
         parentdiv.find('.productsholder').removeClass('d-none')
         console.log('check for old unpaid bons')
         $.get('/products/checkoldunpaidbons', {"clientid":$(this).val()}, (data)=>{
