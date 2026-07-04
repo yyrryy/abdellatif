@@ -862,7 +862,7 @@ def addsupplyfacture(request):
     for i in json.loads(products):
         product=Produit.objects.get(pk=i['productid'])
         product.stockfacture=int(product.stockfacture)+int(i['qty'])
-
+        product.save()
         #product.isnew=True
         Stockin.objects.create(
             date=datebon,
