@@ -476,11 +476,12 @@
           }
           if (data.depassplafon){
             alertify.error('Le client a depassé son plafond')
-            return
+            parentdiv.find('.productsholder').addClass('d-none')
+          }else{
+            parentdiv.find('.productsholder').removeClass('d-none')
           }
         })
-        parentdiv.find('.productsholder').addClass('d-none')
-        return
+        
       }else{
         $.get('/products/getclientrep/'+$(this).val(), function(data){
           console.log(data)
@@ -496,10 +497,11 @@
           }
           if (data.depassplafon){
             alertify.error('Le client a depassé son plafond')
-            return
+            parentdiv.find('.productsholder').addClass('d-none')
+          }else{
+            parentdiv.find('.productsholder').removeClass('d-none')
           }
         })
-        parentdiv.find('.productsholder').removeClass('d-none')
         console.log('check for old unpaid bons')
         $.get('/products/checkoldunpaidbons', {"clientid":$(this).val()}, (data)=>{
           if (data.exist){
