@@ -37,7 +37,7 @@
                     </td>
                     <td>
                         <input type="text" class="form-control" value="{{client.plafon|floatformat:2|intspace}}">
-                        <button class="btn btn-sm btn-primary mt-2" onclick="updateplafon('{{client.id}}', $(this).prev().val())">modifier</button>
+                        <button class="btn btn-sm btn-primary mt-2" onclick="updateplafon('{{client.id}}', parseFloat($(this).prev().val()))">modifier</button>
                     </td>
                 </tr>
                 <!-- <tr>
