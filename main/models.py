@@ -757,7 +757,9 @@ class Modifierstock(models.Model):
     stock=models.IntegerField(default=0)
     stockfc=models.BooleanField(default=False)
     def __str__(self):
-        return f'{self.product.ref} - {self.stock}'
+        if self.product:
+            return f'{self.product.ref} - {self.stock}'
+        return '--'
 class Achathistory(models.Model):
     date=models.DateField()
     fournisseur=models.TextField()
