@@ -36,7 +36,7 @@
                         plafon
                     </td>
                     <td>
-                        <input type="text" class="form-control" value="{{client.plafon|floatformat:2|intspace}}">
+                        <input type="text" class="form-control" value="{{client.plafon|floatformat:2}}">
                         <button class="btn btn-sm btn-primary mt-2" onclick="updateplafon('{{client.id}}', parseFloat($(this).prev().val()))">modifier</button>
                     </td>
                 </tr>
