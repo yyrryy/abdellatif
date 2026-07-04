@@ -849,7 +849,7 @@ def addsupplyfacture(request):
     tva=round(float(totalbon)-(float(totalbon)/1.2), 2)
     
     bon=Itemsbysupplier.objects.create(
-        ismanual=True
+        ismanual=True,
         supplier=None,
         total=totalbon,
         date=datebon,
