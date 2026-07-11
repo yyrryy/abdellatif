@@ -9651,7 +9651,6 @@ def cartpage(request):
     res=req.get(f'http://{serverip}/products/getcarts')
 
     ctx={
-        'carts':Cart.objects.all().order_by('-total').exclude(total=0),
         'cartsserver':list(json.loads(res.text)['carts'])
     }
     return render(request, 'cartspage.html', ctx)
