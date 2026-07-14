@@ -9648,6 +9648,8 @@ def notavailable(request):
     return render(request, 'notavailable.html', ctx)
 
 def cartpage(request):
+    serverip= Setting.objects.only('serverip').first()
+    serverip=serverip.serverip if serverip else None
     res=req.get(f'http://{serverip}/products/getcarts')
 
     ctx={
