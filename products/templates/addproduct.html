@@ -258,13 +258,11 @@
     $('.checkref').on('change', function() {
         $('.loadingscreen').toggleClass('d-none')
         var ref = $(this).val();
-        var category = $('[name="categoryinadd"]').val();
         $.ajax({
             url: '{% url "products:checkref" %}',
             type: 'POST',
             data: {
                 'ref': ref,
-                'category': category,
                 'csrfmiddlewaretoken': '{{csrf_token}}'
             },
             success: function(data) {

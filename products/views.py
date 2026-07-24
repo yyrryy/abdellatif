@@ -260,7 +260,6 @@ def updatemarque(request):
 def checkref(request):
     ref=request.POST.get('ref').lower().strip()
     product=Produit.objects.filter(ref=ref)
-    print(ref)
     if product:
         return JsonResponse({
             'exist':True
@@ -347,7 +346,7 @@ def addoneproduct(request):
     uniqcode=f'pdct{lastid+1}'
     ref=request.POST.get('refinadd').lower().strip().replace('§', '-').replace("'", '')
     name=request.POST.get('nameinadd').strip()
-    category=request.POST.get('categoryinadd')
+    category=request.POST.get('categoryinadd', None)
     commercialsprix=request.POST.get('commercialsprix') or "[]"
     mark=request.POST.get('marqueinadd') or None
     logo=request.POST.get('logoinadd', None)
@@ -433,6 +432,9 @@ def addoneproduct(request):
 
     return JsonResponse({
         'success':True,
+        'ref':ref,
+        'name':name,
+        'id':product.id
 
     })
     

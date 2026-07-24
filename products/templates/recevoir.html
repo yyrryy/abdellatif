@@ -1,115 +1,215 @@
-<div class="text-white rounded h3 d-flex align-items-center justify-content-between bg-darkblue">
-    <button class="btn bg-orange" style="border:1px solid var(--orange);" onclick="deletetab()">x</button>
+<div class="addproductpage d-none position-absolute bg-white p-5" style="height: 100vh; overflow: scroll; width: 40vw; z-index: 99;">
+  <div class="d-flex justify-content-between bg-dark text-white">
     <div>
-      {{title}}
+      Ajouter un article
     </div>
-    <button class="btn bg-orange" style="border:1px solid var(--orange);" onclick="forceupdatetab()">↻</button>
+    <button class="btn btn-danger" onclick="$('.addproductpage').addClass('d-none')">X</button>
   </div>
-<div class="row">
-    <div class="col-2">
-       <div class="bg-white rounded shadow p-2 databonachat">
-            <button type="button" name="button" class="btn bg-darkblue text-white" onclick="refreshselectsupp(event)">↻</button>
-            <select name="supplier" id="" class="suppslect2 select2 supplierselect form-select" style="width:100%;">
-            <option value="">Fournisseur</option>
-            {% for i in suppliers %}
-            <option value="{{i.id}}">{{i.name}}</option>
-            {% endfor %}
-          </select>
-
-          <input name="nbonachat" class="form-control mt-2 nbonachat" style="width:100%;" placeholder="N° Bon">
-          <small class="mt-5">Date de Reception</small>
-          <input type="date" name="datebonachat" class="form-control datebonachat" placeholder="Date de Bon" value="{{today|date:'Y-m-d'}}">
-          <small class="mt-5">Date Facture</small>
-          <input type="date" name="datefacture" class="form-control datefacture" placeholder="Date de Bon" value="">
-          <select name="mode" class="form-select mt-2 mode">
-            <option value="">Mode</option>
-            <option value="facture">Facture</option>
-            <option value="bon">Bon</option>
-          </select>
-          <small class="mt-5">Ref error</small>
-          <div class="refnotexist"></div>
-        </div>
+  <div class="existerror d-none text-danger">
+    Ref exist deja
+  </div>
+  ref:
+  <input type="text" name="ref" class="form-control checkref">
+  designation:
+  <input type="text" name="productname" class="form-control">
+  <!-- categorie:
+  <select name="mark" id="" class="form-control">
+    {%for i in categories%}
+    <option value="{{i.id}}">
+      {{i.name}}
+    </option>
+    {%endfor%}
+  </select>
+  marque:
+  <select name="mark" id="" class="form-control">
+    {%for i in marks%}
+    <option value="{{i.id}}">
+      {{i.name}}
+    </option>
+    {%endfor%}
+  </select> -->
+  <button class="btn w-100 btn-success submitbtn" onclick="addproductinstant()">Ajouter</button>
+</div>
+<div class="recevoir-container">
+  <div class="text-white rounded h3 d-flex align-items-center justify-content-between bg-darkblue">
+      <button class="btn bg-orange" style="border:1px solid var(--orange);" onclick="deletetab()">x</button>
+      <div>
+        {{title}}
+      </div>
+      <button class="btn bg-orange" style="border:1px solid var(--orange);" onclick="forceupdatetab()">↻</button>
     </div>
-
-    <div class="col-10">
-        <div class="bg-white rounded shadow p-2 data">
-            <!-- <div>
-                <small>
-                    Ref.
-                </small>
-                <input type="text" name="ref" class="form-control searchref">
-            </div> -->
-            <div class="d-flex justify-content-between">
-                <div class="mb-3 col-5 ">
-                    <select class="w-100 form-select resultsholderbonachat mb-2" id="my-select" style="width:100%;">
-
-                    </select>
-                    <div class="row">
-                        <div class="col-3" hidden>
-                            <input type="number" class="form-control" placeholder="Devise" name="adddevise">
-
-                          </div>
-                          <div class="col-3">
-                            <input type="number" class="form-control" placeholder="Quantité" name="addqty">
-                            <div class="addstock text-danger"></div>
-                          </div>
-                          <div class="col-3">
-                            <input type="number" class="form-control" placeholder="Prix" name="addprice">
-                            <div class="addlastbuyprice text-danger"></div>
-                          </div>
-                          <div class="col-3">
-                            <input type="number" class="form-control" placeholder="Remise" name="addremise">
-                          </div>
-                          <button class="btn btn-info col-3" onclick="addrowbonachat(event)">Ajouter</button>
-                          <div class="col-12">
-                            <input hidden readonly type="text" name="addname" class="form-control">
-                          </div>
-                          <div class="col-12">
-                          </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="d-flex">
-                        <input type="file" class="form-control excelfile">
-                        <button class="btn-success btn-sm" onclick="recevoirexcel(event)">
-                            Import excel
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-          <table class="table table-bordered" style="font-size: 12px;">
-            <thead style="background: rgb(254, 196, 144);">
-                <tr class="p-0">
-                    <td style="width: 5%;">REF</td>
-                    <td style=" width: 65%;" >Article</td>
-                    <td style="width: 5%;">Dernier P.</td>
-                    <td style="width: 5%;">Stock</td>
-                    <td style="width: 5%;">Devise</td>
-                    <td style=" width: 5%;">Quantité</td>
-                    <td style=" width: 5%;">Prix</td>
-                    <td style=" width: 5%;">Remise</td>
-                    <td style=" width: 5%;">Total</td>
-                </tr>
-            </thead>
-            <tbody class="bonachatbody">
-
-            </tbody>
-          </table>
-          <div class="d-flex justify-content-between bg-white" style="position: sticky; bottom: 0;">
-              <button class="btn btn-success submitbon">
-                    Valider
-              </button>
-              <b class="grandtotalbonachat text-danger totalbon">
-                0.00
-              </b>
+  <div class="row">
+      <div class="col-2">
+         <div class="bg-white rounded shadow p-2 databonachat">
+              <button type="button" name="button" class="btn bg-darkblue text-white" onclick="refreshselectsupp(event)">↻</button>
+              <select name="supplier" id="" class="suppslect2 select2 supplierselect form-select" style="width:100%;">
+              <option value="">Fournisseur</option>
+              {% for i in suppliers %}
+              <option value="{{i.id}}">{{i.name}}</option>
+              {% endfor %}
+            </select>
+  
+            <input name="nbonachat" class="form-control mt-2 nbonachat" style="width:100%;" placeholder="N° Bon">
+            <small class="mt-5">Date de Reception</small>
+            <input type="date" name="datebonachat" class="form-control datebonachat" placeholder="Date de Bon" value="{{today|date:'Y-m-d'}}">
+            <small class="mt-5">Date Facture</small>
+            <input type="date" name="datefacture" class="form-control datefacture" placeholder="Date de Bon" value="">
+            <select name="mode" class="form-select mt-2 mode">
+              <option value="">Mode</option>
+              <option value="facture">Facture</option>
+              <option value="bon">Bon</option>
+            </select>
+            <small class="mt-5">Ref error</small>
+            <div class="refnotexist"></div>
           </div>
-        </div>
-    </div>
+      </div>
+  
+      <div class="col-10">
+          <div class="bg-white rounded shadow p-2 data">
+              <!-- <div>
+                  <small>
+                      Ref.
+                  </small>
+                  <input type="text" name="ref" class="form-control searchref">
+              </div> -->
+              <div class="d-flex justify-content-between">
+                  <div class="mb-3 col-5 ">
+                      <select class="w-100 form-select resultsholderbonachat mb-2" id="my-select" style="width:100%;">
+  
+                      </select>
+                      <div class="row">
+                          <div class="col-3" hidden>
+                              <input type="number" class="form-control" placeholder="Devise" name="adddevise">
+  
+                            </div>
+                            <div class="col-3">
+                              <input type="number" class="form-control" placeholder="Quantité" name="addqty">
+                              <div class="addstock text-danger"></div>
+                            </div>
+                            <div class="col-3">
+                              <input type="number" class="form-control" placeholder="Prix" name="addprice">
+                              <div class="addlastbuyprice text-danger"></div>
+                            </div>
+                            <div class="col-3">
+                              <input type="number" class="form-control" placeholder="Remise" name="addremise">
+                            </div>
+                            <button class="btn btn-info col-3" onclick="addrowbonachat(event)">+</button>
+                            <div class="col-12">
+                              <input hidden readonly type="text" name="addname" class="form-control">
+                            </div>
+                            <div class="col-12">
+                            </div>
+                      </div>
+                  </div>
+                  <div>
+                      <div class="d-flex">
+                          <input type="file" class="form-control excelfile">
+                          <button class="btn-success btn-sm" onclick="recevoirexcel(event)">
+                              Import excel
+                          </button>
+                      </div>
+                  </div>
+              </div>
+              <button class="btn btn-success" onclick="$('.addproductpage').removeClass('d-none')">
+                Ajouter un article
+              </button>
+            <table class="table table-bordered" style="font-size: 12px;">
+              <thead style="background: rgb(254, 196, 144);">
+                  <tr class="p-0">
+                      <td style="width: 5%;">REF</td>
+                      <td style=" width: 65%;" >Article</td>
+                      <td style="width: 5%;">Dernier P.</td>
+                      <td style="width: 5%;">Stock</td>
+                      <td style="width: 5%;">Devise</td>
+                      <td style=" width: 5%;">Quantité</td>
+                      <td style=" width: 5%;">Prix</td>
+                      <td style=" width: 5%;">Remise</td>
+                      <td style=" width: 5%;">Total</td>
+                  </tr>
+              </thead>
+              <tbody class="bonachatbody">
+  
+              </tbody>
+            </table>
+            <div class="d-flex justify-content-between bg-white" style="position: sticky; bottom: 0;">
+                <button class="btn btn-success submitbon">
+                      Valider
+                </button>
+                <b class="grandtotalbonachat text-danger totalbon">
+                  0.00
+                </b>
+            </div>
+          </div>
+      </div>
+  </div>
 </div>
 
 <script>
+  function addproductinstant(){
+    ref=$('[name="ref"]').val()
+    productname=$('[name="productname"]').val()
+    let bonachatbody = $('.bonachatbody')
+    if (ref == ''){
+      $('[name="ref"]').addClass('border-danger')
+      return
+    }
+    if (productname == ''){
+      $('[name="productname"]').addClass('border-danger')
+      return
+    }
+    $.post('/products/addoneproduct',
+      {
+        'csrfmiddlewaretoken': '{{ csrf_token }}',
+        'refinadd':ref,
+        'nameinadd':productname
+      },
+      (data)=>{
+        if (data.success){
+          let tr = `
+            <tr class="itemrow">
+                <td style="padding: 2px 0; font-size: 13px;" class="ref" onclick="removelineba(event, id)">${ref}</td>
+                <td style="padding: 2px 0; font-size: 13px;" class="name text-start">${productname}</td>
+                <td style="paddingpx 0; font-size: 13px;">--</td>
+                <td style="padding: 2px 0; font-size: 13px;">--</td>
+                <td style="padding: 2px 0; font-size: 13px;" class="clientprice"><input class="devise" value="--" style="width:65px;"></td>
+                <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate qty notempty" onkeyup="calculate(event)" name="qty" value="--" style="height:23px; width:65px;"></td>
+                <td style="padding: 2px 0; font-size: 13px;"><input type="number" class="calculate price notempty" onkeyup="calculate(event)" name="price" value="--" step=0.01 style="height:23px; width:65px;"></td>
+                <td style="padding: 2px 0; font-size: 13px;"><input type="number" value="--" class="calculate remise" onkeyup="calculate(event)" name="remise" style="height:23px; width:65px;"></td>
+                <td style="padding: 2px 0; font-size: 13px;" class="total">0</td>
+                <input type="hidden" name="productid" value="${data.id}">
+            </tr>
+            `
+            bonachatbody.prepend(tr)
+            $('.addproductpage').addClass('d-none')
+        }
+      }
+    )
 
+  }
+  $('.checkref').on('change', function() {
+        var ref = $(this).val();
+        $.ajax({
+            url: '{% url "products:checkref" %}',
+            type: 'POST',
+            data: {
+                'ref': ref,
+                'csrfmiddlewaretoken': '{{csrf_token}}'
+            },
+            success: function(data) {
+                if (data.exist) {
+                    $('.existerror').removeClass('d-none');
+                    $('.submitbtn').addClass('disabled');
+                } else {
+                    console.log(data)
+                    $('.existerror').addClass('d-none');
+                    $('.submitbtn').removeClass('disabled');
+                    
+                }
+            }
+        });
+    });
+    
+  
     $(function(){
       $('.resultsholderbonachat').select2({
         minimumInputLength: 1,
