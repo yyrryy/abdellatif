@@ -12,7 +12,7 @@
   <input type="text" name="ref" class="form-control checkref">
   designation:
   <input type="text" name="productname" class="form-control">
-  <!-- categorie:
+  categorie:
   <select name="mark" id="" class="form-control">
     {%for i in categories%}
     <option value="{{i.id}}">
@@ -27,7 +27,7 @@
       {{i.name}}
     </option>
     {%endfor%}
-  </select> -->
+  </select>
   <button class="btn w-100 btn-success submitbtn" onclick="addproductinstant()">Ajouter</button>
 </div>
 <div class="recevoir-container">
@@ -148,6 +148,8 @@
   function addproductinstant(){
     ref=$('[name="ref"]').val()
     productname=$('[name="productname"]').val()
+    category=$('[name="category"]').val()
+    mark=$('[name="mark"]').val()
     let bonachatbody = $('.bonachatbody')
     if (ref == ''){
       $('[name="ref"]').addClass('border-danger')
@@ -161,7 +163,9 @@
       {
         'csrfmiddlewaretoken': '{{ csrf_token }}',
         'refinadd':ref,
-        'nameinadd':productname
+        'nameinadd':productname,
+        'categoryinadd':category,
+        'markinadd':mark
       },
       (data)=>{
         if (data.success){

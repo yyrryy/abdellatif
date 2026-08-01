@@ -10,3 +10,4 @@ logs.txt
 media_root/
 autoparts/static/images
 *.sql
+Makefile

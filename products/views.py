@@ -672,7 +672,14 @@ def cacelcommand(request):
     })
 
 def recevoir(request):
-    return render(request, 'recevoir.html', {'title':"Bon d'achat", 'suppliers':Supplier.objects.all(), 'today':timezone.now().date()})
+    ctx={
+        'title':"Bon d'achat",
+        'suppliers':Supplier.objects.all(),
+        'today':timezone.now().date(),
+        'categories':Category.objects.all().order_by('name'),
+        'marks':Mark.objects.all().order_by('name'),
+    }
+    return render(request, 'recevoir.html', ctx)
 
 def recevoirfacture(request):
     return render(request, 'recevoirfacture.html', {'title':"Bon d'achat", 'suppliers':Supplier.objects.all(), 'today':timezone.now().date()})
