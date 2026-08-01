@@ -1410,7 +1410,7 @@ def adminpage(request):
 
 def bonlivraisondetails(request, id):
     order=Bonlivraison.objects.get(pk=id)
-    orderitems=Livraisonitem.objects.filter(bon=order, isfacture=False).order_by('product__name')
+    orderitems=Livraisonitem.objects.filter(bon=order).order_by('product__name')
     print('orderitems', orderitems)
     reglements=PaymentClientbl.objects.filter(bons__in=[order])
     orderitems=list(orderitems)
@@ -1981,8 +1981,8 @@ def createfacture(request):
     livraison.statusfc='f1'
 
     # watch out for negative total
-    livraison.total=round(livraison.total-float(total), 2)
-    livraison.save()
+    # livraison.total=round(livraison.total-float(total), 2)
+    # livraison.save()
     thisclient=Client.objects.get(pk=livraison.client_id)
     # we substract sold bl because we generate from bin livraisso
     thisclient.soldbl=round(thisclient.soldbl-float(total), 2)
