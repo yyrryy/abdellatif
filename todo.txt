@@ -1,3 +1,6 @@
-panier client
-add article instantly in bon achat if not exist
+panier date of last article 
+valider in panier admin dashboard 
+block catalog..
+panier client..
+add article instantly in bon achat if not exist..
 stock lli ytmodifian manual i5ssa addibayn

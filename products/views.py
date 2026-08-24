@@ -10107,6 +10107,9 @@ def allowcatalog(request):
             'clientcode':clientcode,
         })
         if json.loads(res.text)['success']:
+            client=Client.objects.get(code=clientcode)
+            client.accesscatalog = not client.accesscatalog
+            client.save()
             return JsonResponse({
                 'success':True
             })

@@ -73,7 +73,8 @@
 	</div>
 	<div class="col-8">
 		<div class="bg-white border rounded p-2" style="max-height: 78vh;overflow: scroll;">
-			<table class="table table-bordered">
+			Akhir date dyal produit f had panier: <span class="lastitemdate"></span>
+      <table class="table table-bordered">
 				<thead class="bg-darkblue text-white">
 					<tr>
 						<th>Image</th>
@@ -150,6 +151,7 @@
             </tr>
             `)
         }
+        $('.lastitemdate').text(data.lastitemdate)
 		$('.loadingscreen').addClass('d-none')
 		$('.cartitemsholder').removeClass('blurred')
 
