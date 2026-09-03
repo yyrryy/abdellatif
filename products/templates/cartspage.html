@@ -29,7 +29,7 @@
   </div>
 <div class="row">
 	<div class="col-4">
-		<div style="max-height: 30vh;overflow: scroll;">
+		<!-- <div style="max-height: 30vh;overflow: scroll;">
 			<table class="table table-bordered">
 				<thead class="bg-darkblue text-white">
 					<tr>
@@ -47,7 +47,7 @@
 				</tbody>
 
 			</table>
-		</div>
+		</div> -->
 		<input class="form-control searchpanier" type="search" placeholder="Chercher panier">
 		<div style="max-height: 56vh;overflow: scroll;">
 			<table class="table table-bordered">
@@ -73,7 +73,7 @@
 	</div>
 	<div class="col-8">
 		<div class="bg-white border rounded p-2" style="max-height: 78vh;overflow: scroll;">
-			Akhir date dyal produit f had panier: <span class="lastitemdate"></span>
+			Akhir date dyal produit f had pani: <span class="lastitemdate">ddd</span>
       <table class="table table-bordered">
 				<thead class="bg-darkblue text-white">
 					<tr>
@@ -98,7 +98,7 @@
 
         // Split the filter value into individual terms based on the '&' sign
         var filterTerms = filterValue.split('+').map(function(term) {
-            return term.trim();
+          return term.trim();
         });
 
         // Iterate through the table rows
@@ -123,9 +123,8 @@
 		$(event.target).parent().parent().parent().parent().find('tr').removeClass('bg-success text-white')
 		$(event.target).parent().addClass('bg-success text-white')
 		$.get('/getitemsincart', {'userid': userid}, (data)=>{
-
+      console.log("full data", data)
 						$('.cartitemsholder').html('')
-            console.log(data)
             for (i of data.items){
           $('.cartitemsholder').append(`
 
@@ -150,8 +149,8 @@
 
             </tr>
             `)
-        }
-        $('.lastitemdate').text(data.lastitemdate)
+          }
+          $('.lastitemdate').html(data.lastitemdate)
 		$('.loadingscreen').addClass('d-none')
 		$('.cartitemsholder').removeClass('blurred')
 
@@ -190,6 +189,7 @@
             `)
         }
 		$('.loadingscreen').addClass('d-none')
+    $('.lastitemdate').html(data.lastitemdate)
 		$('.cartitemsholder').removeClass('blurred')
 
 
