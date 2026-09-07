@@ -58,8 +58,8 @@
                     <td>{{i.product.name}}</td>
                     <td>{{i.price}}</td>
                     <td class="prnetjv">{% if i.product.prixnet %} {{i.product.prixnet}} {% else %} 0 {% endif %}</td>
-                    <td style="color:blue" class="">{% if i.product.coutmoyen %} {{i.product.coutmoyen}} {% else %} 0 {% endif %}</td>
-                    <td class="text-danger coutmoyenjv">{% if i.product.buyprice %} {{i.product.buyprice}} {% else %} 0 {% endif %}</td>
+                    <td style="color:blue" class="coutmoyenjv">{% if i.product.coutmoyen %} {{i.product.coutmoyen}} {% else %} 0 {% endif %}</td>
+                    <td class="text-danger prachatjv">{% if i.product.buyprice %} {{i.product.buyprice}} {% else %} 0 {% endif %}</td>
                     <td class="text-danger qtyjv">{{i.qty}}</td>
                     <td class="totaljv">{{i.total|floatformat:2|intspace}}</td>
                     <td>{{i.bon.client.name}}</td>
@@ -110,12 +110,12 @@
         })
     }
     function calculatetotals(){
-        console.log('totals')
         $('.margejv').each(function(){
             var prnet=$(this).parent().find('.prnetjv').text()
             var coutmoyen=$(this).parent().find('.coutmoyenjv').text()
+            var prachatjv=$(this).parent().find('.prachatjv').text()
             var qty=$(this).parent().find('.qtyjv').text()
-            var marge=(parseFloat(prnet)-parseFloat(coutmoyen))*parseFloat(qty)
+            var marge=(parseFloat(prnet)-parseFloat(prachatjv))*parseFloat(qty)
             $(this).text(marge.toFixed(2))
         })
         var totalqty=0

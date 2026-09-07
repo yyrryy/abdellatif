@@ -895,6 +895,15 @@ def getusercart(request):
         res=req.get(f'http://{serverip}/getitemsincart?userid='+userid)
         return JsonResponse(json.loads(res.text))
     return JsonResponse([], safe=False)
+
+def validerclientcart(request):
+    userid=request.GET.get('userid')
+    serverip = Setting.objects.only('serverip').first()
+    serverip = serverip.serverip if serverip else None
+    if serverip:
+        res=req.get(f'http://{serverip}/validerclientcart?userid='+userid)
+        return JsonResponse(json.loads(res.text))
+    return JsonResponse([], safe=False)
     
 def getitemsinWishlist(request):
     userid=request.GET.get('userid')

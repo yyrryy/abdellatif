@@ -1,6 +1,4 @@
-panier date of last article 
-valider in panier admin dashboard 
-block catalog..
-panier client..
-add article instantly in bon achat if not exist..
-stock lli ytmodifian manual i5ssa addibayn
+valider in panier admin dashboard
+in generate bon commande items with stock 0 need to have a button to be sent to reliquat of the client and delete from bon
+journal vents prix achat calcul instead of cout moyen
+categories in system are slow

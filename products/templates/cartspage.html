@@ -60,9 +60,15 @@
 				<tbody class="paniertablebody">
 					{% for i in cartsserver %}
 					{% if i.2 > 0 %}
-					<tr onclick="getcartdetailserver('{{i.0}}', event)">
-						<td>{{i.3}}</td>
-						<td>{{i.2|floatformat:2|intspace}}</td>
+					<tr >
+            <td>
+              {{i.3}}
+            </td>
+            <td>
+              {{i.2|floatformat:2|intspace}} <br>
+              <button class="btn btn-info bi bi-eye" onclick="getcartdetailserver('{{i.0}}', event)"></button>
+              <button class="btn btn-success" onclick="validerclientcart('{{i.0}}', event)"> vlaider</button>
+            </td>
 					</tr>
 					{% endif %}
 					{% endfor %}
@@ -73,7 +79,14 @@
 	</div>
 	<div class="col-8">
 		<div class="bg-white border rounded p-2" style="max-height: 78vh;overflow: scroll;">
-			Akhir date dyal produit f had pani: <span class="lastitemdate"></span>
+			<div class="d-flex justify-content-between">
+        <div>
+          Akhir date dyal produit f had pani: <span class="lastitemdate"></span>
+        </div>
+        <button class="btn btn-success validercartbtn" cartid="">
+          Valider pani client
+        </button>
+      </div>
       <table class="table table-bordered">
 				<thead class="bg-darkblue text-white">
 					<tr>
@@ -156,10 +169,23 @@
 
         })
 	}
+
+  function validerclientcart(userid, event){
+    alertify.confirm("Valider?", ()=>{
+      $.get('/products/validerclientcart', {'userid': userid}, (data)=>{
+        if (data.success){
+          $(event.target).parent().parent().remove()
+        }
+      })
+    })
+  }
+
 	function getcartdetailserver(userid){
 		$(event.target).parent().parent().parent().find('tr').removeClass('bg-success text-white')
 		$('.cartitemsholder').addClass('blurred')
-		$(event.target).parent().addClass('bg-success text-white')
+		$(event.target).parent().parent().css({
+      'background':'yellowgreen'
+    })
 		$.get('/products/getusercart', {'userid': userid}, (data)=>{
 						$('.cartitemsholder').html('')
             console.log(data)
