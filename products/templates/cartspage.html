@@ -183,9 +183,9 @@
 	function getcartdetailserver(userid){
 		$(event.target).parent().parent().parent().find('tr').removeClass('bg-success text-white')
 		$('.cartitemsholder').addClass('blurred')
-		$(event.target).parent().parent().css({
-      'background':'yellowgreen'
-    })
+		// $(event.target).parent().parent().css({
+    //   'background':'yellowgreen'
+    // })
 		$.get('/products/getusercart', {'userid': userid}, (data)=>{
 						$('.cartitemsholder').html('')
             console.log(data)
