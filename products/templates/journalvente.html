@@ -56,8 +56,8 @@
                     <td>{{i.bon.bon_no}}</td>
                     <td>{{i.product.ref.upper}}</td>
                     <td>{{i.product.name}}</td>
-                    <td>{{i.price}}</td>
-                    <td class="prnetjv">{% if i.product.prixnet %} {{i.product.prixnet}} {% else %} 0 {% endif %}</td>
+                    <td class="prnetjv">{{i.price}}</td>
+                    <td>{% if i.product.prixnet %} {{i.product.prixnet}} {% else %} 0 {% endif %}</td>
                     <td style="color:blue" class="coutmoyenjv">{% if i.product.coutmoyen %} {{i.product.coutmoyen}} {% else %} 0 {% endif %}</td>
                     <td class="text-danger prachatjv">{% if i.product.buyprice %} {{i.product.buyprice}} {% else %} 0 {% endif %}</td>
                     <td class="text-danger qtyjv">{{i.qty}}</td>

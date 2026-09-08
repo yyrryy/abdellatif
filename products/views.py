@@ -9235,8 +9235,8 @@ def filterjvdate(request):
             <td>{i.bon.bon_no}</td>
             <td>{i.product.ref}</td>
             <td>{i.product.name}</td>
-            <td>{i.price}</td>
-            <td class="prnetjv">{i.product.prixnet if i.product.prixnet else 0}</td>
+            <td class="prnetjv">{i.price}</td>
+            <td>{i.product.prixnet if i.product.prixnet else 0}</td>
             <td style="color:blue">{i.product.coutmoyen if i.product.coutmoyen else 0}</td>
             <td class="text-danger prachatjv">{i.product.buyprice if i.product.buyprice else 0}</td>
             <td class="text-danger qtyjv">{i.qty}</td>
