@@ -961,7 +961,9 @@ a .uil {
                         <a href="/products/addproductspage" target="_blank">+ Ajouter un article</a>
                         <a href="#" class="tab-link" data-target="Alert" onclick="createtab('ctg', 'CATEGORIES', '/products/categoriespage')">Categories</a>
                         <a href="#" class="tab-link" data-target="Alert" onclick="createtab('ctg', 'CATEGORIES', '/products/marquespage')">Marques</a>
-                        
+                        <a class="sectionitem border-bottom p-2 btn w-100 text-start" onclick="createtab('alert', 'Alert stock', '/products/alertstock?target={{target}}')">
+                          Alert Stock
+                        </a>
                         
                         
 
@@ -1094,6 +1096,9 @@ a .uil {
                           <a class="dropdown-item" href="#" onclick="createtab('add', '+ ARTICLE', '/products/categoriespage')">Categories</a>
                           <a class="dropdown-item" href="#" onclick="createtab('add', '+ ARTICLE', '/products/marquespage')">Marques</a>
                           <a class="dropdown-item" href="#" onclick="createtab('carlogospage', 'carlogospage', '/products/carlogospage')">Logo voitures</a>
+                          <a class="dropdown-item" href="#" onclick="createtab('alert', 'Alert stock', '/products/alertstock?target={{target}}')">
+                          Alert Stock
+                        </a>
                         </div>
 
                       </li>

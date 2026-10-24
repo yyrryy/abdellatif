@@ -330,7 +330,7 @@ urlpatterns = [
     path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
     path('printrepturne', views.printrepturne, name='printrepturne'),
     path('allowmultiplepc', views.allowmultiplepc, name='allowmultiplepc'),
-    #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
+    path('alertstock', views.alertstock, name='alertstock'),
     #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
     #path('saveconfiguration', views.saveconfiguration, name='saveconfiguration'),
     # check views used to be only for check views but now, it's the 2nd views file

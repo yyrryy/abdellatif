@@ -12120,3 +12120,9 @@ def updateplafon(request):
 #         'status': 'success',
 #         'errors': errors
 #     })
+def alertstock(request):
+    targets = Category.objects.filter(produit__stocktotal__lte=F('produit__minstock')).annotate(
+    total_products=Count('produit')
+    )
+    return render(request, 'alertstock.html', {'title':'Alert Stock', 'categories':targets,
+    'suppliers':Supplier.objects.all()})
