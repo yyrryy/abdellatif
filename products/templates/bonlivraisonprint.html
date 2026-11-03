@@ -105,7 +105,7 @@
                   <hr style="margin:0; padding:0;opacity: 1;">
                   {% endfor %}
               </td>
-              <td style="white-space: nowrap; padding:3px">
+              <td style="white-space: nowrap;">
                   {% for v in i %}
 
                   {{v.product.name.upper|slice:'65'}} {%if v.product.mark%}{{v.product.mark}}{%endif%} {%if v.product.diametre%}{{v.product.diametre}}{%endif%}
@@ -128,7 +128,7 @@
               </td>
               <td class="text-center">
                   {% for v in i %}
-                  0
+                  {{v.remise}}
                   <hr style="margin:0; padding:0;opacity: 1;">
                   {% endfor %}
               </td>
@@ -226,7 +226,7 @@
                   <hr style="margin:0; padding:0;opacity: 1;">
                   {% endfor %}
                   </td>
-                <td style="white-space: nowrap; padding:3px">
+                <td style="white-space: nowrap;">
                   {% for v in i %}
 
                   {{v.product.name.upper|slice:'65'}} {%if v.product.mark%}{{v.product.mark}}{%endif%} {%if v.product.diametre%}{{v.product.diametre}}{%endif%}
@@ -249,7 +249,7 @@
               </td>
               <td class="text-center">
                   {% for v in i %}
-                  0
+                  {{v.remise}}
                   <hr style="margin:0; padding:0;opacity: 1;">
                   {% endfor %}
               </td>
