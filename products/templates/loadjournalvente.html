@@ -1,0 +1,20 @@
+{% for i in items %}
+    <tr class="journalvente-row">
+        <td>{{i.date|date:"d/m/Y"}}</td>
+        <td>{{i.bon.bon_no}}</td>
+        <td>{{i.product.ref.upper}}</td>
+        <td>{{i.product.name}}</td>
+        <td class="prnetjv">{{i.price}}</td>
+        <td>{% if i.product.prixnet %} {{i.product.prixnet}} {% else %} 0 {% endif %}</td>
+        <td style="color:blue" class="coutmoyenjv">{% if i.product.coutmoyen %} {{i.product.coutmoyen}} {% else %} 0 {% endif %}</td>
+        <td class="text-danger prachatjv">{% if i.product.buyprice %} {{i.product.buyprice}} {% else %} 0 {% endif %}</td>
+        <td class="text-danger qtyjv">{{i.qty}}</td>
+        <td class="totaljv">{{i.total|floatformat:2|intspace}}</td>
+        <td>{{i.bon.client.name}}</td>
+        <td>{{i.bon.client.code}}</td>
+        <td>{{i.bon.salseman.name}}</td>
+        <td class="text-success margejv">
+
+        </td>
+    </tr>
+{% endfor %}

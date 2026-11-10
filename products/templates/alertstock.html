@@ -50,7 +50,7 @@
             </div>
         </div> -->
         <hr>
-        <ul class="list-group">
+        <ul class="list-group" style="height: 70vh; overflow-y: scroll;">
           
             {% for i in categories %}
             <li class="list-group-item cat{{i.id}}" onclick="getlowbycategory({{i.id}}, '{{i.name}}', 'cat{{i.id}}')">

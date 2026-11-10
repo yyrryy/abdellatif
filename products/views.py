@@ -3848,59 +3848,38 @@ def loadjournalvente(request):
             products = Livraisonitem.objects.filter(isfacture=False, date__year=year, isinventaire=False).filter(q_objects).order_by('-date')[start:end]
             total=round(Livraisonitem.objects.filter(isfacture=False, date__year=year).filter(q_objects).aggregate(Sum('total'))['total__sum'] or 0, 2)
             totalqty=Livraisonitem.objects.filter(isfacture=False, date__year=year).filter(q_objects).aggregate(Sum('qty'))['qty__sum'] or 0
-        for i in products:
-            trs+=f'''
-            <tr class="journalvente-row" year={year} term={term}>
-                <td>{i.date.strftime('%d/%m/%Y')}</td>
-                <td>{i.bon.bon_no}</td>
-                <td>{i.product.ref.upper()}</td>
-                <td>{i.product.name}</td>
-                <td>{i.price}</td>
-                <td class="prnetjv">{i.product.prixnet if i.product.prixnet else 0}</td>
-                <td style="color:blue" class="">{i.product.coutmoyen if i.product.coutmoyen else 0}</td>
-                <td class="text-danger coutmoyenjv">{i.product.buyprice if i.product.buyprice else 0}</td>
-                <td class="text-danger qtyjv">{i.qty}</td>
-                <td class="totaljv">{i.total}</td>
-                <td>{i.bon.client.name}</td>
-                <td>{i.bon.client.code}</td>
-                <td>{i.bon.salseman.name}</td>
-                <td class="text-success margejv">
-
-                </td>
-            </tr>
-            '''
         return JsonResponse({
-            'trs':trs,
+            'trs':render(request, 'loadjournalvente.html', {'items':products}).content.decode('utf-8'),
             'has_more': len(products) == per_page,
         })
     if startdate!='0' and enddate!='0':
         startdate = datetime.strptime(startdate, '%Y-%m-%d')
         enddate = datetime.strptime(enddate, '%Y-%m-%d')
         products=Livraisonitem.objects.filter(isfacture=False, date__range=[startdate, enddate], isinventaire=False).order_by('-date')[start:end]
-        trs=''
-        for i in products:
-            trs+=f'''
-            <tr class="journalvente-row" startdate={startdate} enddate={enddate}>
-                <td>{i.date.strftime('%d/%m/%Y')}</td>
-                <td>{i.bon.bon_no}</td>
-                <td>{i.product.ref.upper()}</td>
-                <td>{i.product.name}</td>
-                <td>{i.price}</td>
-                <td class="prnetjv">{i.product.prixnet if i.product.prixnet else 0}</td>
-                <td style="color:blue" class="">{i.product.coutmoyen if i.product.coutmoyen else 0}</td>
-                <td class="text-danger coutmoyenjv">{i.product.buyprice if i.product.buyprice else 0}</td>
-                <td class="text-danger qtyjv">{i.qty}</td>
-                <td class="totaljv">{i.total}</td>
-                <td>{i.bon.client.name}</td>
-                <td>{i.bon.client.code}</td>
-                <td>{i.bon.salseman.name}</td>
-                <td class="text-success margejv">
+        # trs=''
+        # for i in products:
+        #     trs+=f'''
+        #     <tr class="journalvente-row" startdate={startdate} enddate={enddate}>
+        #         <td>{i.date.strftime('%d/%m/%Y')}</td>
+        #         <td>{i.bon.bon_no}</td>
+        #         <td>{i.product.ref.upper()}</td>
+        #         <td>{i.product.name}</td>
+        #         <td>{i.price}</td>
+        #         <td class="prnetjv">{i.product.prixnet if i.product.prixnet else 0}</td>
+        #         <td style="color:blue" class="">{i.product.coutmoyen if i.product.coutmoyen else 0}</td>
+        #         <td class="text-danger coutmoyenjv">{i.product.buyprice if i.product.buyprice else 0}</td>
+        #         <td class="text-danger qtyjv">{i.qty}</td>
+        #         <td class="totaljv">{i.total}</td>
+        #         <td>{i.bon.client.name}</td>
+        #         <td>{i.bon.client.code}</td>
+        #         <td>{i.bon.salseman.name}</td>
+        #         <td class="text-success margejv">
 
-                </td>
-            </tr>
-            '''
+        #         </td>
+        #     </tr>
+        #     '''
         return JsonResponse({
-            'trs':trs,
+            'trs':render(request, 'loadjournalvente.html', {'items':products}).content.decode('utf-8'),
             'has_more': len(products) == per_page,
         })
     if year=='0':
@@ -3908,30 +3887,30 @@ def loadjournalvente(request):
         products = Livraisonitem.objects.filter(isfacture=False, date__year=thisyear).order_by('-date')[start:end]
     else:
         products = Livraisonitem.objects.filter(isfacture=False, date__year=year, isinventaire=False).order_by('-date')[start:end]
-    trs=''
-    for i in products:
-        trs+=f'''
-        <tr class="journalvente-row" year={year}>
-            <td>{i.date.strftime('%d/%m/%Y')}</td>
-            <td>{i.bon.bon_no}</td>
-            <td>{i.product.ref.upper()}</td>
-            <td>{i.product.name}</td>
-            <td>{i.price}</td>
-            <td class="prnetjv">{i.product.prixnet if i.product.prixnet else 0}</td>
-            <td style="color:blue" class="">{i.product.coutmoyen if i.product.coutmoyen else 0}</td>
-            <td class="text-danger coutmoyenjv">{i.product.buyprice if i.product.buyprice else 0}</td>
-            <td class="text-danger qtyjv">{i.qty}</td>
-            <td class="totaljv">{i.total}</td>
-            <td>{i.bon.client.name}</td>
-            <td>{i.bon.client.code}</td>
-            <td>{i.bon.salseman.name}</td>
-            <td class="text-success margejv">
+    # trs=''
+    # for i in products:
+        # trs+=f'''
+        # <tr class="journalvente-row" year={year}>
+        #     <td>{i.date.strftime('%d/%m/%Y')}</td>
+        #     <td>{i.bon.bon_no}</td>
+        #     <td>{i.product.ref.upper()}</td>
+        #     <td>{i.product.name}</td>
+        #     <td>{i.price}</td>
+        #     <td class="prnetjv">{i.product.prixnet if i.product.prixnet else 0}</td>
+        #     <td style="color:blue" class="">{i.product.coutmoyen if i.product.coutmoyen else 0}</td>
+        #     <td class="text-danger coutmoyenjv">{i.product.buyprice if i.product.buyprice else 0}</td>
+        #     <td class="text-danger qtyjv">{i.qty}</td>
+        #     <td class="totaljv">{i.total}</td>
+        #     <td>{i.bon.client.name}</td>
+        #     <td>{i.bon.client.code}</td>
+        #     <td>{i.bon.salseman.name}</td>
+        #     <td class="text-success margejv">
 
-            </td>
-        </tr>
-        '''
+        #     </td>
+        # </tr>
+        # '''
     return JsonResponse({
-        'trs':trs,
+        'trs':render(request, 'loadjournalvente.html', {'items':products}).content.decode('utf-8'),
         'has_more': len(products) == per_page
     })
 
